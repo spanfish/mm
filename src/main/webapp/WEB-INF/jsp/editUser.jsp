@@ -5,133 +5,104 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<title>Edit User</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/resources/main.css">
 <style>
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-body {
-	font-family: Arial, Helvetica, sans-serif;
+/* Add padding to containers */
+.container {
+    padding: 15px;
+    background-color: white;
+    width: 400px;
 }
 
-/* Style the header */
-header {
-	background-color: #666;
-	padding: 10px;
-	text-align: left;
-	font-size: 14px;
-	color: white;
-	margin-top: 0;
-	margin-left: 0
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;7
+    margin: 10px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
 }
 
-header h1 {
-	margin-top: 0;
-	margin-left: 15px
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
 }
 
-/* Create two columns/boxes that floats next to each other */
-nav {
-	float: left;
-	width: 10%;
-	height: 300px; /* only for demonstration, should be removed */
-	background: #ccc;
-	padding: 20px;
+/* Overwrite default styles of hr */
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
 }
 
-/* Style the list inside the menu */
-nav ul {
-	list-style-type: none;
-	padding: 0;
+/* Set a style for the submit button */
+.registerbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
 }
 
-article {
-	float: left;
-	padding: 20px;
-	width: 90%;
-	background-color: #f1f1f1;
-	height: 300px; /* only for demonstration, should be removed */
+.registerbtn:hover {
+    opacity: 1;
 }
 
-/* Clear floats after the columns */
-section:after {
-	content: "";
-	display: table;
-	clear: both;
+/* Add a blue text color to links */
+a {
+    color: dodgerblue;
 }
 
-/* Style the footer */
-footer {
-	background-color: #777;
-	padding: 10px;
-	text-align: center;
-	color: white;
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+    background-color: #f1f1f1;
+    text-align: center;
 }
-
-/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
-@media ( max-width : 600px) {
-	nav, article {
-		width: 100%;
-		height: auto;
-	}
-}
-</style>
+</style>	
 </head>
 <body>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="navi.jsp">
+		<jsp:param name="page" value="setting" />
+	</jsp:include>
 
-	<section>
-		<jsp:include page="navi.jsp"></jsp:include>
-		<article>
-			<h1>Edit User</h1>
-			<p>
-				<c:if test="${not empty user}">
-					<form:form method="POST" action="${pageContext.request.contextPath }/do/user/update/update.htm"
-						modelAttribute="user" servletRelativeAction="aa">
-						<table style="width: 300px;">
-							<tr>
-								<th>ID</th>
-								<th>Email</th>
-								<th>Enabled</th>
-								<th></th>
-							</tr>
-							<tr>
-								<td><form:label path="username">
-                      ID</form:label></td>
-								<td><form:input path="username" disabled="true"/></td>
-							</tr>
-							<tr>
-								<td><form:label path="password">
-                      Password</form:label></td>
-								<td><form:input path="password" /></td>
-							</tr>
-							<tr>
-								<td><form:label path="email">
-                      Email</form:label></td>
-								<td><form:input path="email" /></td>
-							</tr>
-							<tr>
-								<td><form:label path="enabled">
-                      Enabled</form:label></td>
-								<td><form:input path="enabled" /></td>
-							</tr>
-							<tr>
-								<td><input type="submit" value="Submit" /></td>
-							</tr>
-						</table>
-					</form:form>
-				</c:if>
-			</p>
-		</article>
-	</section>
+	<c:if test="${not empty user}">
+	<form:form method="POST"
+		action="${pageContext.request.contextPath }/do/user/update/update.htm"
+		modelAttribute="user" servletRelativeAction="aa">
+		<div class="container">
+		    <label for="username"><b>用户名，不可修改</b></label> 
+			<form:input path="username" disabled="true"/> 
+			
+			<label for="email"><b>Email</b></label> 
+			<form:input path="email"/> 
+			
+			<label for="psw"><b>密码</b></label> 
+			<form:password path="password"/> 
+			
+			<label for="psw-repeat"><b>密码确认</b></label> 
+			<input type="password" placeholder="请输入密码确认" name="psw-repeat" required>
+			
+			<label for="psw-repeat"><b>权限</b></label> 
+			<input type="checkbox" name="riyu" value="1" checked="checked">一般
+				<input type="checkbox" name="riyu" value="2">役に立つ
+				<input type="checkbox" name="riyu" value="3">系统管理
+			<hr>
+			
+			<button type="submit" class="registerbtn">更新用户</button>
+		</div>
+	</form:form>
+	</c:if>
 
-	<footer>
-		<p>Footer</p>
-	</footer>
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

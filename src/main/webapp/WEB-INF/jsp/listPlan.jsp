@@ -35,16 +35,24 @@
 </head>
 <body>
 	<jsp:include page="navi.jsp">
-		<jsp:param name="page" value="setting" />
+		<jsp:param name="page" value="home" />
 	</jsp:include>
 
-	<c:if test="${not empty users}">
-		<table style="width: 700px;" id="users">
+	<table style="width: 700px;" id="users">
 			<tr>
-				<th style="width: 200px;">用户名</th>
-				<th style="width: 200px;">邮件</th>
-				<th style="width: 100px;">是否有效</th>
-				<th style="width: 100px;"></th>
+				<th style="width: 200px;">序号</th>
+				<th style="width: 200px;">日期</th>
+				<th style="width: 100px;">客戶</th>
+				<th style="width: 100px;">生产计划通知书号</th>
+				<th style="width: 100px;">版本號号</th>
+				<th style="width: 100px;">生产型号</th>
+				<th style="width: 100px;">生产BOM编号</th>
+				<th style="width: 100px;">软件版本号</th>
+				<th style="width: 100px;">订单数量</th>
+				<th style="width: 100px;">生产类型</th>
+				<th style="width: 100px;">备注</th>
+				<th style="width: 100px;">审核</th>
+				<th style="width: 100px;">承认</th>
 			</tr>
 			<c:forEach var="u" items="${users}" varStatus="status">
 				<tr>
@@ -55,7 +63,6 @@
 				</tr>
 			</c:forEach>
 		</table>
-	</c:if>
 	
 	<c:if test="${empty users}">
 		还没有用户

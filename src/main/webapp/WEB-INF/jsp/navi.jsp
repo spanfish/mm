@@ -2,19 +2,10 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<nav>
-	<ul>
-		<security:authorize access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
-			<li>My task</li>
-			<li>--List</li>
-			<li>--Create</li>
-			<li>&nbsp;</li>
-		</security:authorize>
-		<li>&nbsp;</li>
-		<security:authorize access="hasRole('ROLE_ADMIN')">
-			<li>User</li>
-			<li>--<a href="<%=request.getContextPath()%>/do/user/users.htm">List</a></li>
-			<li>--<a href="<%=request.getContextPath()%>/do/user/create/default.htm">Create</a></li>
-		</security:authorize>
-	</ul>
-</nav>
+<ul>
+  <li><a class="<%="home".equals(request.getParameter("page")) ? "active" : "" %>" href="<%=request.getContextPath()%>/do/main.htm">生产计划</a></li>
+  <li><a href="#news">News</a></li>
+  <li><a class="<%="setting".equals(request.getParameter("page")) ? "active" : "" %>" href="<%=request.getContextPath()%>/do/user/users.htm">用户设置</a></li>
+  <li style="float:right"><a href="<%=request.getContextPath()%>/logout">退出</a></li>
+</ul>
+<br/>

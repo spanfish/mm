@@ -5,10 +5,23 @@
  */
 package com.newtronics.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
 /**
  *
  * @author xiangweiwang
  */
+
+@Controller
+@RequestMapping(value = "/plan")
 public class PlanController {
-    
+	@RequestMapping(value = "/list.htm", method = RequestMethod.GET)
+	public ModelAndView defaultPage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("listPlan");
+		return mv;
+	}
 }
