@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.newtronics.tx.model.Plan;
+
 /**
  *
  * @author xiangweiwang
@@ -22,6 +24,21 @@ public class PlanController {
 	public ModelAndView defaultPage() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("listPlan");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/input.htm", method = RequestMethod.GET)
+	public ModelAndView inputPlan() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("inputPlan");
+		mv.addObject("plan", new Plan());
+		return mv;
+	}
+	
+	@RequestMapping(value = "/create.htm", method = RequestMethod.POST)
+	public ModelAndView createPlan() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("createPlan");
 		return mv;
 	}
 }

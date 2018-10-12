@@ -38,21 +38,21 @@
 		<jsp:param name="page" value="home" />
 	</jsp:include>
 
-	<table style="width: 700px;" id="users">
+	<table style="" id="users">
 			<tr>
-				<th style="width: 200px;">序号</th>
-				<th style="width: 200px;">日期</th>
-				<th style="width: 100px;">客戶</th>
-				<th style="width: 100px;">生产计划通知书号</th>
-				<th style="width: 100px;">版本號号</th>
-				<th style="width: 100px;">生产型号</th>
-				<th style="width: 100px;">生产BOM编号</th>
-				<th style="width: 100px;">软件版本号</th>
-				<th style="width: 100px;">订单数量</th>
-				<th style="width: 100px;">生产类型</th>
-				<th style="width: 100px;">备注</th>
-				<th style="width: 100px;">审核</th>
-				<th style="width: 100px;">承认</th>
+				<th style="">序号</th>
+				<th style="">日期</th>
+				<th style="">客戶</th>
+				<th style="">生产计划通知书号</th>
+				<th style=";">版本號号</th>
+				<th style="">生产型号</th>
+				<th style="">生产BOM编号</th>
+				<th style="">软件版本号</th>
+				<th style="">订单数量</th>
+				<th style="">生产类型</th>
+				<th style="">备注</th>
+				<th style="">审核</th>
+				<th style="">承认</th>
 			</tr>
 			<c:forEach var="u" items="${users}" varStatus="status">
 				<tr>
@@ -65,10 +65,10 @@
 		</table>
 	
 	<c:if test="${empty users}">
-		还没有用户
+		还没有生产计划
 	</c:if>
 	<br/>
-	<a href="<%=request.getContextPath()%>/do/user/create/default.htm">创建用户</a>
+	<a href="<%=request.getContextPath()%>/do/plan/input.htm">创建生产计划</a>
 	
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
