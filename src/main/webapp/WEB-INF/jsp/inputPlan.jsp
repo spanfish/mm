@@ -97,8 +97,7 @@ input[type=submit]:hover {
 					<label for="fname">客戶</label>
 				</div>
 				<div class="col-75">
-					<input type="text" id="fname" name="firstname"
-						placeholder="Your name..">
+					<form:input path="customer" />
 				</div>
 			</div>
 			

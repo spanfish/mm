@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Override
-        @Transactional
+	@Transactional
 	public void insertUser(User user) {
 		userDAO.insertUser(user);
 	}

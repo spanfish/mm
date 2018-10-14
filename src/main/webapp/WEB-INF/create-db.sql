@@ -11,8 +11,9 @@ CREATE TABLE user_roles (
 );
 
 CREATE TABLE plan (
-  planid VARCHAR(30),
-  createdate DATE,
+  planid VARCHAR(100),
+  create_date DATE,
+  creator_name VARCHAR(30),
   customer VARCHAR(30),
   notifyNo VARCHAR(30),
   versionNo VARCHAR(30),

@@ -1,48 +1,71 @@
 package com.newtronics.tx.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Plan {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String planId;
 
+	@Column(name = "create_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
-	
+
 	private String customer;
-	
+
 	private String notifyNo;
 
 	private String versionNo;
-	
+
 	private String model;
-	
+
 	private String bomNo;
-	
+
 	private String softVersionNo;
-	
+
 	private String orderQuantity;
-	
+
 	private String manufactureType;
-	
+
 	private String memo;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="reviewer_name")
+
+	@ManyToOne
+	@JoinColumn(name = "creator_name")
+	private User creator;
+
+	@ManyToOne
+	@JoinColumn(name = "reviewer_name")
 	private User reviewer;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="approver_name")
+
+	@Column(name = "review_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date reviewDate;
+
+	@ManyToOne
+	@JoinColumn(name = "approver_name")
 	private User approver;
+	
+	@Column(name = "approve_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date approveDate;
+
+	public Plan() {
+		this.planId = UUID.randomUUID().toString();
+		this.createDate = new Date();
+	}
 
 	public String getPlanId() {
 		return planId;
@@ -51,8 +74,6 @@ public class Plan {
 	public void setPlanId(String planId) {
 		this.planId = planId;
 	}
-
-	
 
 	public Date getCreateDate() {
 		return createDate;
@@ -132,6 +153,14 @@ public class Plan {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 
 	public User getReviewer() {
