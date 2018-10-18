@@ -38,6 +38,11 @@ public class Plan {
 	@Version
 	private int versionNo;
 
+	//1: submitted to review
+	//2: approved
+	//0: 
+	private int status;
+	
 	// 创建者`
 	@OneToOne
 	@JoinColumn(name = "creator_name")
@@ -162,5 +167,13 @@ public class Plan {
 
 	public void setPlanItems(Map<String, PlanItem> planItems) {
 		this.planItems = planItems;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

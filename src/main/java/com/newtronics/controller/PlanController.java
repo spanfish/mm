@@ -57,7 +57,7 @@ public class PlanController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inputPlan");
 		mv.addObject("plan", plan);
-		
+
 		return mv;
 	}
 
@@ -76,23 +76,40 @@ public class PlanController {
 
 	@RequestMapping(value = "save.html", method = RequestMethod.POST)
 	@ResponseBody
-	public String saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name, @RequestParam("value") String value,
-			@RequestParam("pk") String pk) {
-		
+	public String saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
+			@RequestParam("value") String value, @RequestParam("pk") String pk) {
+
 		Plan plan = (Plan) modelMap.get("plan");
-		if(plan == null) {
+		if (plan == null) {
 			return "Timeout";
 		}
 		Map<String, PlanItem> items = plan.getPlanItems();
 		PlanItem item = items.get(name);
-		if(item == null) {
+		if (item == null) {
 			item = new PlanItem();
 			items.put(name, item);
 		}
 		item.setPlan(plan);
 		item.setItemName(name);
 		item.setItemValue(value);
-		
+
+		plan = planService.insertPlan(plan);
+		modelMap.put("plan", plan);
+		return "OK";
+	}
+
+	@RequestMapping(value = "saveHead.html", method = RequestMethod.POST)
+	@ResponseBody
+	public String savePlanHead(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
+			@RequestParam("value") String value, @RequestParam("pk") String pk) {
+		Plan plan = (Plan) modelMap.get("plan");
+		if (plan == null) {
+			return "Timeout";
+		}
+
+		if ("customerName".equals(name)) {
+			plan.setCustomer(value);
+		}
 		plan = planService.insertPlan(plan);
 		modelMap.put("plan", plan);
 		return "OK";
@@ -104,5 +121,14 @@ public class PlanController {
 			@RequestParam("value[]") String value, @RequestParam("pk") String pk) {
 
 		return "OK";
+	}
+	
+	@RequestMapping(value = "submitReview.html", method = RequestMethod.POST)
+	public ModelAndView submitReview(Principal principal, @ModelAttribute("plan") Plan plan) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("listPlan");
+		List<Plan> plans = planService.listPlan();
+		mv.addObject("plans", plans);
+		return mv;
 	}
 }

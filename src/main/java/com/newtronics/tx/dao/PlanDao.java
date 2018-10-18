@@ -7,5 +7,9 @@ import com.newtronics.tx.model.Plan;
 public interface PlanDao {
 	Plan insertPlan(Plan plan);
 
+	Plan updatePlan(Plan plan);
+	
 	List<Plan> listPlan();
+	
+	Plan findPlanById(String planId);
 }

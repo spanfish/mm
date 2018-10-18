@@ -37,4 +37,16 @@ public class PlanDaoImpl implements PlanDao {
 
 		return result;
 	}
+
+	@Override
+	public Plan findPlanById(String planId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Plan updatePlan(Plan plan) {
+		return em.merge(plan);
+	}
 }

@@ -52,10 +52,12 @@
 		</thead>
 			<c:forEach var="p" items="${plans}" varStatus="status">
 				<tr>
+					<td><c:out value="${status.index + 1}"></c:out></td>
 					<td><c:out value="${p.createDate}"></c:out></td>
 					<td><c:out value="${p.customer}"></c:out></td>
 					<td><c:out value="${p.notifyNo}"></c:out></td>
-					<td><c:out value="${p.notifyNo}"></c:out></td>
+					<td><c:out value="${p.reviewer}"></c:out></td>
+					<td><c:out value="${p.approver}"></c:out></td>
 				</tr>
 			</c:forEach>
 		</table>
