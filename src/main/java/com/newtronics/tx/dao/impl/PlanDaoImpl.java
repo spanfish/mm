@@ -20,14 +20,8 @@ public class PlanDaoImpl implements PlanDao {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Plan insertPlan(Plan plan) {
-		@SuppressWarnings("unchecked")
-		List<Plan> plans = em.createQuery("from Plan where planId=:planId").setParameter("planId", plan.getPlanId()).getResultList();
-		if (!plans.isEmpty()) {
-			return em.merge(plan);
-		} else {
-			em.persist(plan);
-			return plan;
-		}
+		em.persist(plan);
+		return plan;
 	}
 
 	@Override
@@ -40,13 +34,28 @@ public class PlanDaoImpl implements PlanDao {
 
 	@Override
 	public Plan findPlanById(String planId) {
-		// TODO Auto-generated method stub
-		return null;
+		@SuppressWarnings("unchecked")
+		List<Plan> result = em.createQuery("from Plan where planId=:planId").setParameter("planId", planId)
+				.getResultList();
+		if (result.isEmpty()) {
+			return null;
+		}
+		return result.get(0);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Plan updatePlan(Plan plan) {
 		return em.merge(plan);
+	}
+
+	@Override
+	public int getNextPlanId(String templateId, int year, int month, int date) {
+		@SuppressWarnings("unchecked")
+		List<Plan> plans = em.createQuery(
+				"from Plan where templateId=:templateId and year(createDate)=:year and month(createDate)=:month and day(createDate)=:date")
+				.setParameter("templateId", templateId).setParameter("year", year).setParameter("month", month + 1)
+				.setParameter("date", date).getResultList();
+		return plans.size() + 1;
 	}
 }

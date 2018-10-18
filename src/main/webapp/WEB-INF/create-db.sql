@@ -10,9 +10,15 @@ CREATE TABLE user_roles (
   role VARCHAR(30)
 );
 
+CREATE TABLE roles (
+  role VARCHAR(30),
+  description VARCHAR(30)
+);
+
 CREATE TABLE plan (
   planid VARCHAR(100),
   status VARCHAR(30),
+  templateId VARCHAR(30),
   create_date DATE,
   creator_name VARCHAR(30),
   customer VARCHAR(30),

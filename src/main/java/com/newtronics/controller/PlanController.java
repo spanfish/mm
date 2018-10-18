@@ -9,12 +9,12 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,33 +39,68 @@ import com.newtronics.tx.service.TemplateService;
 @SessionAttributes("plan")
 public class PlanController {
 
+	private Logger log = Logger.getLogger(PlanController.class);
+
 	@Autowired
 	private PlanService planService;
-	
+
 	@Autowired
 	private TemplateService templateService;
-	
+
+	/**
+	 * 显示所有的计划列表
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "list.html", method = RequestMethod.GET)
-	public ModelAndView defaultPage() {
+	public ModelAndView list() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("listPlan");
 
+		// TODO:
 		List<Plan> plans = planService.listPlan();
 		mv.addObject("plans", plans);
-		
+
+		//
 		List<Template> templates = templateService.findAllTemplates();
 		mv.addObject("templates", templates);
 		return mv;
 	}
 
-	@RequestMapping(value = "input.html", method = RequestMethod.POST)
-	public ModelAndView inputPlan(@RequestParam("templateId") String templateId) {
-		Plan plan = new Plan();
-		Template template = templateService.findTemplateById(templateId);
-		plan.setCustomer(template.getName());
-		plan.setTemplateId(templateId);
-		
+	/**
+	 * 从创建计划迁移而来，创建Plan对象并保持在Session中
+	 * 
+	 * @param templateId
+	 * @return
+	 */
+	@RequestMapping(value = "input.html", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView inputPlan(@RequestParam(name = "templateId", required = false) String templateId,
+			@RequestParam(name = "notifyNo", required = false) String notifyNo,
+			@RequestParam(name = "planId", required = false) String planId) {
 		ModelAndView mv = new ModelAndView();
+		Plan plan = null;
+		String tid = templateId;
+		if (StringUtils.isEmpty(notifyNo)) {
+			plan = new Plan();
+		} else {
+			plan = planService.findPlanById(planId);
+			tid = plan.getTemplateId();
+		}
+		if (plan == null || StringUtils.isEmpty(tid)) {
+			// TODO:
+		}
+
+		Template template = templateService.findTemplateById(tid);
+		if(template == null) {
+			//TODO
+		}
+		if (StringUtils.isEmpty(plan.getCustomer())) {
+			plan.setCustomer(template.getName());
+		}
+		if (StringUtils.isEmpty(plan.getTemplateId())) {
+			plan.setTemplateId(tid);
+		}
+		
 		mv.setViewName(template.getViewName());
 		mv.addObject("plan", plan);
 
@@ -85,14 +120,24 @@ public class PlanController {
 		return "listPlan";
 	}
 
+	/**
+	 * 保存Session中的Plan对象，如果Plan对象未持续化，则插入到DB，否则更新DB
+	 * 
+	 * @param principal
+	 * @param modelMap
+	 * @param name
+	 * @param value
+	 * @param pk
+	 * @return
+	 */
 	@RequestMapping(value = "save.html", method = RequestMethod.POST)
 	@ResponseBody
 	public String saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
 			@RequestParam("value") String value, @RequestParam("pk") String pk) {
 
 		Plan plan = (Plan) modelMap.get("plan");
-		if (plan == null) {
-			return "Timeout";
+		if (plan == null || principal == null || StringUtils.isEmpty(principal.getName())) {
+			return "已过期，请重新登陆";
 		}
 		Map<String, PlanItem> items = plan.getPlanItems();
 		PlanItem item = items.get(name);
@@ -101,31 +146,57 @@ public class PlanController {
 			items.put(name, item);
 		}
 		item.setPlan(plan);
-		item.setItemName(name);
+		item.setItemName(pk);
 		item.setItemValue(value);
 
-		plan = planService.insertPlan(plan);
+		if (StringUtils.isEmpty(plan.getNotifyNo())) {
+			plan = planService.insertPlan(plan);
+		} else {
+			plan = planService.updatePlan(plan);
+		}
 		modelMap.put("plan", plan);
 		return "OK";
 	}
 
+	/**
+	 * 
+	 * @param principal
+	 * @param modelMap
+	 * @param name
+	 * @param value
+	 * @param pk
+	 * @return
+	 */
 	@RequestMapping(value = "saveHead.html", method = RequestMethod.POST)
 	@ResponseBody
 	public String savePlanHead(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
 			@RequestParam("value") String value, @RequestParam("pk") String pk) {
+		log.info("savePlanHead");
 		Plan plan = (Plan) modelMap.get("plan");
-		if (plan == null) {
-			return "Timeout";
+		if (plan == null || principal == null || StringUtils.isEmpty(principal.getName())) {
+			return "已过期，请重新登陆";
 		}
 
-		if ("customerName".equals(name)) {
-			plan.setCustomer(value);
+		String response = "成功";
+		try {
+			BeanUtils.setProperty(plan, name, value);
+			if (StringUtils.isEmpty(plan.getNotifyNo())) {
+				plan = planService.insertPlan(plan);
+			} else {
+				plan = planService.updatePlan(plan);
+			}
+			modelMap.put("plan", plan);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			response = "发生错误";
 		}
-		plan = planService.insertPlan(plan);
-		modelMap.put("plan", plan);
-		return "OK";
+
+		return response;
 	}
 
+	/**
+	 * 
+	 */
 	@RequestMapping(value = "saveList.html", method = RequestMethod.POST)
 	@ResponseBody
 	public String saveListItem(Principal principal, @RequestParam("name") String name,
@@ -133,7 +204,7 @@ public class PlanController {
 
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "submitReview.html", method = RequestMethod.POST)
 	public ModelAndView submitReview(Principal principal, @ModelAttribute("plan") Plan plan) {
 		ModelAndView mv = new ModelAndView();

@@ -3,6 +3,17 @@ package com.newtronics.tx.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * 计划模板文件·
+ * 
+ * name:名称，设想用公司名
+ * viewName：对应JSP文件名
+ * notifiyNoFormat：通知书号码格式
+ * enabled：删除标记
+ * @author wang_
+ *
+ */
+
 @Entity
 public class Template {
 	// 主键

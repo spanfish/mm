@@ -11,12 +11,13 @@
 		<intercept-url pattern="/j_spring_security_check"
 			access="permitAll" />
 		<intercept-url pattern="/do/login*" access="permitAll" />
-		<intercept-url pattern="/do/*" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+		
 		<csrf disabled="true" />
-		<form-login login-page="/do/login.htm" default-target-url="/do/main.htm"
+		<form-login login-page="/do/login.html" default-target-url="/do/plan/list.html"
 			login-processing-url="/j_spring_security_check" username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/do/login.htm" logout-url="/logout" />
+		<logout logout-success-url="/do/login.html" logout-url="/logout" />
 	</http>
 
 	<authentication-manager>

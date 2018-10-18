@@ -12,4 +12,6 @@ public interface PlanDao {
 	List<Plan> listPlan();
 	
 	Plan findPlanById(String planId);
+	
+	int getNextPlanId(String templateId, int year, int month, int date);
 }

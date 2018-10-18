@@ -99,9 +99,15 @@ input[type=submit]:hover {
 	<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 		<tr>
 			<td style="width:100px">客户名称:</td>
-			<td><a href="#" class="editable" id="customerName" data-type="text" data-pk="customerName" data-url="<%=request.getContextPath()%>/do/plan/saveHead.html" data-title="输入客户名称">
+			<td><a href="#" id="customer" data-type="text" data-pk="customer" data-url="<%=request.getContextPath()%>/do/plan/saveHead.html" data-title="输入客户名称">
 				<c:out value="${plan.customer}"/>
-			</a></td>
+				</a>
+				<script>
+				$('#customer').editable({
+						placement: 'bottom'
+				});
+				</script>
+			</td>
 			<td style="width:100px">销售：</td>
 			<td><a href="#" id="saleType" data-type="checklist" data-pk="saleType" data-url="<%=request.getContextPath()%>/do/plan/saveList.html" data-title="选择销售"></a> 
 				<script>
@@ -115,6 +121,7 @@ input[type=submit]:hover {
 								value : 2,
 								text : '外销'
 							}],
+							placement: 'bottom',
 							display:function(value, sourceData){
 								var html = [], checked = $.fn.editableutils.itemsByValue(value, sourceData);
 								if (checked.length) {
@@ -158,7 +165,10 @@ input[type=submit]:hover {
 			<td style="width:160px">产品P/N </td>
 		</tr>
 		<tr>
-			<td><a href="#" class="editable" id="productName" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品名称"></a></td>
+			<td><a href="#" class="editable" id="productName" data-type="text" data-pk="productName" 
+				data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品名称">
+				<c:out value="${plan.planItems['productName']}"/>
+			</a></td>
 			<td><a href="#" class="editable" id="productModel" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品型号"></a></td>
 			<td><a href="#" class="editable" id="pcbVer" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入PCB版本号 "></a></td>
 			<td><a href="#" class="editable" id="productPN" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品P/N"></a></td>

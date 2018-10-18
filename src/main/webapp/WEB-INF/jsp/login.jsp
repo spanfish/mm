@@ -140,8 +140,6 @@ span.psw {
 </head>
 <body>
 
-<h2>登录</h2>
-
 <div id="id01" class="modal">
   
   <form class="modal-content " action="<%=request.getContextPath()%>/j_spring_security_check" method="POST">

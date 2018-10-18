@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
-
+<%@ taglib prefix="spring"
+	uri="http://www.springframework.org/tags"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -81,8 +82,24 @@ input[type=submit]:hover {
 					<td><c:out value="${status.index + 1}"></c:out></td>
 					<td><c:out value="${p.createDate}"></c:out></td>
 					<td><c:out value="${p.customer}"></c:out></td>
-					<td><c:out value="${p.notifyNo}"></c:out></td>
-					<td><c:out value="${p.status}"></c:out></td>
+					<td>
+						<spring:url value="${p.notifyNo}" var="notifyNo" htmlEscape="true"/>
+						<spring:url value="${p.planId}" var="planId" htmlEscape="true"/>
+						<a href="<%=request.getContextPath()%>/do/plan/input.html?notifyNo=${notifyNo}&planId=${planId}"><c:out value="${p.notifyNo}"></c:out></a>
+					</td>
+					<td>
+						
+						<c:if test="${p.status == 'REVIEWING'}">
+							审核中
+						</c:if>
+						<c:if test="${p.status == 'CREATING'}">
+							未提交审核
+						</c:if>
+						<c:if test="${p.status == 'APPROVING'}">
+							最终承认中
+						</c:if>
+						
+					</td>
 					<td><c:out value="${p.approver}"></c:out></td>
 				</tr>
 			</c:forEach>

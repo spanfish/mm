@@ -8,5 +8,9 @@ public interface PlanService {
 
 	Plan insertPlan(Plan plan);
 
+	Plan updatePlan(Plan plan);
+
+	Plan findPlanById(String planId);
+
 	List<Plan> listPlan();
 }

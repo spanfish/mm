@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
@@ -76,7 +77,7 @@ public class Plan {
 	private Date approveDate;
 
 	//
-	@OneToMany(mappedBy = "plan", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "plan", cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
 	@MapKey(name = "itemName")
 	private Map<String, PlanItem> planItems;
 
