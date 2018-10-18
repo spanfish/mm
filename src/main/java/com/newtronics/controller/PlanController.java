@@ -25,7 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.newtronics.tx.model.Plan;
 import com.newtronics.tx.model.PlanItem;
+import com.newtronics.tx.model.Template;
 import com.newtronics.tx.service.PlanService;
+import com.newtronics.tx.service.TemplateService;
 
 /**
  *
@@ -39,7 +41,10 @@ public class PlanController {
 
 	@Autowired
 	private PlanService planService;
-
+	
+	@Autowired
+	private TemplateService templateService;
+	
 	@RequestMapping(value = "list.html", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 		ModelAndView mv = new ModelAndView();
@@ -47,11 +52,14 @@ public class PlanController {
 
 		List<Plan> plans = planService.listPlan();
 		mv.addObject("plans", plans);
+		
+		List<Template> templates = templateService.findAllTemplates();
+		mv.addObject("templates", templates);
 		return mv;
 	}
 
 	@RequestMapping(value = "input.html", method = RequestMethod.GET)
-	public ModelAndView inputPlan(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView inputPlan(@RequestParam("templateId") String templateId) {
 		Plan plan = new Plan();
 
 		ModelAndView mv = new ModelAndView();

@@ -12,6 +12,7 @@ CREATE TABLE user_roles (
 
 CREATE TABLE plan (
   planid VARCHAR(100),
+  status VARCHAR(30),
   create_date DATE,
   creator_name VARCHAR(30),
   customer VARCHAR(30),
@@ -30,4 +31,13 @@ CREATE TABLE planitem (
   itemname VARCHAR(100),
   itemvalue VARCHAR(100),
   
+);
+
+
+CREATE TABLE template (
+  id VARCHAR(100),
+  name  VARCHAR(100),
+  viewname VARCHAR(100),
+  notifiyNoFormat VARCHAR(100),
+  enabled int
 );

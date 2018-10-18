@@ -6,32 +6,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resources/main.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/main.css">
+<link href="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+
+<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
 <style>
-#users {
+#plans {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#users td, #users th {
+#plans td, #users th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#users tr:nth-child(even){background-color: #f2f2f2;}
+#plans tr:nth-child(even){background-color: #f2f2f2;}
 
-#users tr:hover {background-color: #ddd;}
+#plans tr:hover {background-color: #ddd;}
 
-#users th {
+#plans th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #4CAF50;
     color: white;
 }
-</style>	
+
+input[type=submit] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #45a049;
+}
+</style>
+<script>
+	$.fn.editable.defaults.mode = 'popup';
+
+	$(document).ready(function() {
+		$('.editable').editable();
+	});
+</script>
 </head>
 <body>
 	<jsp:include page="navi.jsp">
@@ -56,7 +82,7 @@
 					<td><c:out value="${p.createDate}"></c:out></td>
 					<td><c:out value="${p.customer}"></c:out></td>
 					<td><c:out value="${p.notifyNo}"></c:out></td>
-					<td><c:out value="${p.reviewer}"></c:out></td>
+					<td><c:out value="${p.status}"></c:out></td>
 					<td><c:out value="${p.approver}"></c:out></td>
 				</tr>
 			</c:forEach>
@@ -66,8 +92,14 @@
 		还没有生产计划
 	</c:if>
 	<br/>
-	<a href="<%=request.getContextPath()%>/do/plan/input.html">创建生产计划</a>
-	
+	<form method="get" action="<%=request.getContextPath()%>/do/plan/input.html">
+		<select name="templateId">
+			<c:forEach items="${templates}" var="t">
+				<option value="${t.id}"><c:out value="${t.name}"/></option>
+			</c:forEach>
+		</select>
+		<input type="submit" value="创建生产计划"/>
+	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
@@ -16,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+
+import com.newtronics.common.PlanStatus;
 
 @Entity
 public class Plan {
@@ -41,7 +45,8 @@ public class Plan {
 	//1: submitted to review
 	//2: approved
 	//0: 
-	private int status;
+	@Enumerated(EnumType.STRING)
+	private PlanStatus status;
 	
 	// 创建者`
 	@OneToOne
@@ -76,6 +81,7 @@ public class Plan {
 	public Plan() {
 		this.planId = UUID.randomUUID().toString();
 		this.createDate = new Date();
+		this.status = PlanStatus.CREATING;
 	}
 
 	public String getPlanId() {
@@ -169,11 +175,11 @@ public class Plan {
 		this.planItems = planItems;
 	}
 
-	public int getStatus() {
+	public PlanStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(PlanStatus status) {
 		this.status = status;
 	}
 }
