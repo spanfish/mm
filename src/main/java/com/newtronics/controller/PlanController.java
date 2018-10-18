@@ -58,12 +58,15 @@ public class PlanController {
 		return mv;
 	}
 
-	@RequestMapping(value = "input.html", method = RequestMethod.GET)
+	@RequestMapping(value = "input.html", method = RequestMethod.POST)
 	public ModelAndView inputPlan(@RequestParam("templateId") String templateId) {
 		Plan plan = new Plan();
-
+		Template template = templateService.findTemplateById(templateId);
+		plan.setCustomer(template.getName());
+		plan.setTemplateId(templateId);
+		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("inputPlan");
+		mv.setViewName(template.getViewName());
 		mv.addObject("plan", plan);
 
 		return mv;

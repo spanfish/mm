@@ -4,4 +4,4 @@ INSERT INTO user_roles VALUES('xwang', 'ROLE_USER');
 INSERT INTO user_roles VALUES('xwang', 'ROLE_ADMIN');
 INSERT INTO user_roles VALUES('xwang2', 'ROLE_USER');
 
-INSERT INTO template VALUES('1', '海信', 'xxx', '',  1);
+INSERT INTO template VALUES('1', '海信', 'inputPlan', '',  1);

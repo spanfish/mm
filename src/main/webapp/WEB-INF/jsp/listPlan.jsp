@@ -69,7 +69,7 @@ input[type=submit]:hover {
 		<thead>
 			<tr>
 				<th style="">序号</th>
-				<th style="">日期</th>
+				<th style="">创建/更新日期</th>
 				<th style="">客戶</th>
 				<th style="">生产计划通知书号</th>
 				<th style="">审核</th>
@@ -92,8 +92,9 @@ input[type=submit]:hover {
 		还没有生产计划
 	</c:if>
 	<br/>
-	<form method="get" action="<%=request.getContextPath()%>/do/plan/input.html">
-		<select name="templateId">
+	<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
+		<label for="templateId">选择计划模板</label>
+		<select id="templateId" name="templateId">
 			<c:forEach items="${templates}" var="t">
 				<option value="${t.id}"><c:out value="${t.name}"/></option>
 			</c:forEach>

@@ -21,4 +21,14 @@ public class TemplateDaoImpl implements TemplateDao {
 		return em.createQuery("from Template t where t.enabled = 1 order by t.name").getResultList();
 	}
 
+	@Override
+	public Template findTemplateById(String templateId) {
+		@SuppressWarnings("unchecked")
+		List<Template> result = em.createQuery("from Template t where t.enabled = 1 and t.id = :id").setParameter("id", templateId).getResultList();
+		if(result.isEmpty()) {
+			return null;
+		} else {
+			return result.get(0);
+		}
+	}
 }
