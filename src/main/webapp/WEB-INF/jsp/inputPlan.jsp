@@ -99,7 +99,9 @@ input[type=submit]:hover {
 	<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 		<tr>
 			<td style="width:100px">客户名称:</td>
-			<td><a href="#" class="editable" id="customerName" data-type="text" data-pk="customerName" data-url="<%=request.getContextPath()%>/do/plan/saveHead.html" data-title="输入客户名称"></a></td>
+			<td><a href="#" class="editable" id="customerName" data-type="text" data-pk="customerName" data-url="<%=request.getContextPath()%>/do/plan/saveHead.html" data-title="输入客户名称">
+				<c:out value="${plan.customer}"/>
+			</a></td>
 			<td style="width:100px">销售：</td>
 			<td><a href="#" id="saleType" data-type="checklist" data-pk="saleType" data-url="<%=request.getContextPath()%>/do/plan/saveList.html" data-title="选择销售"></a> 
 				<script>
@@ -112,7 +114,18 @@ input[type=submit]:hover {
 							}, {
 								value : 2,
 								text : '外销'
-							}]
+							}],
+							display:function(value, sourceData){
+								var html = [], checked = $.fn.editableutils.itemsByValue(value, sourceData);
+								if (checked.length) {
+							    	$.each(checked, function(i, v) {
+							        	html.push($.fn.editableutils.escape(v.text));
+							      	});
+							      	$(this).html(html.join(', '));
+							    } else {
+							      	$(this).empty();
+							    }
+							}
 						});
 					});
 				</script>

@@ -27,6 +27,8 @@ public class Plan {
 	@Id
 	private String planId;
 
+	private String templateId;
+	
 	// 创建日
 	@Column(name = "create_date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -181,5 +183,13 @@ public class Plan {
 
 	public void setStatus(PlanStatus status) {
 		this.status = status;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 }

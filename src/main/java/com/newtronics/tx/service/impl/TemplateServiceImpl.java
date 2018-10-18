@@ -20,4 +20,9 @@ public class TemplateServiceImpl implements TemplateService {
 		return templateDao.findAllTemplates();
 	}
 
+	@Override
+	public Template findTemplateById(String templateId) {
+		return templateDao.findTemplateById(templateId);
+	}
+
 }
