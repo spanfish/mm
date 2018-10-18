@@ -28,6 +28,7 @@
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
 	</bean>
@@ -39,16 +40,16 @@
 		type="HSQL"> <jdbc:script location="/WEB-INF/create-db.sql" /> <jdbc:script 
 		location="/WEB-INF/insert-data.sql" /> </jdbc:embedded-database> -->
 	<!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
-
-	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/mm?serverTimezone=JST" />
-		<property name="username" value="mm" />
-		<property name="password" value="9350" />
-		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
-	</bean>
-
+	<jdbc:embedded-database id="dataSource" type="HSQL">
+		<jdbc:script location="/WEB-INF/create-db.sql" />
+		<jdbc:script location="/WEB-INF/insert-data.sql" />
+	</jdbc:embedded-database>
+	
+	<!-- <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" 
+		destroy-method="close"> <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" 
+		/> <property name="url" value="jdbc:mysql://localhost/mm?serverTimezone=JST" 
+		/> <property name="username" value="mm" /> <property name="password" value="9350" 
+		/> <property name="validationQuery" value="SELECT 1 FROM DUAL" /> </bean> -->
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="em" />

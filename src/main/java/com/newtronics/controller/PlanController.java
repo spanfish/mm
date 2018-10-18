@@ -6,23 +6,25 @@
 package com.newtronics.controller;
 
 import java.security.Principal;
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.newtronics.tx.model.Plan;
+import com.newtronics.tx.model.PlanItem;
 import com.newtronics.tx.service.PlanService;
 
 /**
@@ -32,41 +34,74 @@ import com.newtronics.tx.service.PlanService;
 
 @Controller
 @RequestMapping(value = "/plan")
+@SessionAttributes("plan")
 public class PlanController {
 
 	@Autowired
 	private PlanService planService;
 
-	@RequestMapping(value = "/list.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "list.html", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("listPlan");
+
+		List<Plan> plans = planService.listPlan();
+		mv.addObject("plans", plans);
 		return mv;
 	}
 
-	@RequestMapping(value = "/input.htm", method = RequestMethod.GET)
-	public ModelAndView inputPlan() {
+	@RequestMapping(value = "input.html", method = RequestMethod.GET)
+	public ModelAndView inputPlan(HttpServletRequest request, HttpServletResponse response) {
+		Plan plan = new Plan();
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inputPlan");
-		mv.addObject("plan", new Plan());
+		mv.addObject("plan", plan);
+		
 		return mv;
 	}
 
-	@RequestMapping(value = "/create.htm", method = RequestMethod.POST)
-	public ModelAndView createPlan(Principal principal, @Valid @ModelAttribute("plan") Plan plan, BindingResult result,
-			ModelMap model) {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("createPlan");
+	@RequestMapping(value = "create.html", method = RequestMethod.POST)
+	public String createPlan(Principal principal) {
 
+		Plan plan = new Plan();
+		PlanItem item = new PlanItem();
+		item.setPlan(plan);
+		item.setItemName("abc");
+		plan.getPlanItems().put("abc", item);
 		planService.insertPlan(plan);
 
-		return mv;
+		return "listPlan";
 	}
 
-	@RequestMapping(value = "/save.html", method = RequestMethod.POST)
+	@RequestMapping(value = "save.html", method = RequestMethod.POST)
 	@ResponseBody
-	public String savePlan(Principal principal, @RequestParam("name") String name, @RequestParam("value") String value,
+	public String saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name, @RequestParam("value") String value,
 			@RequestParam("pk") String pk) {
+		
+		Plan plan = (Plan) modelMap.get("plan");
+		if(plan == null) {
+			return "Timeout";
+		}
+		Map<String, PlanItem> items = plan.getPlanItems();
+		PlanItem item = items.get(name);
+		if(item == null) {
+			item = new PlanItem();
+			items.put(name, item);
+		}
+		item.setPlan(plan);
+		item.setItemName(name);
+		item.setItemValue(value);
+		
+		plan = planService.insertPlan(plan);
+		modelMap.put("plan", plan);
+		return "OK";
+	}
+
+	@RequestMapping(value = "saveList.html", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveListItem(Principal principal, @RequestParam("name") String name,
+			@RequestParam("value[]") String value, @RequestParam("pk") String pk) {
 
 		return "OK";
 	}

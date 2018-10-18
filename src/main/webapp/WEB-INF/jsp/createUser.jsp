@@ -101,7 +101,7 @@ a {
 			<button type="submit" class="registerbtn">创建用户</button>
 		</div>
 	</form:form>
-
+	
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.newtronics.tx.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,12 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	@Transactional
-	public void insertPlan(Plan plan) {
-		planDAO.insertPlan(plan);
+	public Plan insertPlan(Plan plan) {
+		return planDAO.insertPlan(plan);
 	}
 
+	@Override
+	public List<Plan> listPlan() {
+		return planDAO.listPlan();
+	}
 }

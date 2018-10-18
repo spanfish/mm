@@ -1,5 +1,7 @@
 package com.newtronics.tx.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -16,9 +18,23 @@ public class PlanDaoImpl implements PlanDao {
 	private EntityManager em;
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED)
-	public void insertPlan(Plan plan) {
-		em.persist(plan);
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Plan insertPlan(Plan plan) {
+		@SuppressWarnings("unchecked")
+		List<Plan> plans = em.createQuery("from Plan where planId=:planId").setParameter("planId", plan.getPlanId()).getResultList();
+		if (!plans.isEmpty()) {
+			return em.merge(plan);
+		} else {
+			em.persist(plan);
+			return plan;
+		}
 	}
 
+	@Override
+	public List<Plan> listPlan() {
+		@SuppressWarnings("unchecked")
+		List<Plan> result = em.createQuery("from Plan").getResultList();
+
+		return result;
+	}
 }

@@ -17,12 +17,17 @@ CREATE TABLE plan (
   customer VARCHAR(30),
   notifyNo VARCHAR(30),
   versionNo VARCHAR(30),
-  model VARCHAR(30),
-  bomNo VARCHAR(30),
-  softVersionNo VARCHAR(30),
-  orderQuantity VARCHAR(30),
-  manufactureType VARCHAR(30),
   memo VARCHAR(30),
   reviewer_name VARCHAR(30),
-  approver_name VARCHAR(30)
+  review_date DATE,
+  approver_name VARCHAR(30),
+  approve_date DATE
+);
+
+CREATE TABLE planitem (
+  id VARCHAR(100),
+  plan_id  VARCHAR(100),
+  itemname VARCHAR(100),
+  itemvalue VARCHAR(100),
+  
 );

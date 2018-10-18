@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class LoginController {
 
-	@RequestMapping(value = "/login.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "login.htm", method = RequestMethod.GET)
 	public String defaultPage() {
 		return "login";
 	}
 
-	@RequestMapping(value = "/main.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "main.htm", method = RequestMethod.GET)
 	public String login(HttpServletRequest request, HttpServletResponse response) {
 		return "main";
 	}

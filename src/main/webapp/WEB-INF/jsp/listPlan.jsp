@@ -38,37 +38,33 @@
 		<jsp:param name="page" value="home" />
 	</jsp:include>
 
-	<table style="" id="users">
+	
+	<table style="" id="plans">
+		<thead>
 			<tr>
 				<th style="">序号</th>
 				<th style="">日期</th>
 				<th style="">客戶</th>
 				<th style="">生产计划通知书号</th>
-				<th style=";">版本號号</th>
-				<th style="">生产型号</th>
-				<th style="">生产BOM编号</th>
-				<th style="">软件版本号</th>
-				<th style="">订单数量</th>
-				<th style="">生产类型</th>
-				<th style="">备注</th>
 				<th style="">审核</th>
 				<th style="">承认</th>
 			</tr>
-			<c:forEach var="u" items="${users}" varStatus="status">
+		</thead>
+			<c:forEach var="p" items="${plans}" varStatus="status">
 				<tr>
-					<td><c:out value="${u.username}"></c:out></td>
-					<td><c:out value="${u.email}"></c:out></td>
-					<td><c:out value="${u.enabled ? '有效' : '无效'}"></c:out></td>
-					<td><a href="<%=request.getContextPath()%>/do/user/edit/${u.username}.htm">编辑</a></td>
+					<td><c:out value="${p.createDate}"></c:out></td>
+					<td><c:out value="${p.customer}"></c:out></td>
+					<td><c:out value="${p.notifyNo}"></c:out></td>
+					<td><c:out value="${p.notifyNo}"></c:out></td>
 				</tr>
 			</c:forEach>
 		</table>
 	
-	<c:if test="${empty users}">
+	<c:if test="${empty plans}">
 		还没有生产计划
 	</c:if>
 	<br/>
-	<a href="<%=request.getContextPath()%>/do/plan/input.htm">创建生产计划</a>
+	<a href="<%=request.getContextPath()%>/do/plan/input.html">创建生产计划</a>
 	
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>

@@ -41,7 +41,6 @@ input[type=submit] {
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	float: right;
 }
 
 input[type=submit]:hover {
@@ -96,12 +95,13 @@ input[type=submit]:hover {
 
 	<br/>
 	<br/>
+	<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/create.html">
 	<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 		<tr>
 			<td style="width:100px">客户名称:</td>
-			<td><a href="#" class="editable" id="customerName" data-type="text" data-pk="customerName" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入客户名称"></a></td>
+			<td><a href="#" class="editable" id="customerName" data-type="text" data-pk="${plan.planId}" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入客户名称"></a></td>
 			<td style="width:100px">销售：</td>
-			<td><a href="#" id="saleType" data-type="checklist" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="选择销售"></a> 
+			<td><a href="#" id="saleType" data-type="checklist" data-pk="${plan.planId}" data-url="<%=request.getContextPath()%>/do/plan/saveList.html" data-title="选择销售"></a> 
 				<script>
 					$(function() {
 						$('#saleType').editable({
@@ -274,7 +274,9 @@ input[type=submit]:hover {
 		</tr>
 		</tbody>
 	</table>
-	
+
+		
+	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

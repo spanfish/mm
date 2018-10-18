@@ -1,66 +1,72 @@
 package com.newtronics.tx.model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
 public class Plan {
+	// 主键
 	@Id
 	private String planId;
 
+	// 创建日
 	@Column(name = "create_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
 
+	// 客户名
 	private String customer;
 
+	// 通知书号码
 	private String notifyNo;
 
-	private String versionNo;
+	// 版本号
+	@Version
+	private int versionNo;
 
-	private String model;
-
-	private String bomNo;
-
-	private String softVersionNo;
-
-	private String orderQuantity;
-
-	private String manufactureType;
-
-	private String memo;
-
-	@ManyToOne
+	// 创建者`
+	@OneToOne
 	@JoinColumn(name = "creator_name")
 	private User creator;
 
-	@ManyToOne
+	// 审核者`
+	@OneToOne
 	@JoinColumn(name = "reviewer_name")
 	private User reviewer;
 
+	// 审核日
 	@Column(name = "review_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date reviewDate;
 
-	@ManyToOne
+	// 承认者
+	@OneToOne
 	@JoinColumn(name = "approver_name")
 	private User approver;
-	
+
+	// 承认日
 	@Column(name = "approve_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date approveDate;
+
+	//
+	@OneToMany(mappedBy = "plan", cascade = { CascadeType.ALL })
+	@MapKey(name = "itemName")
+	private Map<String, PlanItem> planItems;
 
 	public Plan() {
 		this.planId = UUID.randomUUID().toString();
@@ -99,62 +105,6 @@ public class Plan {
 		this.notifyNo = notifyNo;
 	}
 
-	public String getVersionNo() {
-		return versionNo;
-	}
-
-	public void setVersionNo(String versionNo) {
-		this.versionNo = versionNo;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-	public String getBomNo() {
-		return bomNo;
-	}
-
-	public void setBomNo(String bomNo) {
-		this.bomNo = bomNo;
-	}
-
-	public String getSoftVersionNo() {
-		return softVersionNo;
-	}
-
-	public void setSoftVersionNo(String softVersionNo) {
-		this.softVersionNo = softVersionNo;
-	}
-
-	public String getOrderQuantity() {
-		return orderQuantity;
-	}
-
-	public void setOrderQuantity(String orderQuantity) {
-		this.orderQuantity = orderQuantity;
-	}
-
-	public String getManufactureType() {
-		return manufactureType;
-	}
-
-	public void setManufactureType(String manufactureType) {
-		this.manufactureType = manufactureType;
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
 	public User getCreator() {
 		return creator;
 	}
@@ -177,5 +127,40 @@ public class Plan {
 
 	public void setApprover(User approver) {
 		this.approver = approver;
+	}
+
+	public int getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(int versionNo) {
+		this.versionNo = versionNo;
+	}
+
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public Date getApproveDate() {
+		return approveDate;
+	}
+
+	public void setApproveDate(Date approveDate) {
+		this.approveDate = approveDate;
+	}
+
+	public Map<String, PlanItem> getPlanItems() {
+		if(planItems == null) {
+			planItems = new HashMap<String, PlanItem>();
+		}
+		return planItems;
+	}
+
+	public void setPlanItems(Map<String, PlanItem> planItems) {
+		this.planItems = planItems;
 	}
 }

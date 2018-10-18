@@ -33,7 +33,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/users.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "users.html", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 		List<User> users = userService.getUsers();
 		ModelAndView mv = new ModelAndView();
@@ -42,7 +42,7 @@ public class UserController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/edit/{username}.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "edit/{username}.html", method = RequestMethod.GET)
 	public ModelAndView editUser(@PathVariable("username") String username) {
 		User user = userService.getUser(username);
 		ModelAndView mv = new ModelAndView();
@@ -51,7 +51,7 @@ public class UserController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/update/update.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "update/update.html", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("user") User user, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
 			return "user";
@@ -62,7 +62,7 @@ public class UserController {
 		return "users";
 	}
 	
-	@RequestMapping(value = "/create/default.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "create/default.html", method = RequestMethod.GET)
 	public ModelAndView createDefault() {
 
 		ModelAndView mv = new ModelAndView();
@@ -71,7 +71,7 @@ public class UserController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/create/create.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "create/create.html", method = RequestMethod.POST)
 	public String create(@Valid @ModelAttribute("user") User user, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
 			return "user";

@@ -13,10 +13,10 @@
 		<intercept-url pattern="/do/login*" access="permitAll" />
 		<intercept-url pattern="/do/*" access="hasRole('ROLE_USER')" />
 		<csrf disabled="true" />
-		<form-login login-page="/do/login.htm"
-			default-target-url="/do/main.htm"  login-processing-url="/j_spring_security_check"
-			username-parameter="username" password-parameter="password" />
-		<logout logout-success-url="/do/login.htm" logout-url="/logout"/>
+		<form-login login-page="/do/login.htm" default-target-url="/do/main.htm"
+			login-processing-url="/j_spring_security_check" username-parameter="username"
+			password-parameter="password" />
+		<logout logout-success-url="/do/login.htm" logout-url="/logout" />
 	</http>
 
 	<authentication-manager>
@@ -24,6 +24,13 @@
 			<jdbc-user-service data-source-ref="dataSource"
 				users-by-username-query="select username, password, enabled from users where username=?"
 				authorities-by-username-query="select username, role from user_roles where username =?  " />
+		</authentication-provider>
+
+		<authentication-provider>
+			<user-service>
+				<user name="admin" password="admin"
+					authorities="ROLE_USER, ROLE_ADMIN" />
+			</user-service>
 		</authentication-provider>
 	</authentication-manager>
 </beans:beans>
