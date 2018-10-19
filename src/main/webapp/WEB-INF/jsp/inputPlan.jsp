@@ -6,88 +6,41 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
+		<meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+        
+		<title>生产计划</title>
 
-<link href="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/main.css">
+		<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
+		
+		<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
+		<!-- bootstrap -->
+		<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
+		<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
+		
+		<!-- X-editable -->
+		<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+		<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+		
+		<!-- wysihtml5 -->
+		
+		<link href="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/bootstrap-wysihtml5-0.0.3.css" rel="stylesheet">  
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/wysihtml5-0.3.0.min.js"></script>  
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/bootstrap-wysihtml5-0.0.3.min.js"></script>
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/wysihtml5-0.0.3.js"></script>
+		
 
-<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-<style>
-* {
-	box-sizing: border-box;
-}
-
-input[type=text], select, textarea {
-	width: 100%;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	resize: vertical;
-}
-
-label {
-	padding: 12px 12px 12px 0;
-	display: inline-block;
-}
-
-input[type=submit] {
-	background-color: #4CAF50;
-	color: white;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-input[type=submit]:hover {
-	background-color: #45a049;
-}
-
-.container {
-	border-radius: 5px;
-	background-color: #f2f2f2;
-	padding: 20px;
-}
-
-.col-25 {
-	float: left;
-	width: 180px;
-	margin-top: 6px;
-}
-
-.col-75 {
-	float: left;
-	margin-top: 6px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-	.col-25, .col-75, input[type=submit] {
-		width: 100%;
-		margin-top: 0;
-	}
-}
-</style>
-
-<script>
-	$.fn.editable.defaults.mode = 'popup';
-
-	$(document).ready(function() {
-		$('.editable').editable();
-	});
-</script>
-</head>
+		<script>
+			$.fn.editable.defaults.mode = 'popup';
+		
+			$(document).ready(function() {
+				$('.editable').editable();
+			});
+		</script>
+	</head>
 <body style=" width: 100%;">
 	<jsp:include page="navi.jsp">
 		<jsp:param name="page" value="home" />
@@ -99,7 +52,7 @@ input[type=submit]:hover {
 	<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 		<tr>
 			<td style="width:100px">客户名称:</td>
-			<td><a href="#" id="customer" data-type="text" data-pk="customer" data-url="<%=request.getContextPath()%>/do/plan/saveHead.html" data-title="输入客户名称">
+			<td><a href="#" id="customer" data-type="text" data-pk="customer" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入客户名称">
 				<c:out value="${plan.customer}"/>
 				</a>
 				<script>
@@ -109,11 +62,11 @@ input[type=submit]:hover {
 				</script>
 			</td>
 			<td style="width:100px">销售：</td>
-			<td><a href="#" id="saleType" data-type="checklist" data-pk="saleType" data-url="<%=request.getContextPath()%>/do/plan/saveList.html" data-title="选择销售"></a> 
+			<td><a href="#" id="saleType" data-type="checklist" data-pk="saleType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="选择销售"></a> 
 				<script>
 					$(function() {
 						$('#saleType').editable({
-							value : 1,
+							value : [${plan.planItems['saleType'].itemValue}],
 							source : [ {
 								value : 1,
 								text : '内销'

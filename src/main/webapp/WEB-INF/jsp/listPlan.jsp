@@ -7,58 +7,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/main.css">
-<link href="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
-
-<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-<style>
-#plans {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#plans td, #users th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#plans tr:nth-child(even){background-color: #f2f2f2;}
-
-#plans tr:hover {background-color: #ddd;}
-
-#plans th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-
-input[type=submit] {
-	background-color: #4CAF50;
-	color: white;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-input[type=submit]:hover {
-	background-color: #45a049;
-}
-</style>
-<script>
-	$.fn.editable.defaults.mode = 'popup';
-
-	$(document).ready(function() {
-		$('.editable').editable();
-	});
-</script>
+	<meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+        
+	<title>生产计划</title>
+	<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
+	<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
+	<!-- bootstrap -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
+	<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
+		
+	<style>
+		#plans {
+		    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+		
+		#plans td, #users th {
+		    border: 1px solid #ddd;
+		    padding: 8px;
+		}
+		
+		#plans tr:nth-child(even){background-color: #f2f2f2;}
+		
+		#plans tr:hover {background-color: #ddd;}
+		
+		#plans th {
+		    padding-top: 12px;
+		    padding-bottom: 12px;
+		    text-align: left;
+		    background-color: #4CAF50;
+		    color: white;
+		}
+		
+		input[type=submit] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		
+		input[type=submit]:hover {
+			background-color: #45a049;
+		}
+	</style>
 </head>
 <body>
 	<jsp:include page="navi.jsp">
@@ -111,7 +108,7 @@ input[type=submit]:hover {
 	<br/>
 	<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
 		<label for="templateId">选择计划模板</label>
-		<select id="templateId" name="templateId">
+		<select id="templateId" name="templateId" style="width:auto">
 			<c:forEach items="${templates}" var="t">
 				<option value="${t.id}"><c:out value="${t.name}"/></option>
 			</c:forEach>

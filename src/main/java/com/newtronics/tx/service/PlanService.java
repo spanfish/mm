@@ -13,4 +13,6 @@ public interface PlanService {
 	Plan findPlanById(String planId);
 
 	List<Plan> listPlan();
+
+	Plan submitPlanForReview(Plan plan);
 }

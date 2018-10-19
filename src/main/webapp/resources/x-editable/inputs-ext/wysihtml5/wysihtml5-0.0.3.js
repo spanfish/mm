@@ -59,6 +59,7 @@ $(function(){
                 }
             });
             
+            
             this.$input.wysihtml5(this.options.wysihtml5);
             
             /*

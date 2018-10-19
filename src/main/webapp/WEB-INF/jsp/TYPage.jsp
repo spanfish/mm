@@ -6,101 +6,55 @@
 
 <html>
 	<head>
-		<title>hangzhou tuya</title>
-<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+		<meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+        
+		<title>生产计划</title>
 
-<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-<link href="<%=request.getContextPath()%>/resources/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css"></link>  
-<script src="<%=request.getContextPath()%>/resources/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js"></script>  
-<script src="<%=request.getContextPath()%>/resources/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/inputs-ext/wysihtml5/wysihtml5.js"></script> 
-
-<style>
-* {
-	box-sizing: border-box;
-}
-
-input[type=text], select, textarea {
-	width: 100%;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	resize: vertical;
-}
-
-label {
-	padding: 12px 12px 12px 0;
-	display: inline-block;
-}
-
-input[type=submit] {
-	background-color: #4CAF50;
-	color: white;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-input[type=submit]:hover {
-	background-color: #45a049;
-}
-
-.container {
-	border-radius: 5px;
-	background-color: #f2f2f2;
-	padding: 20px;
-}
-
-.col-25 {
-	float: left;
-	width: 180px;
-	margin-top: 6px;
-}
-
-.col-75 {
-	float: left;
-	margin-top: 6px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-	.col-25, .col-75, input[type=submit] {
-		width: 100%;
-		margin-top: 0;
-	}
-}
-</style>
-
-<script>
-	$.fn.editable.defaults.mode = 'popup';
-
-	$(document).ready(function() {
-		$('.editable').editable();
-	});
-</script>
-</head>
-
-<body style=" width: 100%;">
-	<jsp:include page="navi.jsp">
-		<jsp:param name="page" value="home" />
-	</jsp:include>
-
-	<br/>
-	<br/>	
+		<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
 		
+		<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
+		<link href="<%=request.getContextPath()%>/resources/w3.css" rel="stylesheet">
+		<!-- bootstrap -->
+		<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
+		<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
+		
+		<!-- X-editable -->
+		<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+		<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+		
+		<!-- wysihtml5 -->
+		
+		<link href="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/bootstrap-wysihtml5-0.0.3.css" rel="stylesheet">  
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/wysihtml5-0.3.0.min.js"></script>  
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/bootstrap-wysihtml5-0.0.3.min.js"></script>
+        <script src="<%=request.getContextPath()%>/resources/x-editable/inputs-ext/wysihtml5/wysihtml5-0.0.3.js"></script>
+		
+
+		<script>
+			$.fn.editable.defaults.mode = 'popup';
+		
+			$(document).ready(function() {
+				$('.editable').editable();
+			});
+		</script>
+	</head>
+	<body style=" width: 100%;">
+		<jsp:include page="navi.jsp">
+			<jsp:param name="page" value="home" />
+		</jsp:include>
+
+		<c:if test="${plan == null}">
+			<div class="w3-panel w3-red">
+			    <h3>出错了</h3>
+			    <p><c:out value="${error}"/></p>
+			</div>
+			<a href="<%=request.getContextPath()%>/do/plan/list.html">返回</a>
+		</c:if>
+		
+		<c:if test="${plan != null}">
 		<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 			<thead>
 				<tr>
@@ -109,7 +63,12 @@ input[type=submit]:hover {
 			</thead>
 			<tfoot align="center">
 		    	<tr>
-		        	<td colspan="7"><input type="submit" value="提交审核"/></td>
+		        	<td colspan="7">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" value="提交审核"/>
+		        		</form>
+		        	</td>
 		      	</tr>
 		    </tfoot>
 			<tbody>
@@ -318,20 +277,29 @@ input[type=submit]:hover {
 			<tr>
 				<th>其他备注</th>
 				<td colspan = "6" >
-					<div id="comments" data-type="wysihtml5" data-pk="1"><h2>awesome</h2> comment!</div>
+					<div id="comments" data-type="wysihtml5" data-pk="comments">
+						<c:out value="${plan.planItems['comments'].itemValue}" escapeXml="false"/>
+					</div>
 					<script>
-						$(function(){
-						    $('#comments').editable({
-						        url: '<%=request.getContextPath()%>/do/plan/save.html',
-						        title: '其他备注'
-						    });
-						});
-						</script>
+					$('#comments').editable({
+				        url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '其他备注',
+				        wysihtml5:{
+				        	"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+				        	"emphasis": true, //Italics, bold, etc. Default true
+				        	"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+				        	"html": false, //Button which allows you to edit the generated HTML. Default false
+				        	"link": false, //Button to insert a link. Default true
+				        	"image": false, //Button to insert an image. Default true,
+				        	"color": true //Button to change color of font 
+				        }
+				    });
+					</script>
 				</td>
 			</tr>
 			</tbody>
 		</table>
-
+	</c:if>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>
