@@ -18,7 +18,7 @@ public class PlanItem {
 	private String itemValue;
 
 	@ManyToOne
-	@JoinColumn(name = "PLAN_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "PLAN_ID")
 	private Plan plan;
 
 	public PlanItem() {

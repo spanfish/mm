@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +20,9 @@ import com.newtronics.tx.service.PlanService;
 
 @Service
 public class PlanServiceImpl implements PlanService {
+
+	private Logger log = Logger.getLogger(PlanServiceImpl.class);
+
 	@Autowired
 	private PlanDao planDAO;
 
@@ -31,18 +35,21 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	@Transactional
 	public Plan insertPlan(Plan plan) {
+		log.info("insertPlan");
 		if (StringUtils.isEmpty(plan.getNotifyNo())) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(plan.getCreateDate());
 			int nextId = planDAO.getNextPlanId(plan.getTemplateId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH),
 					c.get(Calendar.DATE));
-
+			log.debug("nextId:" + nextId);
 			Template template = templateDao.findTemplateById(plan.getTemplateId());
+
 			String f = template.getNotifiyNoFormat();
 			f = f.replace("%yy%", String.format("%04d", c.get(Calendar.YEAR)));
 			f = f.replace("%mm%", String.format("%02d", c.get(Calendar.MONTH) + 1));
 			f = f.replace("%dd%", String.format("%02d", c.get(Calendar.DATE)));
-
+			log.debug(String.format("Template Name:%s, notifyNo format:", template.getName(),
+					template.getNotifiyNoFormat(), template.getViewName()));
 			f = String.format(f, nextId);
 			plan.setNotifyNo(f);
 		}
@@ -58,13 +65,14 @@ public class PlanServiceImpl implements PlanService {
 	public Plan updatePlan(Plan plan) {
 		return planDAO.updatePlan(plan);
 	}
-	
+
 	/**
 	 * 更新一个Plan对象
 	 */
 	public Plan findPlanById(String planId) {
 		return planDAO.findPlanById(planId);
 	}
+
 	@Override
 	public List<Plan> listPlan() {
 		return planDAO.listPlan();

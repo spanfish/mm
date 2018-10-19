@@ -35,8 +35,7 @@ CREATE TABLE planitem (
   id VARCHAR(100),
   plan_id  VARCHAR(100),
   itemname VARCHAR(100),
-  itemvalue VARCHAR(100),
-  
+  itemvalue VARCHAR(100)
 );
 
 

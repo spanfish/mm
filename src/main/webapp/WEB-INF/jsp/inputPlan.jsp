@@ -167,7 +167,7 @@ input[type=submit]:hover {
 		<tr>
 			<td><a href="#" class="editable" id="productName" data-type="text" data-pk="productName" 
 				data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品名称">
-				<c:out value="${plan.planItems['productName']}"/>
+				<c:out value="${plan.planItems['productName'].itemValue}"/>
 			</a></td>
 			<td><a href="#" class="editable" id="productModel" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品型号"></a></td>
 			<td><a href="#" class="editable" id="pcbVer" data-type="text" data-pk="1" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入PCB版本号 "></a></td>
