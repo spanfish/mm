@@ -62,6 +62,18 @@
 				</tr>
 			</thead>
 			<tfoot align="center">
+				<tr>
+					<td colspan="7">
+						<div>制表</div>
+						<div></div>
+						
+						<div>审核</div>
+						<div></div>
+						
+						<div>承认</div>
+						<div></div>
+					</td>
+				</tr>
 		    	<tr>
 		        	<td colspan="7">
 		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
@@ -211,7 +223,20 @@
 			<tr>
 				<th rowspan = "2">绿色产品生产要求</th>
 				<th>工艺要求</th>
-				<td colspan = "5">无铅工艺</td>
+				<td colspan = "5">
+					<a href="#" id="fabrication" data-type="checklist" data-pk="fabrication" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="工艺要求"></a>
+					<script>
+					$(function() {
+						$('#fabrication').editable({
+							value : [${plan.planItems['fabrication'].itemValue}],
+							source : [ {
+								value : 1,
+								text : '无铅工艺'
+							}]
+						});
+					});
+				</script>
+				</td>
 			</tr>
 			<tr>
 				<th>有害物质标准要求</th>
@@ -219,7 +244,26 @@
 			</tr>
 			<tr>
 				<th>生产性质</th>
-				<td colspan = "6">量产</td>
+				<td colspan = "6">
+					<a href="#" id="manufactureType" data-type="checklist" data-pk="manufactureType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="生产性质"></a>
+					<script>
+					$(function() {
+						$('#manufactureType').editable({
+							value : [${plan.planItems['manufactureType'].itemValue}],
+							source : [ {
+								value : 1,
+								text : '试产'
+							},  {
+								value : 2,
+								text : '小批'
+							},  {
+								value : 3,
+								text : '量产'
+							}]
+						});
+					});
+				</script>
+				</td>
 			</tr>
 			<tr>
 				<th>预计生产日期</th>
@@ -297,6 +341,7 @@
 					</script>
 				</td>
 			</tr>
+			
 			</tbody>
 		</table>
 	</c:if>

@@ -22,7 +22,7 @@ public class PlanItem {
 	private Plan plan;
 
 	public PlanItem() {
-		this.id = UUID.randomUUID().toString();
+		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
 	public String getId() {

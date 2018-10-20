@@ -7,10 +7,12 @@
    			    http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
 	<http auto-config="true">
-		<intercept-url pattern="/resources/*" access="permitAll" />
-		<intercept-url pattern="/j_spring_security_check"
-			access="permitAll" />
-		<intercept-url pattern="/do/login*" access="permitAll" />
+		<intercept-url pattern="/index.html" access="permitAll" />
+		<intercept-url pattern="/redirect.jsp" access="permitAll" />
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/j_spring_security_check" access="permitAll" />
+		<intercept-url pattern="/logout" access="permitAll" />
+		<intercept-url pattern="/do/login.html" access="permitAll" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 		
 		<csrf disabled="true" />
@@ -29,9 +31,10 @@
 
 		<authentication-provider>
 			<user-service>
-				<user name="admin" password="admin"
+				<user name="admin" password="f3f1c26545d2424e5bbc7bf12a8f2dc6"
 					authorities="ROLE_USER, ROLE_ADMIN" />
 			</user-service>
+			<password-encoder hash="md5"/>
 		</authentication-provider>
 	</authentication-manager>
 </beans:beans>

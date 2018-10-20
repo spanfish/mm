@@ -14,7 +14,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
         
-	<title>生产计划</title>
+	<title>模板管理</title>
 	<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
 	<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
 	<!-- bootstrap -->
@@ -61,7 +61,7 @@
 </head>
 <body>
 	<jsp:include page="navi.jsp">
-		<jsp:param name="page" value="home" />
+		<jsp:param name="page" value="template" />
 	</jsp:include>
 
 	
@@ -69,57 +69,47 @@
 		<thead>
 			<tr>
 				<th style="">序号</th>
-				<th style="">创建/更新日期</th>
-				<th style="">客戶</th>
-				<th style="">生产计划通知书号</th>
-				<th style="">制作</th>
-				<th style="">审核</th>
-				<th style="">承认</th>
+				<th style="">模板名称</th>
+				<th style="">模板文件名</th>
+				<th style="">制作权限</th>
+				<th style="">审核权限</th>
+				<th style="">承认权限</th>
+				<th style="">可用</th>
 			</tr>
 		</thead>
-			<c:set value="ROLE_ADMIN" var="role" scope="page"> </c:set>
-
-			<c:forEach var="p" items="${plans}" varStatus="status">
+			<c:forEach var="t" items="${templates}" varStatus="status">
 				<tr>
-					<td style="width:40px"><c:out value="${status.index + 1}"></c:out></td>
-					<td style="width:100px"><fmt:formatDate value="${p.createDate}" pattern="yyyy-MM-dd" /></td>
-					<td style="width:300px"><c:out value="${p.customer}"></c:out></td>
-					<td style="width:100px">
-						<spring:url value="${p.notifyNo}" var="notifyNo" htmlEscape="true"/>
-						<spring:url value="${p.planId}" var="planId" htmlEscape="true"/>
-						<a href="<%=request.getContextPath()%>/do/plan/input.html?notifyNo=${notifyNo}&planId=${planId}"><c:out value="${p.notifyNo}"></c:out></a>
+					<td style="width:40px">
+						<c:out value="${status.index + 1}"></c:out>
 					</td>
-					<td style="width:100px"><c:out value="${p.approver}"></c:out></td>
+					
+					<td style="width:300px">
+						<c:out value="${t.name }"/>
+					</td>
+					
+					<td style="width:100px">
+						<c:out value="${t.viewName }"/>
+					</td>
+					
 					<td style="width:100px">
 						
-						<c:if test="${p.status == 'REVIEWING'}">
-							审核中
-						</c:if>
-						<c:if test="${p.status == 'CREATING'}">
-							未提交审核
-						</c:if>
-						<c:if test="${p.status == 'APPROVING'}">
-							最终承认中
-						</c:if>
-						
 					</td>
-					<td style="width:100px"><c:out value="${p.approver}"></c:out></td>
+					
+					<td style="width:100px">
+					</td>
+					
+					<td style="width:100px">
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
 	
-	<c:if test="${empty plans}">
-		还没有生产计划
+	<c:if test="${empty templates}">
+		还没有模板
 	</c:if>
 	<br/>
-	<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
-		<label for="templateId">选择计划模板</label>
-		<select id="templateId" name="templateId" style="width:auto">
-			<c:forEach items="${templates}" var="t">
-				<option value="${t.id}"><c:out value="${t.name}"/></option>
-			</c:forEach>
-		</select>
-		<input type="submit" value="创建生产计划"/>
+	<form method="GET" action="<%=request.getContextPath()%>/do/template/input.html">
+		<input type="submit" value="创建模板"/>
 	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>

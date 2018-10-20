@@ -1,5 +1,7 @@
 package com.newtronics.tx.model;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -16,19 +18,25 @@ import javax.persistence.Id;
 
 @Entity
 public class Template {
-	// 主键
+	// 主键，随机生成的唯一标识
 	@Id
 	private String id;
 
-	//User display
+	//模板名称
 	private String name;
 
 	//JSP file name
 	private String viewName;
 	
+	//格式
 	private String notifiyNoFormat;
 
 	private int enabled;
+	
+	public Template() {
+		this.id = UUID.randomUUID().toString().replaceAll("-", "");
+		this.enabled = 1;
+	}
 	
 	public String getId() {
 		return id;
@@ -45,8 +53,6 @@ public class Template {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	
 
 	public String getViewName() {
 		return viewName;

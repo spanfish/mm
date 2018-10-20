@@ -82,7 +82,7 @@ public class Plan {
 	private Map<String, PlanItem> planItems;
 
 	public Plan() {
-		this.planId = UUID.randomUUID().toString();
+		this.planId = UUID.randomUUID().toString().replaceAll("-", "");
 		this.createDate = new Date();
 		this.status = PlanStatus.CREATING;
 	}
