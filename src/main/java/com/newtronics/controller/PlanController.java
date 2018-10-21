@@ -53,7 +53,7 @@ public class PlanController {
 	 * @return
 	 */
 	@RequestMapping(value = "list.html", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("listPlan");
 
@@ -62,7 +62,7 @@ public class PlanController {
 		mv.addObject("plans", plans);
 
 		//
-		List<Template> templates = templateService.findAllTemplates();
+		List<Template> templates = templateService.findAllTemplatesByCreator(principal.getName());
 		mv.addObject("templates", templates);
 		return mv;
 	}

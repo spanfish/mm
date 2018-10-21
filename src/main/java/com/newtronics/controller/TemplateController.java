@@ -195,6 +195,6 @@ public class TemplateController {
 			mv.setViewName("inputTemplate");
 		}
 
-		return mv;
+		return templateListInit();
 	}
 }

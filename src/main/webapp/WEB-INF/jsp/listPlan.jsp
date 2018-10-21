@@ -112,15 +112,21 @@
 		还没有生产计划
 	</c:if>
 	<br/>
-	<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
-		<label for="templateId">选择计划模板</label>
-		<select id="templateId" name="templateId" style="width:auto">
-			<c:forEach items="${templates}" var="t">
-				<option value="${t.id}"><c:out value="${t.name}"/></option>
-			</c:forEach>
-		</select>
-		<input type="submit" value="创建生产计划"/>
-	</form>
+	<c:if test="${not empty templates}">
+		<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
+			
+			<label for="templateId">选择计划模板</label>
+			<select id="templateId" name="templateId" style="width:auto">
+				<c:forEach items="${templates}" var="t">
+					<option value="${t.id}"><c:out value="${t.name}"/></option>
+				</c:forEach>
+			</select>
+			<input type="submit" value="创建生产计划"/>
+			
+		</form>
+	</c:if>
+	<c:if test="${empty templates}">
+	</c:if>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

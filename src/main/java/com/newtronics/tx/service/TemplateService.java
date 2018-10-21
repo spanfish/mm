@@ -6,6 +6,8 @@ import com.newtronics.tx.model.Template;
 
 public interface TemplateService {
 	List<Template> findAllTemplates();
+	
+	List<Template> findAllTemplatesByCreator(String username);
 
 	Template findTemplateById(String templateId);
 

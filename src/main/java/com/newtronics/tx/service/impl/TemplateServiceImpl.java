@@ -29,6 +29,12 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 
 	@Override
+	public List<Template> findAllTemplatesByCreator(String username) {
+		//
+		return templateDao.findAllTemplatesByCreator(username);
+	}
+	
+	@Override
 	public Template findTemplateById(String templateId) {
 		return templateDao.findTemplateById(templateId);
 	}

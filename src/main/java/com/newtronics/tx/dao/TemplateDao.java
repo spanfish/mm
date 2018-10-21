@@ -8,11 +8,13 @@ public interface TemplateDao {
 
 	List<Template> findAllTemplates();
 
+	List<Template> findAllTemplatesByCreator(String username);
+
 	Template findTemplateById(String templateId);
-	
+
 	Template findTemplateById(String templateId, boolean includeDisabled);
-	
+
 	void insertTemplate(Template template);
-	
+
 	Template updateTemplate(Template template);
 }
