@@ -41,59 +41,6 @@
 				$('.editable').editable();
 			});
 		</script>
-		
-		<style>
-			.rTable {
-			  	display: table;
-			  	width: 100%;
-			  	border-collapse: collapse;
-			}
-			.rTableRow {
-			  	display: table-row;
-			  	border-collapse: collapse;
-			}
-			.rTableHeading {
-			  	display: table-header-group;
-			  	background-color: #ddd;
-			  	border-collapse: collapse;
-			}
-			.rTableCell, .rTableHead {
-			  	display: table-cell;
-			  	padding: 3px 10px;
-			  	border: 1px solid #999999;
-			  	border-collapse: collapse;
-			}
-			.rTableHeading {
-			  	display: table-header-group;
-			  	background-color: #ddd;
-			  	font-weight: bold;
-			  	border-collapse: collapse;
-			}
-			.rTableFoot {
-			  	display: table-footer-group;
-			  	font-weight: bold;
-			  	background-color: #ddd;
-			  	border-collapse: collapse;
-			}
-			.rTableBody {
-			  	display: table-row-group;
-			  	border-collapse: collapse;
-			}
-			.rTable-nested {
-			    display: table;
-			    border-collapse: collapse;  
-			}
-			.table--nested .rTableCell {
-			    padding: 0;
-			    border: none;
-			    width:100%;
-			    height:100%;
-			}
-			.table--nested .rTableRow {
-			    padding: 0;
-			    border: none;
-			}
-		</style>
 	</head>
 <body style=" width: 100%;">
 	<jsp:include page="navi.jsp">
@@ -102,40 +49,7 @@
 
 	<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/create.html">
 	<h3 align="center">生产计划通知书</h3>
-	<h2>Phone numbers</h2>
-	<div class="rTable">
-		<div class="rTableRow">
-			<div class="rTableHead"><strong>客户确认</strong></div>
-			<div class="rTableCell">标记</div>
-			<div class="rTableCell" style="padding: 0;">
-				<div class="rTable-nested" style="padding: 0; width:100%; height:100%">
-					<div  style="border:0;padding: 0; border:0">
-						<div style="padding: 0; border-bottom:1px solid #999999;">标记<br/>aaaa</div>
-					</div>
-					<div class="rTableRow" style="padding: 0;">
-						<div class="" style="padding: 0; border-bottom:1px solid #999999;">标记</div>
-					</div>
-					<div class="rTableRow" style="padding: 0;">
-						<div class="" style="padding: 0; border-bottom:0px solid #999999;">标记</div>
-					</div>
-				</div>
-			</div>
-			<div class="rTableCell" style="padding: 0;">
-				<div class="rTable-nested" style="padding: 0; width:100%; height:100%">
-					<div class="rTableRow" style="padding: 0;">
-						<div class="" style="padding: 0; border-bottom:1px solid #999999;">标记</div>
-					</div>
-					<div class="rTableRow" style="padding: 0;">
-						<div class="" style="padding: 0; border-bottom:1px solid #999999;">标记</div>
-					</div>
-					<div class="rTableRow" style="padding: 0;">
-						<div class="" style="padding: 0; border-bottom:0px solid #999999;">标记</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
 	<table style="margin-left: auto; margin-right: auto; border: 0px">
 		<tr>
 			<td style="width:80px">客户名称:</td>
@@ -527,16 +441,30 @@
 			<td></td>
 			<td></td>
 		</tr>
+		</tbody>
+	</table>
+
+	<table style="border-top-width: 0px;　border-right-width: 1px;　border-bottom-width: 1px;　border-left-width: 1px; margin-left: auto;margin-right: auto; width:80%; border-collapse: collapse">
+	<tbody>
 		<tr>
-			<td>客户确认</td>
-			<td>标记</td>
-			<td>主板S/N</td>
+			<td rowspan="3">客户确认</td>
+			<td rowspan="3">标记</td>
+			<td>主板S/N：</td>
+			<td></td>
+			<td>MAC地址：</td>
+		</tr>
+		<tr>
+			<td>IMEI：</td>
+			<td></td>
+			<td>MEID：</td>
+		</tr>
+		<tr>
+			<td>蓝牙地址：</td>
 			<td></td>
 			<td></td>
 		</tr>
 		</tbody>
 	</table>
-
 		
 	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
