@@ -10,10 +10,12 @@ public class User {
 	@Id
 	private String username;
 
+	private String userDispName;
+
 	private String password;
-	
+
 	private String email;
-	
+
 	private String enabled;
 
 	public String getUsername() {
@@ -22,6 +24,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getUserDispName() {
+		return userDispName;
+	}
+
+	public void setUserDispName(String userDispName) {
+		this.userDispName = userDispName;
 	}
 
 	public String getPassword() {

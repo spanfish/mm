@@ -35,7 +35,7 @@ public class UserController {
 
 	@RequestMapping(value = "users.html", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
-		List<User> users = userService.getUsers();
+		List<User> users = userService.getAllUsers();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("users");
 		mv.addObject("users", users);
@@ -44,7 +44,7 @@ public class UserController {
 
 	@RequestMapping(value = "edit/{username}.html", method = RequestMethod.GET)
 	public ModelAndView editUser(@PathVariable("username") String username) {
-		User user = userService.getUser(username);
+		User user = userService.getUserByName(username);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("editUser");
 		mv.addObject("user", user);

@@ -25,17 +25,20 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	@Transactional
-	public User getUser(String username) {
-		return (User) em.createQuery("from User where username=:username").setParameter("username", username)
-				.getSingleResult();
+	public User getUserByName(String username) {
+		@SuppressWarnings("unchecked")
+		List<User> users = em.createQuery("from User where username=:username").setParameter("username", username).getResultList();
+		if(users.isEmpty()) {
+			return null;
+		} else {
+			return users.get(0);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional
-	public List<User> getUsers() {
-		return em.createQuery("from User").getResultList();
+	public List<User> getAllUsers() {
+		return em.createQuery("from User u where u.enabled=1 order by u.username").getResultList();
 	}
 
 }

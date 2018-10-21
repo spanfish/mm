@@ -9,4 +9,8 @@ public interface TemplateDao {
 	List<Template> findAllTemplates();
 
 	Template findTemplateById(String templateId);
+	
+	void insertTemplate(Template template);
+	
+	Template updateTemplate(Template template);
 }

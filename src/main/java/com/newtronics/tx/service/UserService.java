@@ -8,7 +8,7 @@ public interface UserService {
 
     void insertUser(User user);
 
-    User getUser(String username);
+    User getUserByName(String username);
 
-    List<User> getUsers();
+    List<User> getAllUsers();
 }

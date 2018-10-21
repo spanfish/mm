@@ -65,12 +65,13 @@
 	</jsp:include>
 
 	
-	<table style="width:900px" id="plans">
+	<table style="" id="plans">
 		<thead>
 			<tr>
 				<th style="">序号</th>
 				<th style="">模板名称</th>
 				<th style="">模板文件名</th>
+				<th style="">通知书号码格式</th>
 				<th style="">制作权限</th>
 				<th style="">审核权限</th>
 				<th style="">承认权限</th>
@@ -87,18 +88,30 @@
 						<c:out value="${t.name }"/>
 					</td>
 					
-					<td style="width:100px">
+					<td style="">
 						<c:out value="${t.viewName }"/>
 					</td>
-					
-					<td style="width:100px">
-						
+					<td style="">
+						<c:out value="${t.notifiyNoFormat}"/>
+					</td>
+					<td style="">
+						<c:out value="${t.creators}"/>
 					</td>
 					
-					<td style="width:100px">
+					<td style="">
+						<c:out value="${t.reviewers}"/>
 					</td>
 					
-					<td style="width:100px">
+					<td style="">
+						<c:out value="${t.approvers}"/>
+					</td>
+					<td>
+						<c:if test="${t.enabled == 1}">
+								可用
+						</c:if>
+						<c:if test="${t.enabled == 0}">
+								不可用
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>

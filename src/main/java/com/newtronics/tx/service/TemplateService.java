@@ -6,6 +6,10 @@ import com.newtronics.tx.model.Template;
 
 public interface TemplateService {
 	List<Template> findAllTemplates();
-	
+
 	Template findTemplateById(String templateId);
+
+	void insertTemplate(Template template) throws Exception;
+
+	Template updateTemplate(Template template) throws Exception;
 }

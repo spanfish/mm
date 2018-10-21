@@ -1,5 +1,6 @@
 CREATE TABLE users (
   username VARCHAR(30),
+  userDispname VARCHAR(30),
   password VARCHAR(30),
   email  VARCHAR(50),
   enabled CHAR(1)
@@ -44,5 +45,8 @@ CREATE TABLE template (
   name  VARCHAR(100),
   viewname VARCHAR(100),
   notifiyNoFormat VARCHAR(100),
-  enabled int
+  enabled int,
+  creators VARCHAR(400),
+  reviewers VARCHAR(400),
+  approvers VARCHAR(400),
 );

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.newtronics.tx.dao.UserDAO;
 import com.newtronics.tx.model.User;
 import com.newtronics.tx.service.UserService;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,13 +23,13 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User getUser(String username) {
-		return userDAO.getUser(username);
+	public User getUserByName(String username) {
+		return userDAO.getUserByName(username);
 	}
 
 	@Override
-	public List<User> getUsers() {
-		return userDAO.getUsers();
+	public List<User> getAllUsers() {
+		return userDAO.getAllUsers();
 	}
 
 }
