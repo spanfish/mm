@@ -37,7 +37,7 @@ import com.newtronics.tx.service.UserService;
  */
 @Controller
 @RequestMapping("/template")
-@SessionAttributes({"template" })
+@SessionAttributes({ "template" })
 public class TemplateController {
 	private Logger log = Logger.getLogger(TemplateController.class);
 
@@ -46,7 +46,7 @@ public class TemplateController {
 
 	@Autowired
 	private TemplateService templateService;
-	
+
 	@ModelAttribute("template")
 	public Template template() {
 		Template t = new Template();
@@ -86,29 +86,41 @@ public class TemplateController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("templates", templates);
 		mv.setViewName("templateList");
-		
+
 		return mv;
 	}
 
 	@RequestMapping(value = "input.html", method = RequestMethod.GET)
-	public ModelAndView addTemplateInit() {
+	public ModelAndView addTemplateInit(ModelMap model,
+			@RequestParam(name = "templateId", required = false) String templateId, SessionStatus status) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inputTemplate");
 
+		if (!StringUtils.isEmpty(templateId)) {
+			Template t = templateService.findTemplateById(templateId, true);
+			if (t == null) {
+				mv.addObject("error", "此模板不存在");
+				mv.addObject("returnPage", "/do/template/");
+				mv.setViewName("error");
+				status.setComplete();
+			} else {
+				model.put("template", t);
+			}
+		}
 		return mv;
 	}
 
 	@RequestMapping(value = "addUser.html", method = RequestMethod.POST)
 	@ResponseBody
-	public String addUser(Principal principal, @ModelAttribute("template") Template template, @RequestParam("name") String name,
-			@RequestParam("pk") String pk, @RequestParam(name = "value[]", required = false) String value) {
+	public String addTemplateUsers(Principal principal, @ModelAttribute("template") Template template,
+			@RequestParam("name") String name, @RequestParam("pk") String pk,
+			@RequestParam(name = "value[]", required = false) String value) {
 
 		if (template == null || principal == null || StringUtils.isEmpty(principal.getName())) {
 			return "已过期，请重新登陆";
 		}
 		String response = "成功";
 		try {
-			// PlanItem表存在此项目，则更新PlanItem表
 			if (PropertyUtils.isReadable(template, name) && PropertyUtils.isWriteable(template, name)) {
 				BeanUtils.setProperty(template, name, value);
 			} else {
@@ -121,8 +133,17 @@ public class TemplateController {
 		return response;
 	}
 
+	/**
+	 * 新建或更新一个模板
+	 * 
+	 * @param principal
+	 * @param template
+	 * @param status
+	 * @return
+	 */
 	@RequestMapping(value = "add.html", method = RequestMethod.POST)
-	public ModelAndView addTemplate(Principal principal, @ModelAttribute("template") Template template, SessionStatus status) {
+	public ModelAndView addTemplate(Principal principal, @ModelAttribute("template") Template template,
+			SessionStatus status) {
 		ModelAndView mv = new ModelAndView();
 
 		if (template == null || principal == null || StringUtils.isEmpty(principal.getName())) {
@@ -144,30 +165,36 @@ public class TemplateController {
 			mv.addObject("error", "请输入通知书号码格式");
 			mv.setViewName("inputTemplate");
 			return mv;
-		} else if (StringUtils.isEmpty(template.getCreators())) {
+		} else if (StringUtils.isEmpty(template.getCreatorNames())) {
 			mv.addObject("error", "请输入谁可以利用该模板创建计划");
 			mv.setViewName("inputTemplate");
 			return mv;
-		} else if (StringUtils.isEmpty(template.getReviewers())) {
+		} else if (StringUtils.isEmpty(template.getReviewerNames())) {
 			mv.addObject("error", "请输入审核者");
 			mv.setViewName("inputTemplate");
 			return mv;
-		} else if (StringUtils.isEmpty(template.getApprovers())) {
+		} else if (StringUtils.isEmpty(template.getApproverNames())) {
 			mv.addObject("error", "请输入承认者");
 			mv.setViewName("inputTemplate");
 			return mv;
 		}
-		
+
 		try {
-			templateService.insertTemplate(template);
+			Template t = templateService.findTemplateById(template.getId());
+			if (t == null) {
+				templateService.insertTemplate(template);
+			} else {
+				template = templateService.updateTemplate(template);
+			}
+
 			mv.setViewName("templateList");
 			status.setComplete();
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			mv.addObject("error", "保持出错");
+			mv.addObject("error", "保存出错");
 			mv.setViewName("inputTemplate");
 		}
-		
+
 		return mv;
 	}
 }

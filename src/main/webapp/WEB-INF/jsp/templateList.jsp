@@ -85,27 +85,33 @@
 					</td>
 					
 					<td style="width:300px">
-						<c:out value="${t.name }"/>
+						<a href="<%=request.getContextPath()%>/do/template/input.html?templateId=${t.id}"><c:out value="${t.name }"/></a>
 					</td>
 					
-					<td style="">
+					<td style="width:100px">
 						<c:out value="${t.viewName }"/>
 					</td>
-					<td style="">
+					<td style="width:100px">
 						<c:out value="${t.notifiyNoFormat}"/>
 					</td>
 					<td style="">
-						<c:out value="${t.creators}"/>
+						<c:forEach var="u" items="${t.creators}" varStatus="status">
+							${u.userDispName}
+						</c:forEach>
 					</td>
 					
 					<td style="">
-						<c:out value="${t.reviewers}"/>
+						<c:forEach var="u" items="${t.reviewers}">
+							${u.userDispName}
+						</c:forEach>
 					</td>
 					
 					<td style="">
-						<c:out value="${t.approvers}"/>
+						<c:forEach var="u" items="${t.approvers}">
+							${u.userDispName}
+						</c:forEach>
 					</td>
-					<td>
+					<td style="width:100px">
 						<c:if test="${t.enabled == 1}">
 								可用
 						</c:if>

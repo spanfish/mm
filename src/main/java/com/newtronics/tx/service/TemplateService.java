@@ -9,6 +9,8 @@ public interface TemplateService {
 
 	Template findTemplateById(String templateId);
 
+	Template findTemplateById(String templateId, boolean includeDisabled);
+	
 	void insertTemplate(Template template) throws Exception;
 
 	Template updateTemplate(Template template) throws Exception;

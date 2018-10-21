@@ -10,6 +10,8 @@ public interface TemplateDao {
 
 	Template findTemplateById(String templateId);
 	
+	Template findTemplateById(String templateId, boolean includeDisabled);
+	
 	void insertTemplate(Template template);
 	
 	Template updateTemplate(Template template);

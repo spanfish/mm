@@ -109,10 +109,10 @@
 	            <tr>         
 	                <td>制作权限</td>
 	                <td>
-						<a href="#" id="creators" data-type="select2" data-pk="creators" data-value="" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="制作者"></a>
+						<a href="#" id="creatorNames" data-type="select2" data-pk="creatorNames" data-value="${template.creatorNames}" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="制作者"></a>
 						<script>
 							$(function(){
-								$('#creators').editable({
+								$('#creatorNames').editable({
 									source: [
 							        	<c:forEach var="u" items="${users}" varStatus="status">
 							        		{id: '${u.username}', text: '${u.userDispName}'},
@@ -132,10 +132,10 @@
 	            <tr>         
 	                <td>审核权限</td>
 	                <td>
-	                	<a href="#" id="reviewers" data-type="select2" data-pk="reviewers" data-value="${template.reviewers }" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="审核者"></a>
+	                	<a href="#" id="reviewerNames" data-type="select2" data-pk="reviewerNames" data-value="${template.reviewerNames}" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="审核者"></a>
 						<script>
 							$(function(){
-								$('#reviewers').editable({
+								$('#reviewerNames').editable({
 							        source: [
 							        	<c:forEach var="u" items="${users}" varStatus="status">
 							        		{id: '${u.username}', text: '${u.userDispName}'},
@@ -155,10 +155,10 @@
 	            <tr>         
 	                <td>承认权限</td>
 	                <td>
-						<a href="#" id="approvers" data-type="select2" data-pk="approvers" data-value="" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="承认者"></a>
+						<a href="#" id="approverNames" data-type="select2" data-pk="approverNames" data-value="${template.approverNames}" data-url="<%=request.getContextPath()%>/do/template/addUser.html" data-title="承认者"></a>
 						<script>
 							$(function(){
-								$('#approvers').editable({
+								$('#approverNames').editable({
 									source: [
 							        	<c:forEach var="u" items="${users}" varStatus="status">
 							        		{id: '${u.username}', text: '${u.userDispName}'},
@@ -184,8 +184,13 @@
 	            </tr>  
 			</tbody>
 		</table>
+		<c:if test="${not empty param.templateId}" >
+			<input type="submit" value="更新"/>
+		</c:if>
+		<c:if test="${empty param.templateId}" >
+			<input type="submit" value="创建"/>
+		</c:if>
 		
-		<input type="submit" value="创建"/>
 	</form:form>
 	<br/>
 	<jsp:include page="footer.jsp"></jsp:include>

@@ -19,13 +19,24 @@ public class TemplateDaoImpl implements TemplateDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Template> findAllTemplates() {
-		return em.createQuery("from Template t where t.enabled = 1 order by t.name").getResultList();
+		return em.createQuery("from Template t order by t.name").getResultList();
 	}
 
 	@Override
 	public Template findTemplateById(String templateId) {
+		return this.findTemplateById(templateId, false);
+	}
+
+	@Override
+	public Template findTemplateById(String templateId, boolean includeDisabled) {
+		
+		String sql = "from Template t where t.id = :id";
+		if(!includeDisabled) {
+			sql += " and t.enabled = 1";
+		}
+		
 		@SuppressWarnings("unchecked")
-		List<Template> result = em.createQuery("from Template t where t.enabled = 1 and t.id = :id")
+		List<Template> result = em.createQuery(sql)
 				.setParameter("id", templateId).getResultList();
 		if (result.isEmpty()) {
 			return null;
@@ -46,4 +57,5 @@ public class TemplateDaoImpl implements TemplateDao {
 		Template t = em.merge(template);
 		return t;
 	}
+
 }

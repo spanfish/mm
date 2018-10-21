@@ -50,3 +50,18 @@ CREATE TABLE template (
   reviewers VARCHAR(400),
   approvers VARCHAR(400),
 );
+
+CREATE TABLE template_creator (
+ template_id varchar(100),
+ user_id varchar(100)
+);
+
+CREATE TABLE template_reviewer (
+ template_id varchar(100),
+ user_id varchar(100)
+);
+
+CREATE TABLE template_approver (
+ template_id varchar(100),
+ user_id varchar(100)
+);
