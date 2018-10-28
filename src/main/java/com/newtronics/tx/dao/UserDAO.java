@@ -2,6 +2,7 @@ package com.newtronics.tx.dao;
 
 import java.util.List;
 
+import com.newtronics.tx.model.Role;
 import com.newtronics.tx.model.User;
 
 public interface UserDAO {
@@ -11,4 +12,6 @@ public interface UserDAO {
     User getUserByName(String username);
 
     List<User> getAllUsers();
+    
+    List<Role> getAllRoles();
 }

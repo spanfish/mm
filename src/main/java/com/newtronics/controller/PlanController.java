@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.newtronics.tx.model.Plan;
 import com.newtronics.tx.model.PlanItem;
 import com.newtronics.tx.model.Template;
+import com.newtronics.tx.service.MailService;
 import com.newtronics.tx.service.PlanService;
 import com.newtronics.tx.service.TemplateService;
 
@@ -47,6 +48,8 @@ public class PlanController {
 	@Autowired
 	private TemplateService templateService;
 
+	@Autowired 
+	private MailService mailService;
 	/**
 	 * 显示所有的计划列表 TODO:加入查询条件
 	 * 
@@ -169,6 +172,13 @@ public class PlanController {
 		return response;
 	}
 
+	/**
+	 * 提交創建的計劃，該計劃會進入審核狀態
+	 * @param principal
+	 * @param modelMap
+	 * @param planId
+	 * @return
+	 */
 	@RequestMapping(value = "submitReview.html", method = RequestMethod.POST)
 	public ModelAndView submitReview(Principal principal, ModelMap modelMap, @RequestParam("planId") String planId) {
 		ModelAndView mv = new ModelAndView();
@@ -182,6 +192,8 @@ public class PlanController {
 				return mv;
 			}
 			planService.submitPlanForReview(plan);
+			
+			mailService.sendReviewEmail();
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

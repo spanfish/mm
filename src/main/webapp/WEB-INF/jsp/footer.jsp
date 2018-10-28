@@ -3,5 +3,5 @@
 
 
 <div class="footer">
-<img style="width: 103px; height:47px; border:0px;" src="<%=request.getContextPath()%>/resources/logo.jpg"/>
+<!-- img style="width: 103px; height:47px; border:0px;" src="<%=request.getContextPath()%>/resources/logo.jpg"/ -->
 </div>

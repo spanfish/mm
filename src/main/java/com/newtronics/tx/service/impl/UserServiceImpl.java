@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.newtronics.tx.dao.UserDAO;
+import com.newtronics.tx.model.Role;
 import com.newtronics.tx.model.User;
 import com.newtronics.tx.service.UserService;
 
@@ -30,6 +31,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllUsers() {
 		return userDAO.getAllUsers();
+	}
+
+
+	@Override
+	public List<Role> getAllRoles() {
+		return userDAO.getAllRoles();
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.newtronics.tx.dao.UserDAO;
+import com.newtronics.tx.model.Role;
 import com.newtronics.tx.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,13 @@ public class UserDAOImpl implements UserDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllUsers() {
-		return em.createQuery("from User u where u.enabled=1 order by u.username").getResultList();
+		return em.createQuery("from User u order by u.username").getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Role> getAllRoles() {
+		return em.createQuery("from Role r order by r.role").getResultList();
 	}
 
 }

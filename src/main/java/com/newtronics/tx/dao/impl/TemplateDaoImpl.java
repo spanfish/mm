@@ -25,7 +25,9 @@ public class TemplateDaoImpl implements TemplateDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Template> findAllTemplatesByCreator(String username) {
-		List<Template> result = em.createQuery("select t from Template t inner join t.creators c where t.enabled = 1 order by t.name").getResultList();
+		List<Template> result = em.createQuery(
+				"select t from Template t inner join t.creators c where t.enabled = 1 and c.username=:username order by t.name")
+				.setParameter("username", username).getResultList();
 		return result;
 	}
 

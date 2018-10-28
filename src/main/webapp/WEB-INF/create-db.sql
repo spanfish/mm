@@ -6,7 +6,7 @@ CREATE TABLE users (
   enabled CHAR(1)
 );
 
-CREATE TABLE user_roles (
+CREATE TABLE user_role (
   username VARCHAR(30),
   role VARCHAR(30)
 );
