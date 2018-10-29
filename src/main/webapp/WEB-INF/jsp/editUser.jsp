@@ -102,10 +102,10 @@
 			<form:input placeholder="请输入邮件" path="email" /> 
 			
 			<label for="psw"><b>密码</b></label> 
-			<form:password placeholder="请输入密码" path="password" required="required"/> 
+			<form:password placeholder="请输入密码" path="password" /> 
 			
 			<label for="psw-repeat"><b>密码确认</b></label> 
-			<form:password placeholder="请输入密码确认" path="password2" required="required"/>
+			<form:password placeholder="请输入密码确认" path="password2"/>
 			<br/>
 			<label for="role"><b>权限</b></label>
 			<form:select path="userRole">
