@@ -7,11 +7,13 @@ import com.newtronics.tx.model.User;
 
 public interface UserService {
 
-    void insertUser(User user);
+	void insertUser(User user);
 
-    User getUserByName(String username);
+	User updateUser(User user);
 
-    List<User> getAllUsers();
-    
-    List<Role> getAllRoles();
+	User getUserByName(String username);
+
+	List<User> getAllUsers();
+
+	List<Role> getAllRoles();
 }

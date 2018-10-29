@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.newtronics.tx.model.Role;
@@ -57,10 +58,19 @@ public class UserController {
 	 * @param username
 	 * @return
 	 */
-	@RequestMapping(value = "edit/{username}.html", method = RequestMethod.GET)
-	public ModelAndView editUser(@PathVariable("username") String username) {
-		User user = userService.getUserByName(username);
+	@RequestMapping(value = "edit/", method = RequestMethod.GET)
+	public ModelAndView editUser(@RequestParam("username") String username) {
 		ModelAndView mv = new ModelAndView();
+		mv.setViewName("editUser");
+		if(StringUtils.isEmpty(username)) {
+			mv.addObject("error", "参数错误");
+			return mv;
+		}
+		User user = userService.getUserByName(username);
+		if(user == null) {
+			mv.addObject("error", "没找到这个用户");
+			return mv;
+		}
 		mv.setViewName("editUser");
 		mv.addObject("user", user);
 		return mv;
@@ -74,15 +84,49 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "update/update.html", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("user") User user, BindingResult result, ModelMap model) {
-		if (result.hasErrors()) {
-			return "user";
+	@RequestMapping(value = "update/", method = RequestMethod.POST)
+	public ModelAndView update(Principal principal, @ModelAttribute("user") User user, BindingResult result, ModelMap model) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("editUser");
+		
+		if (user == null || principal == null) {
+			mv.addObject("error", "已过期，请重新登陆");
+			mv.setViewName("error");
+			return mv;
 		}
-		// model.addAttribute("name", employee.getName());
-		// model.addAttribute("contactNumber", employee.getContactNumber());
-		// model.addAttribute("id", employee.getId());
-		return "users";
+		
+		mv.addObject("user", user);
+		
+		if (StringUtils.isEmpty(user.getUsername())) {
+			mv.addObject("error", "用户ID未输入");
+			return mv;
+		}
+		if (StringUtils.isEmpty(user.getUserDispName())) {
+			mv.addObject("error", "用户显示名未输入");
+			return mv;
+		}
+		if (StringUtils.isEmpty(user.getPassword())) {
+			mv.addObject("error", "用户密码未输入");
+			return mv;
+		}
+		if (StringUtils.isEmpty(user.getPassword2())) {
+			mv.addObject("error", "用户确认密码未输入");
+			return mv;
+		}
+		if (!user.getPassword().equals(user.getPassword2())) {
+			mv.addObject("error", "用户密码和用户确认密码不一致");
+			return mv;
+		}
+
+		User u = userService.getUserByName(user.getUsername());
+		if (u != null) {
+			mv.addObject("error", "用户ID已存在");
+			return mv;
+		}
+
+		user.setEnabled("1");
+
+		return users();
 	}
 
 	/**
@@ -114,8 +158,8 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("createUser");
 		mv.addObject("user", user);
-		List<Role> roles = userService.getAllRoles();
-		mv.addObject("roles", roles);
+		//List<Role> roles = userService.getAllRoles();
+		//mv.addObject("roles", roles);
 
 		if (user == null || principal == null) {
 			mv.addObject("error", "已过期，请重新登陆");
@@ -144,24 +188,20 @@ public class UserController {
 		}
 
 		User u = userService.getUserByName(user.getUsername());
-		if(u != null) {
+		if (u != null) {
 			mv.addObject("error", "用户ID已存在");
 			return mv;
 		}
-		
+
 		user.setEnabled("1");
-		
-		if(user.getRoles() == null) {
+
+		if (user.getRoles() == null) {
 			user.setRoles(new ArrayList<String>());
 		}
 		user.getRoles().add(user.getUserRole());
-//		for (Role role : roles) {
-//			if(role.getRole().equals(user.getUserRole())) {
-//				user.getRoles().put(role.getUserRole(), role);
-//			}
-//		}
+
 		userService.insertUser(user);
-		
+
 		return users();
 	}
 

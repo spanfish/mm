@@ -48,4 +48,9 @@ public class UserDAOImpl implements UserDAO {
 		return em.createQuery("from Role r order by r.role").getResultList();
 	}
 
+	@Override
+	public User updateUser(User user) {
+		return em.merge(user);
+	}
+
 }

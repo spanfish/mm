@@ -96,11 +96,11 @@
 					</td>
 					<td>
 						<c:forEach var="r" items="${u.roles}" varStatus="status">
-							<c:if test="${r == 'ROLE_USER '}">一般</c:if>
+							<c:if test="${r == 'ROLE_USER'}">一般</c:if>
 							<c:if test="${r == 'ROLE_ADMIN'}">管理员</c:if>
 						</c:forEach>
 					</td>
-					<td><a href="<%=request.getContextPath()%>/do/user/edit/${u.username}.htm">编辑</a></td>
+					<td><a href="<c:url value = "/do/user/edit/?username=${u.username}"/>">编辑</a></td>
 				</tr>
 			</c:forEach>
 		</table>

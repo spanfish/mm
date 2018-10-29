@@ -8,6 +8,8 @@ import com.newtronics.tx.model.User;
 public interface UserDAO {
 
     void insertUser(User user);
+    
+    User updateUser(User user);
 
     User getUserByName(String username);
 
