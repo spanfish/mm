@@ -6,6 +6,7 @@
 package com.newtronics.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -192,8 +193,11 @@ public class PlanController {
 				return mv;
 			}
 			planService.submitPlanForReview(plan);
-			
-			mailService.sendReviewEmail();
+			Map<String, String> model = new HashMap<String, String>();
+			model.put("user", "xwang");
+			model.put("notificationNo", plan.getNotifyNo());
+			model.put("contentPath", "/mm");
+			mailService.sendReviewEmail(model);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

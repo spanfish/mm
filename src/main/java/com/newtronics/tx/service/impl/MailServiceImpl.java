@@ -2,6 +2,7 @@ package com.newtronics.tx.service.impl;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -33,7 +34,7 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	@Async
-	public void sendReviewEmail() {
+	public void sendReviewEmail(Map<String, String> model) {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper;
 		try {
@@ -43,11 +44,11 @@ public class MailServiceImpl implements MailService {
 			// ClassPathResource("memorynotfound-logo.png"));
 
 			Template t = freemarkerConfiguration.getTemplate("review.ftl");
-			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, null);
+			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
 			helper.setTo("spanfishwang@gmail.com");
 			helper.setText(html, true);
-			helper.setSubject("");
+			helper.setSubject("test");
 			helper.setFrom("wang_xiangwei@hotmail.com");
 
 			mailSender.send(message);
