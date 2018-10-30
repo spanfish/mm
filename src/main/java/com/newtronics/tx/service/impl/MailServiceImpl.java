@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -32,6 +33,12 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private Configuration freemarkerConfiguration;
 
+	@Value("${mail.from}")
+	private String from;
+	
+	@Value("${mail.subject}")
+	private String subject;
+	
 	@Override
 	@Async
 	public void sendReviewEmail(Map<String, String> model) {
@@ -40,16 +47,15 @@ public class MailServiceImpl implements MailService {
 		try {
 			helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
-			// helper.addAttachment("logo.png", new
-			// ClassPathResource("memorynotfound-logo.png"));
 
-			Template t = freemarkerConfiguration.getTemplate("review.ftl");
+			Template t = freemarkerConfiguration.getTemplate(model.get("template"));
 			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
-			helper.setTo("spanfishwang@gmail.com");
+			String receipts = model.get("receipts");
+			helper.setTo(receipts.split(";"));
 			helper.setText(html, true);
-			helper.setSubject("test");
-			helper.setFrom("wang_xiangwei@hotmail.com");
+			helper.setSubject(subject);
+			helper.setFrom(from);
 
 			mailSender.send(message);
 		} catch (MessagingException e) {

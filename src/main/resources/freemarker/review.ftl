@@ -15,7 +15,7 @@
 		<link href="${contentPath}/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">	
 	</head>
 	<body style=" width: 100%;">
-		${user}提交了一个生产计划，请审核, 生产计划通知书号码:${notificationNo}<br/>
+		${user}提交了一个生产计划，请审核, 生产计划通知书号码:<br/>
 		<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 			<thead>
 				<tr>

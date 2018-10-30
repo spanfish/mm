@@ -64,22 +64,45 @@
 			<tfoot align="center">
 				<tr>
 					<td colspan="7">
-						<div>制表</div>
-						<div></div>
-						
-						<div>审核</div>
-						<div></div>
-						
-						<div>承认</div>
-						<div></div>
+						<table style="border:0; width:100%; height:100%">
+							<tr>
+								<td>制表</td>
+								<td>${plan.creator.username}</td>
+								<td>审核</td>
+								<td>${plan.reviewer.username}</td>
+								<td>承认</td>
+								<td>${plan.approver.username}</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 		    	<tr>
 		        	<td colspan="7">
+		        		<c:if test="${plan.planStatus == 'CREATING' }">
 		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
 		        			<input type="hidden" name="planId" value="${plan.planId}">
 		        			<input type="submit" value="提交审核"/>
 		        		</form>
+		        		</c:if>
+		        		
+		        		<c:if test="${plan.planStatus == 'REVIEWING' }">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/review.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" value="发回修改"/>
+		        			<input type="submit" value="通过审核"/>
+		        		</form>
+		        		</c:if>
+		        		
+		        		<c:if test="${plan.planStatus == 'APPROVING' }">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/approve.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" value="发回修改"/>
+		        			<input type="submit" value="承认"/>
+		        		</form>
+		        		</c:if>
+		        		<c:if test="${plan.planStatus == 'APPROVED' }">
+		        		
+		        		</c:if>
 		        	</td>
 		      	</tr>
 		    </tfoot>

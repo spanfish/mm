@@ -6,6 +6,7 @@
 package com.newtronics.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,8 @@ import com.newtronics.tx.model.Template;
 import com.newtronics.tx.service.MailService;
 import com.newtronics.tx.service.PlanService;
 import com.newtronics.tx.service.TemplateService;
-
+import com.newtronics.tx.service.UserService;
+import com.newtronics.tx.model.User;
 /**
  *
  * @author xiangweiwang
@@ -43,6 +45,9 @@ public class PlanController {
 
 	private Logger log = Logger.getLogger(PlanController.class);
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private PlanService planService;
 
@@ -185,27 +190,46 @@ public class PlanController {
 		ModelAndView mv = new ModelAndView();
 
 		try {
-			Plan plan = (Plan) modelMap.get("plan");//planService.findPlanById(planId);
+			Plan plan = (Plan) modelMap.get("plan");
 			if(plan == null || StringUtils.isEmpty(plan.getTemplateId())) {
 				mv.addObject("error", "未找到该计划，请刷新页面");
 				mv.addObject("returnPage", "/do/plan/list.html");
 				mv.setViewName("error");
 				return mv;
 			}
+			User creator = userService.getUserByName(principal.getName());
+			plan.setCreator(creator);
+			plan.setCreateDate(new Date());
 			planService.submitPlanForReview(plan);
-			Map<String, String> model = new HashMap<String, String>();
-			model.put("user", "xwang");
-			model.put("notificationNo", plan.getNotifyNo());
-			model.put("contentPath", "/mm");
-			mailService.sendReviewEmail(model);
+			
+			Template template = templateService.findTemplateById(plan.getTemplateId());
+			if(template != null) {
+				StringBuffer sb = new StringBuffer();
+				for(User u : template.getReviewers()) {
+					if(!StringUtils.isEmpty(u.getEmail())) {
+						if(sb.length() > 0) {
+							sb.append(";");
+						}
+						sb.append(u.getEmail());
+					}
+				}
+				if(sb.length() > 0) {
+					Map<String, String> model = new HashMap<String, String>();
+					model.put("receipts", sb.toString());
+					model.put("template", "review.ftl");
+					model.put("user", creator.getUserDispName());
+					model.put("notificationNo", plan.getNotifyNo());
+					model.put("contentPath", "/mm");
+					mailService.sendReviewEmail(model);
+				}
+				
+			}
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 
 		//success
-		mv.setViewName("listPlan");
-		List<Plan> plans = planService.listPlan();
-		mv.addObject("plans", plans);
-		return mv;
+		return list(principal);
 	}
 }

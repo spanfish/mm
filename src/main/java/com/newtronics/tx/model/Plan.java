@@ -52,12 +52,12 @@ public class Plan {
 	private PlanStatus status;
 	
 	// 创建者`
-	@OneToOne
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "creator_name")
 	private User creator;
 
 	// 审核者`
-	@OneToOne
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "reviewer_name")
 	private User reviewer;
 
@@ -67,7 +67,7 @@ public class Plan {
 	private Date reviewDate;
 
 	// 承认者
-	@OneToOne
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "approver_name")
 	private User approver;
 
