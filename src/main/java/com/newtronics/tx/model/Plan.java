@@ -81,6 +81,8 @@ public class Plan {
 	@MapKey(name = "itemName")
 	private Map<String, PlanItem> planItems;
 
+	private String message;
+	
 	public Plan() {
 		this.planId = UUID.randomUUID().toString().replaceAll("-", "");
 		this.createDate = new Date();
@@ -192,5 +194,13 @@ public class Plan {
 
 	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

@@ -1,8 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8"%>
 
 <html>
 	<head>
@@ -55,6 +56,11 @@
 		</c:if>
 		
 		<c:if test="${plan != null}">
+		<c:if test="${not empty plan.message }">
+			<div class="w3-panel w3-yellow">
+			    <p><c:out value="${plan.message}"/></p>
+			</div>
+		</c:if>
 		<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
 			<thead>
 				<tr>
@@ -66,41 +72,52 @@
 					<td colspan="7">
 						<table style="border:0; width:100%; height:100%">
 							<tr>
-								<td>制表</td>
-								<td>${plan.creator.username}</td>
-								<td>审核</td>
-								<td>${plan.reviewer.username}</td>
-								<td>承认</td>
-								<td>${plan.approver.username}</td>
+								<th style="width:80px">制表</th>
+								<td style="width:160px">${plan.creator.username}</td>
+								<th style="width:80px">审核</th>
+								<td style="width:160px">
+									<div class="stamp stamp-review">
+										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
+										<span><c:out value="${plan.reviewer.userDispName}"></c:out></span>
+									</div>
+								</td>
+								<th style="width:80px">承认</th>
+								<td style="width:160px">
+									<div class="stamp stamp-approve">
+										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
+										<span><c:out value="${plan.approver.userDispName}"></c:out></span>
+									</div>
+								</td>
+								<td></td>
 							</tr>
 						</table>
 					</td>
 				</tr>
 		    	<tr>
 		        	<td colspan="7">
-		        		<c:if test="${plan.planStatus == 'CREATING' }">
+		        		<c:if test="${plan.status == 'CREATING' }">
 		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
 		        			<input type="hidden" name="planId" value="${plan.planId}">
 		        			<input type="submit" value="提交审核"/>
 		        		</form>
 		        		</c:if>
 		        		
-		        		<c:if test="${plan.planStatus == 'REVIEWING' }">
+		        		<c:if test="${plan.status == 'REVIEWING' }">
 		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/review.html">
 		        			<input type="hidden" name="planId" value="${plan.planId}">
-		        			<input type="submit" value="发回修改"/>
-		        			<input type="submit" value="通过审核"/>
+		        			<input type="submit" name="action" value="发回修改"/>
+		        			<input type="submit" name="action" value="通过审核"/>
 		        		</form>
 		        		</c:if>
 		        		
-		        		<c:if test="${plan.planStatus == 'APPROVING' }">
+		        		<c:if test="${plan.status == 'APPROVING' }">
 		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/approve.html">
 		        			<input type="hidden" name="planId" value="${plan.planId}">
-		        			<input type="submit" value="发回修改"/>
-		        			<input type="submit" value="承认"/>
+		        			<input type="submit" name="action" value="发回修改"/>
+		        			<input type="submit" name="action" value="承认"/>
 		        		</form>
 		        		</c:if>
-		        		<c:if test="${plan.planStatus == 'APPROVED' }">
+		        		<c:if test="${plan.status == 'APPROVED' }">
 		        		
 		        		</c:if>
 		        	</td>

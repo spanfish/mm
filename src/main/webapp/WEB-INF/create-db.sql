@@ -24,12 +24,15 @@ CREATE TABLE plan (
   creator_name VARCHAR(30),
   customer VARCHAR(30),
   notifyNo VARCHAR(30),
-  versionNo VARCHAR(30),
+  versionNo INTEGER,
   memo VARCHAR(30),
   reviewer_name VARCHAR(30),
   review_date DATE,
+  
   approver_name VARCHAR(30),
-  approve_date DATE
+  approve_date DATE,
+  
+  message VARCHAR(200)
 );
 
 CREATE TABLE planitem (

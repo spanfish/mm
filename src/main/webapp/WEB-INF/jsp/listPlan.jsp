@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring"
@@ -17,6 +16,7 @@
 	<title>生产计划</title>
 	<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
 	<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/resources/w3.css" rel="stylesheet">
 	<!-- bootstrap -->
 	<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
 	<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
@@ -89,21 +89,26 @@
 						<spring:url value="${p.planId}" var="planId" htmlEscape="true"/>
 						<a href="<%=request.getContextPath()%>/do/plan/input.html?notifyNo=${notifyNo}&planId=${planId}"><c:out value="${p.notifyNo}"></c:out></a>
 					</td>
-					<td style="width:100px"><c:out value="${p.approver}"></c:out></td>
+					<td style="width:100px"><c:out value="${p.creator.userDispName}"></c:out></td>
 					<td style="width:100px">
-						
-						<c:if test="${p.status == 'REVIEWING'}">
-							审核中
-						</c:if>
-						<c:if test="${p.status == 'CREATING'}">
-							未提交审核
-						</c:if>
-						<c:if test="${p.status == 'APPROVING'}">
-							最终承认中
+						<c:if test="${not empty p.reviewer.userDispName}">
+						<c:if test="${plan.status == 'CREATING' }">
+							<div class="stamp stamp-review-fail">
 						</c:if>
 						
+							<span><fmt:formatDate value="${p.reviewDate}" pattern="yyyy-MM-dd" /></span>
+							<span><c:out value="${p.reviewer.userDispName}"></c:out></span>
+						</div>
+						</c:if>
 					</td>
-					<td style="width:100px"><c:out value="${p.approver}"></c:out></td>
+					<td style="width:100px">
+						<c:if test="${not empty p.approver.userDispName}">
+						<div class="stamp stamp-approve-${p.status}">
+							<span><fmt:formatDate value="${p.approveDate}" pattern="yyyy-MM-dd" /></span>
+							<span><c:out value="${p.approver.userDispName}"></c:out></span>
+						</div>
+						</c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>

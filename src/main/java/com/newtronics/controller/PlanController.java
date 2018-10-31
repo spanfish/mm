@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.newtronics.common.PlanStatus;
 import com.newtronics.tx.model.Plan;
 import com.newtronics.tx.model.PlanItem;
 import com.newtronics.tx.model.Template;
@@ -197,15 +198,147 @@ public class PlanController {
 				mv.setViewName("error");
 				return mv;
 			}
+			if (plan.getStatus() != PlanStatus.CREATING) {
+				// exception
+				mv.addObject("error", "状态错误");
+				mv.addObject("returnPage", "/do/plan/list.html");
+				mv.setViewName("error");
+				return mv;
+			}
+			
 			User creator = userService.getUserByName(principal.getName());
 			plan.setCreator(creator);
 			plan.setCreateDate(new Date());
-			planService.submitPlanForReview(plan);
+			plan.setStatus(PlanStatus.REVIEWING);
+			planService.updatePlan(plan);
 			
 			Template template = templateService.findTemplateById(plan.getTemplateId());
 			if(template != null) {
 				StringBuffer sb = new StringBuffer();
 				for(User u : template.getReviewers()) {
+					if(!StringUtils.isEmpty(u.getEmail())) {
+						if(sb.length() > 0) {
+							sb.append(";");
+						}
+						sb.append(u.getEmail());
+					}
+				}
+				if(sb.length() > 0) {
+					Map<String, String> model = new HashMap<String, String>();
+					model.put("receipts", sb.toString());
+					model.put("template", "review.ftl");
+					model.put("user", creator.getUserDispName());
+					model.put("notificationNo", plan.getNotifyNo());
+					model.put("contentPath", "/mm");
+					mailService.sendReviewEmail(model);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		//success
+		return list(principal);
+	}
+	
+	@RequestMapping(value = "review.html", method = RequestMethod.POST)
+	public ModelAndView completeReview(Principal principal, ModelMap modelMap, @RequestParam("planId") String planId, @RequestParam("action") String action) {
+		ModelAndView mv = new ModelAndView();
+
+		try {
+			Plan plan = (Plan) modelMap.get("plan");
+			if(plan == null || StringUtils.isEmpty(plan.getTemplateId())) {
+				mv.addObject("error", "未找到该计划，请刷新页面");
+				mv.addObject("returnPage", "/do/plan/list.html");
+				mv.setViewName("error");
+				return mv;
+			}
+			if (plan.getStatus() != PlanStatus.REVIEWING) {
+				// exception
+				mv.addObject("error", "状态错误");
+				mv.addObject("returnPage", "/do/plan/list.html");
+				mv.setViewName("error");
+				return mv;
+			}
+			User creator = userService.getUserByName(principal.getName());
+			plan.setReviewer(creator);
+			plan.setReviewDate(new Date());
+			if("发回修改".equals(action)) {
+				plan.setStatus(PlanStatus.CREATING);
+			} else {
+				plan.setStatus(PlanStatus.APPROVING);
+			}
+			
+			planService.updatePlan(plan);
+			
+			Template template = templateService.findTemplateById(plan.getTemplateId());
+			if(template != null) {
+				StringBuffer sb = new StringBuffer();
+				for(User u : template.getApprovers()) {
+					if(!StringUtils.isEmpty(u.getEmail())) {
+						if(sb.length() > 0) {
+							sb.append(";");
+						}
+						sb.append(u.getEmail());
+					}
+				}
+				if(sb.length() > 0) {
+					Map<String, String> model = new HashMap<String, String>();
+					model.put("receipts", sb.toString());
+					model.put("template", "review.ftl");
+					model.put("user", creator.getUserDispName());
+					model.put("notificationNo", plan.getNotifyNo());
+					model.put("contentPath", "/mm");
+					mailService.sendReviewEmail(model);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		//success
+		return list(principal);
+	}
+	
+	@RequestMapping(value = "approve.html", method = RequestMethod.POST)
+	public ModelAndView completeApprove(Principal principal, ModelMap modelMap, @RequestParam("planId") String planId, @RequestParam("action") String action) {
+		ModelAndView mv = new ModelAndView();
+
+		try {
+			Plan plan = (Plan) modelMap.get("plan");
+			if(plan == null || StringUtils.isEmpty(plan.getTemplateId())) {
+				mv.addObject("error", "未找到该计划，请刷新页面");
+				mv.addObject("returnPage", "/do/plan/list.html");
+				mv.setViewName("error");
+				return mv;
+			}
+			
+			if (plan.getStatus() != PlanStatus.APPROVING) {
+				// exception
+				mv.addObject("error", "状态错误");
+				mv.addObject("returnPage", "/do/plan/list.html");
+				mv.setViewName("error");
+				return mv;
+			}
+			
+			User creator = userService.getUserByName(principal.getName());
+			plan.setApprover(creator);
+			plan.setApproveDate(new Date());
+			if("发回修改".equals(action)) {
+				plan.setStatus(PlanStatus.CREATING);
+			} else {
+				plan.setStatus(PlanStatus.APPROVED);
+			}
+			planService.updatePlan(plan);
+			
+			Template template = templateService.findTemplateById(plan.getTemplateId());
+			if(template != null) {
+				StringBuffer sb = new StringBuffer();
+				for(User u : template.getApprovers()) {
 					if(!StringUtils.isEmpty(u.getEmail())) {
 						if(sb.length() > 0) {
 							sb.append(";");
