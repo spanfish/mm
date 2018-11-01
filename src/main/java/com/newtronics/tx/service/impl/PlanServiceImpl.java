@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,8 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired
 	private TemplateDao templateDao;
 
+	@Value("${page.size}")
+	private String pageSize;
 	/**
 	 * 新创建一个Plan对象
 	 */
@@ -75,6 +78,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public List<Plan> listPlan() {
+		log.info("page size:" + this.pageSize);
 		return planDAO.listPlan();
 	}
 
