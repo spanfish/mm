@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
 import com.newtronics.tx.dao.TemplateDao;
 import com.newtronics.tx.model.Template;
+import com.newtronics.tx.model.User;
 
 @Repository
 public class TemplateDaoImpl implements TemplateDao {
@@ -29,6 +31,17 @@ public class TemplateDaoImpl implements TemplateDao {
 				"select t from Template t inner join t.creators c where t.enabled = 1 and c.username=:username order by t.name")
 				.setParameter("username", username).getResultList();
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Template> findAllVisibleTemplate(String username) {
+		Query query = em.createQuery(
+				"select t from Template t where :c MEMBER OF t.creators or :r MEMBER OF t.reviewers or :a MEMBER OF t.approvers order by t.name");
+		query.setParameter("c", new User(username));
+		query.setParameter("r", new User(username));
+		query.setParameter("a", new User(username));
+		return query.getResultList();
 	}
 
 	@Override

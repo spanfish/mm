@@ -15,7 +15,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -31,11 +30,11 @@ import com.newtronics.common.PlanStatus;
 import com.newtronics.tx.model.Plan;
 import com.newtronics.tx.model.PlanItem;
 import com.newtronics.tx.model.Template;
+import com.newtronics.tx.model.User;
 import com.newtronics.tx.service.MailService;
 import com.newtronics.tx.service.PlanService;
 import com.newtronics.tx.service.TemplateService;
 import com.newtronics.tx.service.UserService;
-import com.newtronics.tx.model.User;
 
 /**
  *
@@ -44,7 +43,7 @@ import com.newtronics.tx.model.User;
 
 @Controller
 @RequestMapping(value = "/plan")
-@SessionAttributes("plan")
+@SessionAttributes({ "plan", "search" })
 public class PlanController {
 
 	private Logger log = Logger.getLogger(PlanController.class);
@@ -61,29 +60,74 @@ public class PlanController {
 	@Autowired
 	private MailService mailService;
 
+	@RequestMapping(value = "search.html", method = { RequestMethod.GET })
+	public String searchCriteria(Principal principal, ModelMap modelMap,
+			@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "pk", required = false) String pk,
+			@RequestParam(name = "value", required = false) String value) {
+		@SuppressWarnings("unchecked")
+		Map<String, String> search = (Map<String, String>) modelMap.get("search");
+		if (search == null) {
+			search = new HashMap<String, String>();
+			modelMap.put("search", search);
+		}
+		if (!StringUtils.isEmpty(pk)) {
+			if (StringUtils.isEmpty(value)) {
+				search.remove(pk);
+			} else {
+				search.put(pk, value);
+			}
+		}
+		return "OK";
+	}
+
+	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
+	public ModelAndView search(Principal principal, ModelMap modelMap) {
+		@SuppressWarnings("unchecked")
+		Map<String, String> search = (Map<String, String>) modelMap.get("search");
+		if (search == null) {
+			search = new HashMap<String, String>();
+			modelMap.put("search", search);
+		}
+
+		return list(principal, modelMap, null);
+	}
+
 	/**
 	 * 显示所有的计划列表 TODO:加入查询条件
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "list.html", method = RequestMethod.GET)
-	public ModelAndView list(Principal principal, @RequestParam(name = "page", required = false) String page) {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("listPlan");
-		
-		// TODO:
+	@RequestMapping(value = "list.html", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView list(Principal principal, ModelMap modelMap,
+			@RequestParam(name = "page", required = false) String page) {
+
 		int p = 0;
-		if(!StringUtils.isEmpty(page)) {
+		if (!StringUtils.isEmpty(page)) {
 			p = Integer.valueOf(page);
 		}
-		Long pageCount = planService.getPageCount();
-		mv.addObject("pageCount", pageCount);
-		
-		List<Plan> plans = planService.listPlan(p);
-		mv.addObject("plans", plans);
-		
+
+		@SuppressWarnings("unchecked")
+		Map<String, String> search = (Map<String, String>) modelMap.get("search");
+		if (search == null) {
+			search = new HashMap<String, String>();
+			modelMap.put("search", search);
+		}
+
+		Long pageCount = planService.getPageCount(search);
+		modelMap.put("pageCount", pageCount);
+
+		List<Plan> plans = planService.listPlan(p, search);
+		modelMap.put("plans", plans);
+
 		List<Template> templates = templateService.findAllTemplatesByCreator(principal.getName());
-		mv.addObject("templates", templates);
+		modelMap.put("templates", templates);
+
+		templates = templateService.findAllVisibleTemplate(principal.getName());
+		modelMap.put("visibleTemplates", templates);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("listPlan");
 		return mv;
 	}
 
@@ -261,7 +305,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null);
+		return list(principal, null, null);
 	}
 
 	@RequestMapping(value = "review.html", method = RequestMethod.POST)
@@ -325,7 +369,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null);
+		return list(principal, null, null);
 	}
 
 	@RequestMapping(value = "approve.html", method = RequestMethod.POST)
@@ -391,6 +435,6 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null);
+		return list(principal, null, null);
 	}
 }

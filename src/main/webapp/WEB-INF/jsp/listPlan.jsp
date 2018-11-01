@@ -18,11 +18,16 @@
 	<link href="<%=request.getContextPath()%>/resources/main.css" rel="stylesheet">
 	<link href="<%=request.getContextPath()%>/resources/w3.css" rel="stylesheet">
 	<!-- bootstrap -->
+	<!-- bootstrap -->
 	<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
 	<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
+	
+	<!-- X-editable -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+	<script src="<%=request.getContextPath()%>/resources/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 		
 	<style>
-#plans {
+#plans #search {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	border-collapse: collapse;
 	width: 100%;
@@ -36,6 +41,7 @@
 #plans tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
+
 
 #plans tr:hover {
 	background-color: #ddd;
@@ -78,6 +84,8 @@ input[type=submit]:hover {
 	color: white;
 }
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+
 </style>
 </head>
 <body>
@@ -85,12 +93,88 @@ input[type=submit]:hover {
 		<jsp:param name="page" value="home" />
 	</jsp:include>
 
-	
+	<table id="search">
+		<tr>
+			<th style="width: 120px;text-align:right">创建/更新日期: 从</th>
+			<td>
+				<div>
+					<a class="search" href="#" id="d1" data-type="date" data-pk="dateFrom" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择日期">${dateFrom }</a>
+					<script>
+						$(function(){
+						    $('#d1').editable({
+						    	placement: 'bottom',
+						        format: 'yyyy-mm-dd',   
+						        viewformat: 'yyyy-mm-dd',    
+						        datepicker: {
+						                weekStart: 1
+						           }
+						        });
+						});
+					</script>
+				</div>
+			</td>
+			<th style="width: 40px; text-align:right">到</th>			
+			<td>
+				<div>
+					<a class="search" href="#" id="d2" data-type="date" data-pk="dateTo" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择日期">${dateTo}</a>
+					<script>
+						$(function(){
+						    $('#d2').editable({
+						    	placement: 'bottom',
+						        format: 'yyyy-mm-dd',    
+						        viewformat: 'yyyy-mm-dd',    
+						        datepicker: {
+						                weekStart: 1
+						           }
+						        });
+						});
+					</script>
+				</div>
+			</td>
+			<th style="width: 60px; text-align:right">客戶</th>
+			<td style="width: 180px;">
+				<a href="#" id="status" data-type="select" data-pk="customer" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择客戶"></a>
+				<script>
+				$(function(){
+				    $('#status').editable({
+				    	placement: 'bottom',
+				        value: '',    
+				        source: [
+				        	<c:forEach items="${visibleTemplates}" var="t">
+				        	{value: '<c:out value="${t.id}"/>', text: '<c:out value="${t.name}"/>'},
+							</c:forEach>
+				           ]
+				    });
+				});
+				</script>
+			</td>
+			
+			<th style="width: 120px; text-align:right">生产计划通知书号</th>
+			<td>
+				<a href="#" id="notifyNo" data-type="text" data-pk="notifyNo" data-url="<%=request.getContextPath()%>/do/plan/search.html">${notifyNo }</a>
+				<script>
+				$(function(){
+				    $('#notifyNo').editable({
+				    	placement: 'bottom',
+				        mode: 'inline'
+				    });
+				});
+				</script>
+			</td>
+			<td>
+				<form method="POST" action="<%=request.getContextPath()%>/do/plan/search.html">
+					<input type="submit" value="检索"/>
+				</form>
+			</td>
+		</tr>
+	</table>
 	<table style="width:900px" id="plans">
 		<thead>
 			<tr>
 				<th style="">序号</th>
-				<th style="">创建/更新日期</th>
+				<th style="width: 200px">
+					<div>创建/更新日期</div>
+				</th>
 				<th style="">客戶</th>
 				<th style="">生产计划通知书号</th>
 				<th style="">制作</th>
@@ -100,6 +184,7 @@ input[type=submit]:hover {
 		</thead>
 			<c:set value="ROLE_ADMIN" var="role" scope="page"> </c:set>
 
+			<c:if test="${not empty plans }">
 			<c:forEach var="p" items="${plans}" varStatus="status">
 				<tr>
 					<td style="width:40px"><c:out value="${status.index + 1}"></c:out></td>
@@ -129,6 +214,7 @@ input[type=submit]:hover {
 					</td>
 				</tr>
 			</c:forEach>
+			</c:if>
 		</table>
 	
 		<div class="pagination">

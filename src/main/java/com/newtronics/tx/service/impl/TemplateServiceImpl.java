@@ -21,7 +21,7 @@ public class TemplateServiceImpl implements TemplateService {
 
 	@Autowired
 	private UserDAO userDAO;
-	
+
 	@Override
 	public List<Template> findAllTemplates() {
 		//
@@ -33,18 +33,22 @@ public class TemplateServiceImpl implements TemplateService {
 		//
 		return templateDao.findAllTemplatesByCreator(username);
 	}
-	
+
+	@Override
+	public List<Template> findAllVisibleTemplate(String username) {
+		return templateDao.findAllVisibleTemplate(username);
+	}
+
 	@Override
 	public Template findTemplateById(String templateId) {
 		return templateDao.findTemplateById(templateId);
 	}
 
-	
 	@Override
 	public Template findTemplateById(String templateId, boolean includeDisabled) {
 		return templateDao.findTemplateById(templateId, includeDisabled);
 	}
-	
+
 	@Override
 	@Transactional(rollbackOn = { Exception.class })
 	public void insertTemplate(Template template) throws Exception {
@@ -55,42 +59,42 @@ public class TemplateServiceImpl implements TemplateService {
 		List<User> users = new ArrayList<User>();
 		template.setCreators(users);
 		String str = template.getCreatorNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		users = new ArrayList<User>();
 		template.setReviewers(users);
 		str = template.getReviewerNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		users = new ArrayList<User>();
 		template.setApprovers(users);
 		str = template.getApproverNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		templateDao.insertTemplate(template);
 	}
 
@@ -101,50 +105,48 @@ public class TemplateServiceImpl implements TemplateService {
 		if (t == null) {
 			throw new Exception("Tempate not exists");
 		}
-		
+
 		List<User> users = new ArrayList<User>();
 		template.setCreators(users);
 		String str = template.getCreatorNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		users = new ArrayList<User>();
 		template.setReviewers(users);
 		str = template.getReviewerNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		users = new ArrayList<User>();
 		template.setApprovers(users);
 		str = template.getApproverNames();
-		if(str != null) {
+		if (str != null) {
 			String[] userNames = str.split(",");
 			for (String name : userNames) {
 				User user = userDAO.getUserByName(name);
-				if(user != null) {
+				if (user != null) {
 					users.add(user);
 				}
 			}
 		}
-		
+
 		t = templateDao.updateTemplate(template);
 		return t;
 	}
-
-	
 
 }

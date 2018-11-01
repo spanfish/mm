@@ -8,6 +8,8 @@ public interface TemplateService {
 	List<Template> findAllTemplates();
 	
 	List<Template> findAllTemplatesByCreator(String username);
+	
+	List<Template> findAllVisibleTemplate(String username);
 
 	Template findTemplateById(String templateId);
 

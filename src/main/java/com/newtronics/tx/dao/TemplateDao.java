@@ -10,6 +10,8 @@ public interface TemplateDao {
 
 	List<Template> findAllTemplatesByCreator(String username);
 
+	List<Template> findAllVisibleTemplate(String username);
+
 	Template findTemplateById(String templateId);
 
 	Template findTemplateById(String templateId, boolean includeDisabled);

@@ -38,6 +38,14 @@ public class User {
 	@Column(name = "role")
 	private List<String> roles;
 
+	public User() {
+
+	}
+
+	public User(String username) {
+		this.username = username;
+	}
+
 	public String getUsername() {
 		return username;
 	}

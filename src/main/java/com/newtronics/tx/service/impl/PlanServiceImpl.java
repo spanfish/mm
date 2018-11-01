@@ -3,6 +3,7 @@ package com.newtronics.tx.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -77,13 +78,13 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public Long getPageCount() {
-		return planDAO.getPageCount();
+	public Long getPageCount(Map<String, String> search) {
+		return planDAO.getPageCount(search);
 	}
 
 	@Override
-	public List<Plan> listPlan(int page) {
-		return planDAO.listPlan(page);
+	public List<Plan> listPlan(int page, Map<String, String> search) {
+		return planDAO.listPlan(page, search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

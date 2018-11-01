@@ -1,6 +1,7 @@
 package com.newtronics.tx.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.newtronics.tx.model.Plan;
 
@@ -12,9 +13,9 @@ public interface PlanService {
 
 	Plan findPlanById(String planId);
 
-	Long getPageCount();
+	Long getPageCount(Map<String, String> search);
 
-	List<Plan> listPlan(int page);
+	List<Plan> listPlan(int page, Map<String, String> search);
 
 	Plan submitPlanForReview(Plan plan);
 }
