@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +32,6 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired
 	private TemplateDao templateDao;
 
-	@Value("${page.size}")
-	private String pageSize;
 	/**
 	 * 新创建一个Plan对象
 	 */
@@ -77,9 +77,13 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public List<Plan> listPlan() {
-		log.info("page size:" + this.pageSize);
-		return planDAO.listPlan();
+	public Long getPageCount() {
+		return planDAO.getPageCount();
+	}
+
+	@Override
+	public List<Plan> listPlan(int page) {
+		return planDAO.listPlan(page);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

@@ -12,7 +12,9 @@ public interface PlanService {
 
 	Plan findPlanById(String planId);
 
-	List<Plan> listPlan();
+	Long getPageCount();
+
+	List<Plan> listPlan(int page);
 
 	Plan submitPlanForReview(Plan plan);
 }

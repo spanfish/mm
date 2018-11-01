@@ -76,7 +76,10 @@ public class PlanController {
 		if(!StringUtils.isEmpty(page)) {
 			p = Integer.valueOf(page);
 		}
-		List<Plan> plans = planService.listPlan();
+		Long pageCount = planService.getPageCount();
+		mv.addObject("pageCount", pageCount);
+		
+		List<Plan> plans = planService.listPlan(p);
 		mv.addObject("plans", plans);
 		
 		List<Template> templates = templateService.findAllTemplatesByCreator(principal.getName());

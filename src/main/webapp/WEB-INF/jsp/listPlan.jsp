@@ -22,42 +22,63 @@
 	<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
 		
 	<style>
-		#plans {
-		    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-		    border-collapse: collapse;
-		    width: 100%;
-		}
-		
-		#plans td, #users th {
-		    border: 1px solid #ddd;
-		    padding: 8px;
-		}
-		
-		#plans tr:nth-child(even){background-color: #f2f2f2;}
-		
-		#plans tr:hover {background-color: #ddd;}
-		
-		#plans th {
-		    padding-top: 12px;
-		    padding-bottom: 12px;
-		    text-align: left;
-		    background-color: #4CAF50;
-		    color: white;
-		}
-		
-		input[type=submit] {
-			background-color: #4CAF50;
-			color: white;
-			padding: 12px 20px;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-		}
-		
-		input[type=submit]:hover {
-			background-color: #45a049;
-		}
-	</style>
+#plans {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#plans td, #users th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+#plans tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#plans tr:hover {
+	background-color: #ddd;
+}
+
+#plans th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #4CAF50;
+	color: white;
+}
+
+input[type=submit] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #45a049;
+}
+
+.pagination {
+	display: inline-block;
+}
+
+.pagination a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+.pagination a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
 </head>
 <body>
 	<jsp:include page="navi.jsp">
@@ -110,6 +131,46 @@
 			</c:forEach>
 		</table>
 	
+		<div class="pagination">
+			
+			<c:if test="${empty param.st}">
+				<c:set value="1" var="st"></c:set>
+			</c:if>
+			<c:if test="${not empty param.st}">
+				<c:set value="${param.st}" var="st"></c:set>
+			</c:if>
+			<c:set value="5" var="ps"></c:set>
+			<c:set value="${st + ps - 1 }" var="es"></c:set>
+			
+			<c:if test="${pageCount < es}">
+				<c:set value="${pageCount}" var="es"></c:set>
+			</c:if>
+			
+			<c:if test="${st > ps}">
+				<a href="<%=request.getContextPath()%>/do/plan/list.html?st=${st-ps}&page=${st - ps}">&laquo;</a>
+			</c:if>
+			
+			<c:if test="${not empty param.page}">
+				<c:set value="${param.page}" var="cp"></c:set>
+			</c:if>
+			<c:if test="${empty param.page}">
+				<c:set value="1" var="cp"></c:set>
+			</c:if>
+			
+		    <c:forEach begin="${st}" end="${es}" varStatus="loop">
+		    	<c:if test="${cp == loop.index}">
+		    		<a class="active" href="#">${loop.index}</a>
+		    	</c:if>
+		    	<c:if test="${cp != loop.index}">
+		    		<a  href="<%=request.getContextPath()%>/do/plan/list.html?page=${loop.index}">${loop.index}</a>
+		    	</c:if>
+		   </c:forEach>
+		   
+		   <c:if test="${pageCount > es}">
+				<a href="<%=request.getContextPath()%>/do/plan/list.html?st=${es + 1}&page=${es + 1}">&raquo;</a>
+		   </c:if>
+		  
+		</div>
 	<c:if test="${empty plans}">
 		还没有生产计划
 	</c:if>

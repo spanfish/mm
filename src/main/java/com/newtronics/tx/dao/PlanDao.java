@@ -8,10 +8,12 @@ public interface PlanDao {
 	Plan insertPlan(Plan plan);
 
 	Plan updatePlan(Plan plan);
-	
-	List<Plan> listPlan();
-	
+
+	Long getPageCount();
+
+	List<Plan> listPlan(int page);
+
 	Plan findPlanById(String planId);
-	
+
 	int getNextPlanId(String templateId, int year, int month, int date);
 }

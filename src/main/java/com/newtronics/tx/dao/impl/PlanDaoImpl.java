@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,17 +19,31 @@ public class PlanDaoImpl implements PlanDao {
 	@PersistenceContext
 	private EntityManager em;
 
+	@Value("${page.size}")
+	private int pageSize;
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Plan insertPlan(Plan plan) {
 		em.persist(plan);
 		return plan;
 	}
+	
+	@Override
+	public Long getPageCount() {
+		Query query = em.createQuery("select count(p) from Plan p");
+		Long count = (Long) query.getSingleResult();
+		return count/pageSize;
+	}
 
 	@Override
-	public List<Plan> listPlan() {
+	public List<Plan> listPlan(int page) {
+		
+		Query query = em.createQuery("from Plan");
+		query.setFirstResult(page);
+		query.setMaxResults(pageSize);
 		@SuppressWarnings("unchecked")
-		List<Plan> result = em.createQuery("from Plan").getResultList();
+		List<Plan> result = query.getResultList();
 
 		return result;
 	}
