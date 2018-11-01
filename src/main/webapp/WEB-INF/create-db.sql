@@ -21,6 +21,7 @@ CREATE TABLE plan (
   status VARCHAR(30),
   templateId VARCHAR(30),
   create_date DATE,
+  updateDate DATE,
   creator_name VARCHAR(30),
   customer VARCHAR(30),
   notifyNo VARCHAR(30),
@@ -28,10 +29,10 @@ CREATE TABLE plan (
   memo VARCHAR(30),
   reviewer_name VARCHAR(30),
   review_date DATE,
-  
+  reviewStatus INTEGER,
   approver_name VARCHAR(30),
   approve_date DATE,
-  
+  approveStatus INTEGER,
   message VARCHAR(200)
 );
 

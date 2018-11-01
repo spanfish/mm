@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.newtronics.common.ApproveResult;
 import com.newtronics.common.PlanStatus;
 import com.newtronics.tx.model.Plan;
 import com.newtronics.tx.model.PlanItem;
@@ -166,6 +167,7 @@ public class PlanController {
 				item.setItemValue(value == null ? values : value);
 			}
 
+			plan.setUpdateDate(new Date());
 			if (StringUtils.isEmpty(plan.getNotifyNo())) {
 				plan = planService.insertPlan(plan);
 			} else {
@@ -206,10 +208,19 @@ public class PlanController {
 				return mv;
 			}
 			
+			if(StringUtils.isEmpty(plan.getNotifyNo())) {
+				Template template = templateService.findTemplateById(plan.getTemplateId());
+				mv.addObject("error", "未输入任何内容");
+				mv.addObject("plan", plan);
+				mv.setViewName(template.getViewName());
+				return mv;
+			}
 			User creator = userService.getUserByName(principal.getName());
 			plan.setCreator(creator);
 			plan.setCreateDate(new Date());
 			plan.setStatus(PlanStatus.REVIEWING);
+			plan.setReviewStatus(ApproveResult.NONE);
+			plan.setApproveStatus(ApproveResult.NONE);
 			planService.updatePlan(plan);
 			
 			Template template = templateService.findTemplateById(plan.getTemplateId());
@@ -267,8 +278,10 @@ public class PlanController {
 			plan.setReviewDate(new Date());
 			if("发回修改".equals(action)) {
 				plan.setStatus(PlanStatus.CREATING);
+				plan.setReviewStatus(ApproveResult.REJECTED);
 			} else {
 				plan.setStatus(PlanStatus.APPROVING);
+				plan.setReviewStatus(ApproveResult.APPROVED);
 			}
 			
 			planService.updatePlan(plan);
@@ -330,8 +343,11 @@ public class PlanController {
 			plan.setApproveDate(new Date());
 			if("发回修改".equals(action)) {
 				plan.setStatus(PlanStatus.CREATING);
+				plan.setReviewStatus(ApproveResult.REJECTED);
+				plan.setApproveStatus(ApproveResult.REJECTED);
 			} else {
 				plan.setStatus(PlanStatus.APPROVED);
+				plan.setApproveStatus(ApproveResult.APPROVED);
 			}
 			planService.updatePlan(plan);
 			

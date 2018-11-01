@@ -47,12 +47,14 @@
 			<jsp:param name="page" value="home" />
 		</jsp:include>
 
-		<c:if test="${plan == null}">
+		<c:if test="${plan == null or not empty error}">
 			<div class="w3-panel w3-red">
 			    <h3>出错了</h3>
 			    <p><c:out value="${error}"/></p>
 			</div>
+			<c:if test="${plan == null}">
 			<a href="<%=request.getContextPath()%>/do/plan/list.html">返回</a>
+			</c:if>
 		</c:if>
 		
 		<c:if test="${plan != null}">
@@ -76,17 +78,21 @@
 								<td style="width:160px">${plan.creator.username}</td>
 								<th style="width:80px">审核</th>
 								<td style="width:160px">
-									<div class="stamp stamp-review">
+									<c:if test="${plan.reviewStatus == 'REJECTED'  or plan.reviewStatus == 'APPROVED'}">
+									<div class="stamp stamp-${plan.reviewStatus}">
 										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
 										<span><c:out value="${plan.reviewer.userDispName}"></c:out></span>
 									</div>
+									</c:if>
 								</td>
 								<th style="width:80px">承认</th>
 								<td style="width:160px">
-									<div class="stamp stamp-approve">
+									<c:if test="${plan.approveStatus == 'REJECTED'  or plan.approveStatus == 'APPROVED'}">
+									<div class="stamp stamp-${plan.approveStatus}">
 										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
 										<span><c:out value="${plan.approver.userDispName}"></c:out></span>
 									</div>
+									</c:if>
 								</td>
 								<td></td>
 							</tr>

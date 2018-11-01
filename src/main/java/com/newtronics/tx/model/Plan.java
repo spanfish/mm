@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import com.newtronics.common.ApproveResult;
 import com.newtronics.common.PlanStatus;
 
 @Entity
@@ -66,6 +67,9 @@ public class Plan {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date reviewDate;
 
+	@Enumerated(EnumType.ORDINAL)
+	private ApproveResult reviewStatus;
+	
 	// 承认者
 	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "approver_name")
@@ -76,17 +80,26 @@ public class Plan {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date approveDate;
 
+	@Enumerated(EnumType.ORDINAL)
+	private ApproveResult approveStatus;
+	
 	//
 	@OneToMany(mappedBy = "plan", cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
 	@MapKey(name = "itemName")
 	private Map<String, PlanItem> planItems;
 
+	@Column
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updateDate;
+	
 	private String message;
 	
 	public Plan() {
 		this.planId = UUID.randomUUID().toString().replaceAll("-", "");
 		this.createDate = new Date();
 		this.status = PlanStatus.CREATING;
+		this.reviewStatus = ApproveResult.NONE;
+		this.approveStatus = ApproveResult.NONE;
 	}
 
 	public String getPlanId() {
@@ -203,4 +216,30 @@ public class Plan {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public ApproveResult getReviewStatus() {
+		return reviewStatus;
+	}
+
+	public void setReviewStatus(ApproveResult reviewStatus) {
+		this.reviewStatus = reviewStatus;
+	}
+
+	public ApproveResult getApproveStatus() {
+		return approveStatus;
+	}
+
+	public void setApproveStatus(ApproveResult approveStatus) {
+		this.approveStatus = approveStatus;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	
 }

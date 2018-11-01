@@ -1,7 +1,7 @@
-INSERT INTO users VALUES ('xwang', '王向伟', '1234', 'wang_xiangwei@hotmail.com', '1');
-INSERT INTO users VALUES ('test1', '测试1', '1234', 'wangxw@icloud.com', '1');
-INSERT INTO users VALUES ('test2', '测试2', '1234', 'wangxw@icloud.com', '1');
-INSERT INTO users VALUES ('test3', '测试3', '1234', 'wangxw@icloud.com', '1');
+INSERT INTO users VALUES ('xwang', '王向伟', '1234', null, '1');
+INSERT INTO users VALUES ('test1', '测试1', '1234', null, '1');
+INSERT INTO users VALUES ('test2', '测试2', '1234', null, '1');
+INSERT INTO users VALUES ('test3', '测试3', '1234', null, '1');
 
 INSERT INTO roles VALUES('ROLE_USER', '一般用户');
 INSERT INTO roles VALUES('ROLE_ADMIN', '管理员用户');

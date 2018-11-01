@@ -238,15 +238,11 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 .stamp span:first-child::before { position:absolute; top:5px; left:0; right:0; margin:auto; width:80%; border-bottom:1px solid #f00; line-height:1; padding-bottom:3px; }
 .stamp span:first-child { line-height:56px; }
 .stamp span:last-child { position:absolute; top:38px; left:0; right:0; margin:auto; width:80%; border-top:1px solid #f00; padding-top:2px; line-height:1; }
-.stamp-review-pass span:first-child::before {
-  content:"已审";
-}
-.stamp-review-fail span:first-child::before {
+
+.stamp-REJECTED span:first-child::before {
   content:"否决";
 }
-.stamp-approve-pass span:first-child::before {
-  content:"已审";
+.stamp-APPROVED span:first-child::before {
+  content:"承认";
 }
-.stamp-approve-fail span:first-child::before {
-  content:"否决";
-}
+

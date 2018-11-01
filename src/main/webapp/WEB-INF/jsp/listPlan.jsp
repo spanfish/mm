@@ -91,19 +91,16 @@
 					</td>
 					<td style="width:100px"><c:out value="${p.creator.userDispName}"></c:out></td>
 					<td style="width:100px">
-						<c:if test="${not empty p.reviewer.userDispName}">
-						<c:if test="${plan.status == 'CREATING' }">
-							<div class="stamp stamp-review-fail">
-						</c:if>
-						
+						<c:if test="${plan.reviewStatus == 'REJECTED'  or plan.reviewStatus == 'APPROVED'}">
+						<div class="stamp stamp-${plan.reviewStatus}">
 							<span><fmt:formatDate value="${p.reviewDate}" pattern="yyyy-MM-dd" /></span>
 							<span><c:out value="${p.reviewer.userDispName}"></c:out></span>
 						</div>
 						</c:if>
 					</td>
 					<td style="width:100px">
-						<c:if test="${not empty p.approver.userDispName}">
-						<div class="stamp stamp-approve-${p.status}">
+						<c:if test="${plan.approveStatus == 'REJECTED'  or plan.approveStatus == 'APPROVED'}">
+						<div class="stamp stamp-${p.approveStatus}">
 							<span><fmt:formatDate value="${p.approveDate}" pattern="yyyy-MM-dd" /></span>
 							<span><c:out value="${p.approver.userDispName}"></c:out></span>
 						</div>
@@ -118,7 +115,7 @@
 	</c:if>
 	<br/>
 	<c:if test="${not empty templates}">
-		<form method="POST" action="<%=request.getContextPath()%>/do/plan/input.html">
+		<form method="GET" action="<%=request.getContextPath()%>/do/plan/input.html">
 			
 			<label for="templateId">选择计划模板</label>
 			<select id="templateId" name="templateId" style="width:auto">
