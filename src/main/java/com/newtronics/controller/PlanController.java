@@ -60,8 +60,8 @@ public class PlanController {
 	@Autowired
 	private MailService mailService;
 
-	@RequestMapping(value = "search.html", method = { RequestMethod.GET })
-	public String searchCriteria(Principal principal, ModelMap modelMap,
+	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
+	public ModelAndView searchCriteria(Principal principal, ModelMap modelMap,
 			@RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "pk", required = false) String pk,
 			@RequestParam(name = "value", required = false) String value) {
@@ -78,20 +78,23 @@ public class PlanController {
 				search.put(pk, value);
 			}
 		}
-		return "OK";
+		
+		ModelAndView mv = list(principal, modelMap, "0", "10");
+		mv.setViewName("planTable");
+		return mv;
 	}
 
-	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
-	public ModelAndView search(Principal principal, ModelMap modelMap) {
-		@SuppressWarnings("unchecked")
-		Map<String, String> search = (Map<String, String>) modelMap.get("search");
-		if (search == null) {
-			search = new HashMap<String, String>();
-			modelMap.put("search", search);
-		}
-
-		return list(principal, modelMap, "0", "10");
-	}
+//	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
+//	public ModelAndView search(Principal principal, ModelMap modelMap) {
+//		@SuppressWarnings("unchecked")
+//		Map<String, String> search = (Map<String, String>) modelMap.get("search");
+//		if (search == null) {
+//			search = new HashMap<String, String>();
+//			modelMap.put("search", search);
+//		}
+//
+//		return list(principal, modelMap, "0", "10");
+//	}
 
 	/**
 	 * 显示所有的计划列表 TODO:加入查询条件

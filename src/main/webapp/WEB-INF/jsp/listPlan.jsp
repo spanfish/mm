@@ -97,77 +97,35 @@ input[type=submit]:hover {
 		<tr>
 			<th style="width: 120px;text-align:right">创建/更新日期: 从</th>
 			<td>
-				<div>
-					<a class="search" href="#" id="d1" data-type="date" data-pk="dateFrom" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择日期">${dateFrom }</a>
-					<script>
-						$(function(){
-						    $('#d1').editable({
-						    	placement: 'bottom',
-						        format: 'yyyy-mm-dd',   
-						        viewformat: 'yyyy-mm-dd',    
-						        datepicker: {
-						                weekStart: 1
-						           }
-						        });
-						});
-					</script>
-				</div>
+				<input type="date" name="dateFrom">
 			</td>
-			<th style="width: 40px; text-align:right">到</th>			
+			<th style="width: 40px; text-align:right">到</th>
 			<td>
-				<div>
-					<a class="search" href="#" id="d2" data-type="date" data-pk="dateTo" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择日期">${dateTo}</a>
-					<script>
-						$(function(){
-						    $('#d2').editable({
-						    	placement: 'bottom',
-						        format: 'yyyy-mm-dd',    
-						        viewformat: 'yyyy-mm-dd',    
-						        datepicker: {
-						                weekStart: 1
-						           }
-						        });
-						});
-					</script>
-				</div>
+				<input type="date" name="dateTo">
 			</td>
 			<th style="width: 60px; text-align:right">客戶</th>
 			<td style="width: 180px;">
-				<a href="#" id="status" data-type="select" data-pk="customer" data-url="<%=request.getContextPath()%>/do/plan/search.html" data-title="选择客戶"></a>
-				<script>
-				$(function(){
-				    $('#status').editable({
-				    	placement: 'bottom',
-				        value: '',    
-				        source: [
-				        	<c:forEach items="${visibleTemplates}" var="t">
-				        	{value: '<c:out value="${t.id}"/>', text: '<c:out value="${t.name}"/>'},
-							</c:forEach>
-				           ]
-				    });
-				});
-				</script>
+				<select name="customer">
+					<option></option>
+					<c:forEach items="${visibleTemplates}" var="t">
+						<option value="${t.id}">${t.name}</option>
+					</c:forEach>
+				</select>
 			</td>
 			
 			<th style="width: 120px; text-align:right">生产计划通知书号</th>
 			<td>
-				<a href="#" id="notifyNo" data-type="text" data-pk="notifyNo" data-url="<%=request.getContextPath()%>/do/plan/search.html">${notifyNo }</a>
-				<script>
-				$(function(){
-				    $('#notifyNo').editable({
-				    	placement: 'bottom',
-				        mode: 'inline'
-				    });
-				});
-				</script>
+				<input type="text" name="notifyNo"></input>
 			</td>
 			<td>
+				<input type="button" value="检索"/>
 			</td>
 		</tr>
 	</table>
 	
+	<div id="result">
 	<jsp:include page="planTable.jsp"></jsp:include>
-	
+	</div>
 	<br/>
 	<c:if test="${not empty templates}">
 		<form method="GET" action="<%=request.getContextPath()%>/do/plan/input.html">
