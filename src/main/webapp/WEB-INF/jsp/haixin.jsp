@@ -65,24 +65,19 @@
 			</td>
 			<td style="width:100px">销    售：</td>
 			<td style="width:200px" align="left">
-				<label><input id="sale-domestic" class="ajaxCheckbox" type="checkbox" name="sale-domestic"><span> 内销</span></label>
-				<label><input id="sale-export" class="ajaxCheckbox" type="checkbox" name="sale-export"><span> 外销</span></label>
+				<label><input id="sale-domestic" class="ajaxCheckbox" type="checkbox" name="sale-domestic" ${plan.planItems['sale-domestic'].itemValue}><span> 内销</span></label>
+				<label><input id="sale-export" class="ajaxCheckbox" type="checkbox" name="sale-export" ${plan.planItems['sale-export'].itemValue}><span> 外销</span></label>
 				<script>
-				var d = '${plan.planItems['sale-domestic'].itemValue}';
-				var e = '${plan.planItems['sale-export'].itemValue}';
-				if(d == 'true') {
-					$('#sale-domestic').prop('checked', true);
-				}
-				if(e == 'true') {
-					$('#sale-export').prop('checked', true);
-				}
 				$('.ajaxCheckbox').change(function() {
 			        $.ajax({
 			        	  method: "POST",
 			        	  url: "<%=request.getContextPath()%>/do/plan/save.html",
-			        	  data: { name: this.name, pk: this.name, value: this.checked}
+			        	  data: { name: this.name, pk: this.name, value: this.checked ? 'checked' : ''}
 			        	})
 			        	  .done(function( msg ) {
+			        	  })
+			        	  .error(function( msg ) {
+			        		  alert('保存失败');
 			        	  });
 			    });
 				</script>
@@ -463,5 +458,15 @@
 		
 	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
+	<div class="modal">
+		<script>
+			$( document ).ajaxStart(function() {
+				$("body").addClass("loading");
+			});
+			$( document ).ajaxStop(function() {
+				$("body").removeClass("loading");
+			});
+		</script>
+	</div>
 </body>
 </html>

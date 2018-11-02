@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,6 @@ import com.newtronics.tx.model.Plan;
 public class PlanDaoImpl implements PlanDao {
 	@PersistenceContext
 	private EntityManager em;
-
-	@Value("${page.size}")
-	private int pageSize;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -45,7 +41,7 @@ public class PlanDaoImpl implements PlanDao {
 			hqlQuery += " where ";
 		}
 		boolean w = false;
-		
+
 		if (!StringUtils.isEmpty(dateFrom)) {
 			if (w) {
 				hqlQuery += " and ";
@@ -91,7 +87,7 @@ public class PlanDaoImpl implements PlanDao {
 		}
 		if (!StringUtils.isEmpty(dateTo)) {
 			try {
-				query.setParameter("dateTo", sf.parse(dateTo  + " 23:59:59"));
+				query.setParameter("dateTo", sf.parse(dateTo + " 23:59:59"));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -103,11 +99,11 @@ public class PlanDaoImpl implements PlanDao {
 			query.setParameter("notifyNo", notifyNo);
 		}
 		Long count = (Long) query.getSingleResult();
-		return count / pageSize;
+		return count;
 	}
 
 	@Override
-	public List<Plan> listPlan(int page, Map<String, String> search) {
+	public List<Plan> listPlan(int page, int pageSize, Map<String, String> search) {
 
 		String dateFrom = search.get("dateFrom");
 		String dateTo = search.get("dateTo");
@@ -153,6 +149,7 @@ public class PlanDaoImpl implements PlanDao {
 			hqlQuery += " p.notifyNo = :notifyNo";
 		}
 
+		hqlQuery += " order by p.notifyNo desc";
 		Query query = em.createQuery(hqlQuery);
 
 		if (!StringUtils.isEmpty(dateFrom)) {
@@ -175,7 +172,7 @@ public class PlanDaoImpl implements PlanDao {
 		if (!StringUtils.isEmpty(notifyNo)) {
 			query.setParameter("notifyNo", notifyNo);
 		}
-		query.setFirstResult(page);
+		query.setFirstResult(page * pageSize);
 		query.setMaxResults(pageSize);
 		@SuppressWarnings("unchecked")
 		List<Plan> result = query.getResultList();

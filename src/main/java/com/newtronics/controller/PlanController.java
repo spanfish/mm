@@ -90,7 +90,7 @@ public class PlanController {
 			modelMap.put("search", search);
 		}
 
-		return list(principal, modelMap, null);
+		return list(principal, modelMap, "0", "10");
 	}
 
 	/**
@@ -100,11 +100,16 @@ public class PlanController {
 	 */
 	@RequestMapping(value = "list.html", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView list(Principal principal, ModelMap modelMap,
-			@RequestParam(name = "page", required = false) String page) {
+			@RequestParam(name = "page", required = false) String page,
+			@RequestParam(name = "pageSize", required = false) String pageSize) {
 
 		int p = 0;
 		if (!StringUtils.isEmpty(page)) {
 			p = Integer.valueOf(page);
+		}
+		int ps = 10;
+		if (!StringUtils.isEmpty(pageSize)) {
+			ps = Integer.valueOf(pageSize);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -114,18 +119,21 @@ public class PlanController {
 			modelMap.put("search", search);
 		}
 
-		Long pageCount = planService.getPageCount(search);
+		Long totalCount = planService.getPageCount(search);
+		Long pageCount =  (totalCount + ps - 1) / ps;
 		modelMap.put("pageCount", pageCount);
 
-		List<Plan> plans = planService.listPlan(p, search);
-		modelMap.put("plans", plans);
-
+		if(totalCount > 0) {
+			List<Plan> plans = planService.listPlan(p, ps, search);
+			modelMap.put("plans", plans);
+		}
+		
 		List<Template> templates = templateService.findAllTemplatesByCreator(principal.getName());
 		modelMap.put("templates", templates);
 
 		templates = templateService.findAllVisibleTemplate(principal.getName());
 		modelMap.put("visibleTemplates", templates);
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("listPlan");
 		return mv;
@@ -305,7 +313,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, null);
+		return list(principal, null, "0", "10");
 	}
 
 	@RequestMapping(value = "review.html", method = RequestMethod.POST)
@@ -369,7 +377,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, null);
+		return list(principal, null, "0", "10");
 	}
 
 	@RequestMapping(value = "approve.html", method = RequestMethod.POST)
@@ -435,6 +443,6 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, null);
+		return list(principal, null, "0", "10");
 	}
 }

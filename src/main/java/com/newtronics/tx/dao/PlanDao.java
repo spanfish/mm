@@ -12,7 +12,7 @@ public interface PlanDao {
 
 	Long getPageCount(Map<String, String> search);
 
-	List<Plan> listPlan(int page, Map<String, String> search);
+	List<Plan> listPlan(int page, int pageSize, Map<String, String> search);
 
 	Plan findPlanById(String planId);
 

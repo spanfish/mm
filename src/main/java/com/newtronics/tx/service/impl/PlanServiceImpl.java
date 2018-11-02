@@ -83,8 +83,8 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public List<Plan> listPlan(int page, Map<String, String> search) {
-		return planDAO.listPlan(page, search);
+	public List<Plan> listPlan(int page, int pageSize, Map<String, String> search) {
+		return planDAO.listPlan(page, pageSize, search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

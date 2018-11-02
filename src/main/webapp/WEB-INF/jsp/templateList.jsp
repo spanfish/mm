@@ -91,27 +91,27 @@
 					<td style="width:100px">
 						<c:out value="${t.viewName }"/>
 					</td>
-					<td style="width:100px">
+					<td style="width:200px">
 						<c:out value="${t.notifiyNoFormat}"/>
 					</td>
-					<td style="">
+					<td style="width:100px">
 						<c:forEach var="u" items="${t.creators}" varStatus="status">
 							${u.userDispName}
 						</c:forEach>
 					</td>
 					
-					<td style="">
+					<td style="width:100px">
 						<c:forEach var="u" items="${t.reviewers}">
 							${u.userDispName}
 						</c:forEach>
 					</td>
 					
-					<td style="">
+					<td style="width:100px">
 						<c:forEach var="u" items="${t.approvers}">
 							${u.userDispName}
 						</c:forEach>
 					</td>
-					<td style="width:100px">
+					<td>
 						<c:if test="${t.enabled == 1}">
 								可用
 						</c:if>
