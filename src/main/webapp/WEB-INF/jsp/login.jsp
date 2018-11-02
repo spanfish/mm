@@ -5,6 +5,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=request.getContextPath()%>/resources/jquery/jquery-2.0.3.min.js"></script>
+<!-- bootstrap -->
+<link href="<%=request.getContextPath()%>/resources/bootstrap300/css/bootstrap.css" rel="stylesheet">
+<script src="<%=request.getContextPath()%>/resources/bootstrap300/js/bootstrap.js"></script>
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
@@ -137,6 +141,13 @@ span.psw {
 	border-color: #ebccd1;
 }
 </style>
+
+<script>
+
+	$(document).ready(function() {
+		$('#username').focus();
+	});
+</script>
 </head>
 <body>
 
@@ -151,7 +162,7 @@ span.psw {
 	</c:if>
     <div class="container">
       <label for="uname"><b>用户名</b></label>
-      <input type="text" placeholder="请输入用户名" name="username" required>
+      <input id="username" type="text" placeholder="请输入用户名" name="username" required>
 
       <label for="psw"><b>密码 </b></label>
       <input type="password" placeholder="请输入密码" name="password" required>

@@ -64,27 +64,32 @@
 				</script>
 			</td>
 			<td style="width:100px">销    售：</td>
-			<td style="width:200px" align="left">
-				<label><input id="sale-domestic" class="ajaxCheckbox" type="checkbox" name="sale-domestic"><span> 内销</span></label>
-				<label><input id="sale-export" class="ajaxCheckbox" type="checkbox" name="sale-export"><span> 外销</span></label>
+			<td style="width:200px" align="left"><div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="saleType" data-type="checklist" data-pk="saleType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="选择销售"></a></div> 
 				<script>
-				var d = '${plan.planItems['sale-domestic'].itemValue}';
-				var e = '${plan.planItems['sale-export'].itemValue}';
-				if(d == 'true') {
-					$('#sale-domestic').prop('checked', true);
-				}
-				if(e == 'true') {
-					$('#sale-export').prop('checked', true);
-				}
-				$('.ajaxCheckbox').change(function() {
-			        $.ajax({
-			        	  method: "POST",
-			        	  url: "<%=request.getContextPath()%>/do/plan/save.html",
-			        	  data: { name: this.name, pk: this.name, value: this.checked}
-			        	})
-			        	  .done(function( msg ) {
-			        	  });
-			    });
+					$(function() {
+						$('#saleType').editable({
+							value : [${plan.planItems['saleType'].itemValue}],
+							source : [ {
+								value : 1,
+								text : '内销'
+							}, {
+								value : 2,
+								text : '外销'
+							}],
+							placement: 'bottom',
+							display:function(value, sourceData){
+								var html = [], checked = $.fn.editableutils.itemsByValue(value, sourceData);
+								if (checked.length) {
+							    	$.each(checked, function(i, v) {
+							        	html.push($.fn.editableutils.escape(v.text));
+							      	});
+							      	$(this).html(html.join(', '));
+							    } else {
+							      	$(this).empty();
+							    }
+							}
+						});
+					});
 				</script>
 			</td>
 		</tr>
@@ -95,22 +100,32 @@
 			<td><fmt:formatDate value="${plan.createDate}" pattern="yyyy-MM-dd" /></td>
 		</tr>
 	</table>
-	<br/>
 	<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
-		<!-- 
-		<thead>
-			<tr>
-				<th colspan="4">生产资料（无请填写/）</th>
-			</tr>
-		</thead>
 		<tfoot align="center">
-	      <tr>
-	        <td colspan="4"><input type="submit" value="提交审核"/></td>
-	      </tr>
-	    </tfoot>
-	     -->
+				<tr>
+					<td colspan="5">
+						<div>审核</div>
+						<div></div>
+						
+						<div>制表</div>
+						<div></div>
+						
+						<div>承认</div>
+						<div></div>
+					</td>
+				</tr>
+		    	<tr>
+		        	<td colspan="5">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" value="提交审核"/>
+		        		</form>
+		        	</td>
+		      	</tr>
+		    </tfoot>
 	    <tbody>
 		<tr>
+			<td rowspan = "11">生产资料</td>
 			<td style="width:140px">产品名称 </td>
 			<td style="width:200px">产品型号 </td>
 			<td style="width:160px">PCB 版本号 </td>
@@ -177,7 +192,7 @@
 		</tr>
 		<tr>
 			<td>贴片BOM</td>
-			<td colspan="3">
+			<td colspan="2">
 				<a href="#" id="bom" data-type="textarea" data-pk="bom" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品P/N"><c:out value="${plan.planItems['bom'].itemValue}"/></a>
 			<script>
 				$(function(){
@@ -189,11 +204,22 @@
 				});
 				</script>
 			</td>
-			
+			<td rowspan ="8">
+				<a href="#" id="custel" data-type="textarea" data-pk="custel" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入客户信息"><c:out value="${plan.planItems['custel'].itemValue}"/></a>
+			<script>
+				$(function(){
+				    $('#custel').editable({
+				        url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '客户信息',
+				        rows: 2
+				    });
+				});
+				</script>
+			</td>
 		</tr>
 		<tr>
 			<td>SMT资料包</td>
-			<td colspan="3"><a href="#" id="smtDocPackage" data-type="textarea" data-pk="smtDocPackage" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品P/N"><c:out value="${plan.planItems['smtDocPackage'].itemValue}"/></a>
+			<td colspan="2"><a href="#" id="smtDocPackage" data-type="textarea" data-pk="smtDocPackage" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品P/N"><c:out value="${plan.planItems['smtDocPackage'].itemValue}"/></a>
 			<script>
 				$(function(){
 				    $('#smtDocPackage').editable({
@@ -206,13 +232,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td>软件版本号</td>
-			<td colspan="3"><a href="#" id="softwareVer" data-type="textarea" data-pk="softwareVer" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="软件版本号"><c:out value="${plan.planItems['softwareVer'].itemValue}"/></a>
+			<td>软件版本</td>
+			<td colspan="2"><a href="#" id="softwareVer" data-type="textarea" data-pk="softwareVer" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入软件版本"><c:out value="${plan.planItems['softwareVer'].itemValue}"/></a>
 			<script>
 				$(function(){
 				    $('#softwareVer').editable({
 				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '软件版本号',
+				        title: '软件版本',
 				        rows: 5
 				    });
 				});
@@ -220,64 +246,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td>下载软件名</td>
-			<td colspan="3"><a href="#" id="downloadSoft" data-type="textarea" data-pk="downloadSoft" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="下载软件名"><c:out value="${plan.planItems['downloadSoft'].itemValue}"/></a>
-			<script>
-				$(function(){
-				    $('#downloadSoft').editable({
-				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '下载软件名',
-				        rows: 5
-				    });
-				});
-				</script>
-			</td>
-		</tr>
-		<tr>
-			<td>烧录软件校验和</td>
-			<td colspan="3"><a href="#" id="softChecksum" data-type="textarea" data-pk="softChecksum" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="烧录软件校验和"><c:out value="${plan.planItems['softChecksum'].itemValue }"/></a>
+			<td>校验和</td>
+			<td colspan="2"><a href="#" id="softChecksum" data-type="textarea" data-pk="softChecksum" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入校验和"><c:out value="${plan.planItems['softChecksum'].itemValue }"/></a>
 			<script>
 				$(function(){
 				    $('#softChecksum').editable({
 				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '烧录软件校验和',
-				        rows: 5
-				    });
-				});
-				</script>
-			</td>
-		</tr>
-		<tr>
-			<td>测试流程要求</td>
-			<td colspan="3">
-				<div id="flowReq" data-type="wysihtml5" data-pk="flowReq">
-						<c:out value="${plan.planItems['flowReq'].itemValue}" escapeXml="false"/>
-					</div>
-					<script>
-					$('#flowReq').editable({
-				        url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '测试流程要求',
-				        wysihtml5:{
-				        	"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
-				        	"emphasis": true, //Italics, bold, etc. Default true
-				        	"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
-				        	"html": false, //Button which allows you to edit the generated HTML. Default false
-				        	"link": false, //Button to insert a link. Default true
-				        	"image": false, //Button to insert an image. Default true,
-				        	"color": true //Button to change color of font 
-				        }
-				    });
-					</script>
-			</td>
-		</tr>
-		<tr>
-			<td>测试工具版本</td>
-			<td colspan="3"><a href="#" id="testToolVer" data-type="textarea" data-pk="testToolVer" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="测试工具版本"><c:out value="${plan.planItems['testToolVer'].itemValue }"/></a>
-			<script>
-				$(function(){
-				    $('#testToolVer').editable({
-				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '测试工具版本',
+				        title: '校验和',
 				        rows: 5
 				    });
 				});
@@ -286,7 +261,7 @@
 		</tr>
 		<tr>
 			<td>烧录器件编码</td>
-			<td colspan="3"><a href="#" id="qijianCode" data-type="textarea" data-pk="qijianCode" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="烧录器件编码"><c:out value="${plan.planItems['qijianCode'].itemValue }"/></a>
+			<td colspan="2"><a href="#" id="qijianCode" data-type="textarea" data-pk="qijianCode" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入烧录器件编码"><c:out value="${plan.planItems['qijianCode'].itemValue }"/></a>
 			<script>
 				$(function(){
 				    $('#qijianCode').editable({
@@ -299,59 +274,50 @@
 			</td>
 		</tr>
 		<tr>
-			<td>LCM</td>
-			<td><a href="#" id="lcm" data-type="textarea" data-pk="lcm" 
-				data-url="<%=request.getContextPath()%>/do/plan/save.html" 
-				data-title="LCM"><c:out value="${plan.planItems['lcm'].itemValue }"/></a>
+			<td>条码标签规格</td>
+			<td colspan="2"><a href="#" id="biaoqianstyle" data-type="textarea" data-pk="biaoqianstyle" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入条码标签规格"><c:out value="${plan.planItems['biaoqianstyle'].itemValue }"/></a>
 			<script>
 				$(function(){
-				    $('#lcm').editable({
+				    $('#biaoqianstyle').editable({
 				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: 'LCM',
-				        rows: 5
-				    });
-				});
-				</script>
-			</td>
-			
-			<td>摄像头</td>
-			<td ><a href="#" id="camera" data-type="textarea" data-pk="camera" 
-				data-url="<%=request.getContextPath()%>/do/plan/save.html" 
-				data-title="摄像头"><c:out value="${plan.planItems['camera'].itemValue }"/></a>
-			<script>
-				$(function(){
-				    $('#camera').editable({
-				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
-				        title: '摄像头',
-				        rows: 5
-				    });
-				});
-				</script>
-			</td>
-			
-			<td>主副板配套信息</td>
-			<td ><a href="#" id="zhufubanpeitao" data-type="textarea" data-pk="zhufubanpeitao" 
-				data-url="<%=request.getContextPath()%>/do/plan/save.html" 
-				data-title="主副板配套信息"><c:out value="${plan.planItems['zhufubanpeitao'].itemValue }"/></a>
-			<script>
-				$(function(){
-				    $('#zhufubanpeitao').editable({
-				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '条码标签规格',
 				        rows: 5
 				    });
 				});
 				</script>
 			</td>
 		</tr>
-		
 		<tr>
-			<td>测试频段</td>
-			<td>
+			<td>插件要求</td>
+			<td colspan="2"><a href="#" id="chajian_request" data-type="textarea" data-pk="chajian_request" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入插件要求"><c:out value="${plan.planItems['chajian_request'].itemValue }"/></a>
+			<script>
+				$(function(){
+				    $('#chajian_request').editable({
+				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '插件要求',
+				        rows: 5
+				    });
+				});
+				</script>
 			</td>
 		</tr>
 		<tr>
-			<td>绿色产品生产要求（必选）</td>
-			<td>工艺要求：<div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="fabrication" data-type="checklist" data-pk="fabrication" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="工艺要求"></a></div> 
+			<td>测试要求</td>
+			<td colspan="2"><a href="#" id="test_request" data-type="textarea" data-pk="test_request" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入测试要求"><c:out value="${plan.planItems['test_request'].itemValue }"/></a>
+			<script>
+				$(function(){
+				    $('#test_request').editable({
+				    	url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '测试要求',
+				        rows: 5
+				    });
+				});
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td>绿色产品生产要求<br/>（必选）</td>
+			<td colspan = "4">工艺要求：<div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="fabrication" data-type="checklist" data-pk="fabrication" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="工艺要求"></a></div> 
 				<script>
 					$(function() {
 						$('#fabrication').editable({
@@ -391,7 +357,7 @@
 		
 		<tr>
 			<td>生产性质（必选）</td>
-			<td><div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="manufactureType" data-type="checklist" data-pk="manufactureType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="生产性质"></a></div> 
+			<td colspan = "4"><div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="manufactureType" data-type="checklist" data-pk="manufactureType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="生产性质"></a></div> 
 				<script>
 					$(function() {
 						$('#manufactureType').editable({
@@ -401,7 +367,7 @@
 								text : '量产'
 							}, {
 								value : 2,
-								text : '试产'
+								text : '试产(小批量设计验证)'
 							}, {
 								value : 3,
 								text : '返工'
@@ -423,44 +389,105 @@
 				</script></td>
 		</tr>
 		<tr>
-			<td>委托加工放</td>
+			<td>委托加工方</td>
 			<td>订单批量</td>
-			<td>要求出货量</td>
+			<td>分批投产数量</td>
 			<td>预计生产日期</td>
 			<td>预计交货日期</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>
+				<a href="#" class="editable" id="producer" data-type="text" data-pk="producter" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入委托加工方">
+					<c:out value="${plan.planItems['producer'].itemValue}"/>
+				</a>
+			</td>
+			<td>
+				<a href="#" class="editable" id="dingdan_total" data-type="text" data-pk="dingdan_total" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入订单批量">
+					<c:out value="${plan.planItems['dingdan_total'].itemValue}"/>
+				</a>
+			</td>
+			<td>
+				<a href="#" class="editable" id="fenpi_total" data-type="text" data-pk="fenpi_total" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入分批投产数量">
+					<c:out value="${plan.planItems['fenpi_total'].itemValue}"/>
+				</a>
+			</td>
+			<td>
+				<a href="#" class="editable" id="manufactureDate" data-type="date" data-pk="manufactureDate" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入预计生产日期">
+					<c:out value="${plan.planItems['manufactureDate'].itemValue}"/>
+				</a>
+			</td>
+			<td>
+				<a href="#" class="editable" id="completeDate" data-type="date" data-pk="completeDate" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入预计交货日期">
+					<c:out value="${plan.planItems['completeDate'].itemValue}"/>
+				</a>
+			</td>
 		</tr>
-		</tbody>
+		<tr>
+				<td rowspan = "3">客户确认（标记）</td>
+				<td>主板S/N</td>
+				<td>
+					<a href="#" class="editable" id="zhuban_sn" data-type="text" data-pk="zhuban_sn" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入主板S/N">
+						<c:out value="${plan.planItems['zhuban_sn'].itemValue}"/>
+					</a>
+				</td>
+				<td>MAC地址</td>
+				<td>
+					<a href="#" class="editable" id="mac_address" data-type="text" data-pk="mac_address" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入MAC地址">
+						<c:out value="${plan.planItems['mac_address'].itemValue}"/>
+					</a>
+				</td>
+		</tr>
+		<tr>
+				<td>IMEI</td>
+				<td>
+					<a href="#" class="editable" id="imei" data-type="text" data-pk="imei" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入IMEI">
+						<c:out value="${plan.planItems['imei'].itemValue}"/>
+					</a>
+				</td>
+				<td>MEID</td>
+				<td>
+					<a href="#" class="editable" id="meid" data-type="text" data-pk="meid" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入MEID">
+						<c:out value="${plan.planItems['meid'].itemValue}"/>
+					</a>
+				</td>
+		</tr>
+		<tr>
+				<td>蓝牙地址</td>
+				<td align="center" style=" word-wrap: break-word; word-break: normal;">
+					<a href="#" class="editable" id="bluetooth_address" data-type="text" data-pk="bluetooth_address" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入蓝牙地址">
+						<c:out value="${plan.planItems['bluetooth_address'].itemValue}"/>
+					</a>
+				</td>
+				<td></td>
+				<td></td>
+		</tr>
+		<tr>
+				<td>备注</td>
+				<td colspan = "4" >
+					<div id="comments" data-type="wysihtml5" data-pk="comments">
+						<c:out value="${plan.planItems['comments'].itemValue}" escapeXml="false"/>
+					</div>
+					<script>
+					$('#comments').editable({
+				        url: '<%=request.getContextPath()%>/do/plan/save.html',
+				        title: '备注',
+				        wysihtml5:{
+				        	"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+				        	"emphasis": true, //Italics, bold, etc. Default true
+				        	"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+				        	"html": false, //Button which allows you to edit the generated HTML. Default false
+				        	"link": false, //Button to insert a link. Default true
+				        	"image": false, //Button to insert an image. Default true,
+				        	"color": true //Button to change color of font 
+				        }
+				    });
+					</script>
+				</td>
+		</tr>
 	</table>
-
+	
 	<table style="border-top-width: 0px;　border-right-width: 1px;　border-bottom-width: 1px;　border-left-width: 1px; margin-left: auto;margin-right: auto; width:80%; border-collapse: collapse">
-	<tbody>
-		<tr>
-			<td rowspan="3">客户确认</td>
-			<td rowspan="3">标记</td>
-			<td>主板S/N：</td>
-			<td></td>
-			<td>MAC地址：</td>
-		</tr>
-		<tr>
-			<td>IMEI：</td>
-			<td></td>
-			<td>MEID：</td>
-		</tr>
-		<tr>
-			<td>蓝牙地址：</td>
-			<td></td>
-			<td></td>
-		</tr>
-		</tbody>
-	</table>
-		
+	</table>	
 	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>

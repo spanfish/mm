@@ -1,8 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8"%>
 
 <html>
 	<head>
@@ -40,78 +41,287 @@
 				$('.editable').editable();
 			});
 		</script>
+		<style>
+			th {
+			font-weight:normal;}
+		</style>
 	</head>
 	<body style=" width: 100%;">
 		<jsp:include page="navi.jsp">
 			<jsp:param name="page" value="home" />
 		</jsp:include>
 
-		<c:if test="${plan == null}">
+		<c:if test="${plan == null or not empty error}">
 			<div class="w3-panel w3-red">
 			    <h3>出错了</h3>
 			    <p><c:out value="${error}"/></p>
 			</div>
+			<c:if test="${plan == null}">
 			<a href="<%=request.getContextPath()%>/do/plan/list.html">返回</a>
+			</c:if>
 		</c:if>
 		
 		<c:if test="${plan != null}">
-			<table border="1">
+		<c:if test="${not empty plan.message }">
+			<div class="w3-panel w3-yellow">
+			    <p><c:out value="${plan.message}"/></p>
+			</div>
+		</c:if>
+				<table border="1" style="margin-left: auto;margin-right: auto; width:80%">
+			<thead>
+				<tr>
+					<th style="text-align: center;" colspan="10" align="center"><h2>上海盛本智能科技有限公司</h2></th>
+				</tr>
+			</thead>
+			<tfoot align="center">
+				<tr>
+					<td colspan="10">
+						<table style="border:0; width:100%; height:100%">
+							<tr>
+								<th style="width:80px">制表</th>
+								<td style="width:160px">${plan.creator.username}</td>
+								<th style="width:80px">审核</th>
+								<td style="width:160px">
+									<c:if test="${plan.reviewStatus == 'REJECTED'  or plan.reviewStatus == 'APPROVED'}">
+									<div class="stamp stamp-${plan.reviewStatus}">
+										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
+										<span><c:out value="${plan.reviewer.userDispName}"></c:out></span>
+									</div>
+									</c:if>
+								</td>
+								<th style="width:80px">承认</th>
+								<td style="width:160px">
+									<c:if test="${plan.approveStatus == 'REJECTED'  or plan.approveStatus == 'APPROVED'}">
+									<div class="stamp stamp-${plan.approveStatus}">
+										<span><fmt:formatDate value="${plan.reviewDate}" pattern="yyyy-MM-dd" /></span>
+										<span><c:out value="${plan.approver.userDispName}"></c:out></span>
+									</div>
+									</c:if>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+		    	<tr>
+		        	<td colspan="10">
+		        		<c:if test="${plan.status == 'CREATING' }">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/submitReview.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" value="提交审核"/>
+		        		</form>
+		        		</c:if>
+		        		
+		        		<c:if test="${plan.status == 'REVIEWING' }">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/review.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" name="action" value="发回修改"/>
+		        			<input type="submit" name="action" value="通过审核"/>
+		        		</form>
+		        		</c:if>
+		        		
+		        		<c:if test="${plan.status == 'APPROVING' }">
+		        		<form name="form" method="POST" action="<%=request.getContextPath()%>/do/plan/approve.html">
+		        			<input type="hidden" name="planId" value="${plan.planId}">
+		        			<input type="submit" name="action" value="发回修改"/>
+		        			<input type="submit" name="action" value="承认"/>
+		        		</form>
+		        		</c:if>
+		        		<c:if test="${plan.status == 'APPROVED' }">
+		        		
+		        		</c:if>
+		        	</td>
+		      	</tr>
+		    </tfoot>
 			<tr>
-				<th colspan  = "10">上海盛本智能科技有限公司</th>
+				<th colspan = "8" rowspan = "3">
+					<a href="#" id="product_book" data-type="textarea" data-pk="product_book" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入通知书信息"><c:out value="${plan.planItems['product_book'].itemValue}"/></a>
+					<script>
+					$(function(){
+					    $('#product_book').editable({
+					        url: '<%=request.getContextPath()%>/do/plan/save.html',
+					        title: '通知书',
+					        rows: 2
+					    });
+					});
+					</script>
+				</th>
+				<td colspan = "2">表单编号:
+					<a href="#" id="list_number" data-type="textarea" data-pk="list_number" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入表单编号"><c:out value="${plan.planItems['list_number'].itemValue}"/></a>
+					<script>
+					$(function(){
+					    $('#list_number').editable({
+					        url: '<%=request.getContextPath()%>/do/plan/save.html',
+					        title: '表单编号',
+					        rows: 2
+					    });
+					});
+					</script>
+				</td>
 			</tr>
 			<tr>
-				<th colspan = "8" rowspan = "3">QR300 P4_PCBA生产通知书</th>
-				<td colspan = "2">表单编号:QR-QSP-017-10</td>
+				<td colspan = "2">版本号:
+					<a href="#" class="editable" id="version_number" data-type="text" data-pk="version_number" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入版本号">
+						<c:out value="${plan.planItems['version_number'].itemValue}"/>
+					</a>
+				</td>
 			</tr>
 			<tr>
-				<td colspan = "2">版本号:A/1</td>
-			</tr>
-			<tr>
-				<td colspan = "2">编号:201809291511</td>
+				<td colspan = "2">编号:
+					<a href="#" class="editable" id="edit_number" data-type="text" data-pk="edit_number" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入编号">
+						<c:out value="${plan.planItems['edit_number'].itemValue}"/>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th rowspan = "2">订单信息</th>
 				<th>客户</th>
-				<td colspan = "4"></td>
+				<td colspan = "4">
+					<a href="#" class="editable" id="cus_name" data-type="text" data-pk="cus_name" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入客户">
+						<c:out value="${plan.planItems['cus_name'].itemValue}"/>
+					</a>				
+				</td>
 				<th>产品型号</th>
-				<td colspan = "3">QR300</td>
+				<td colspan = "3">
+					<a href="#" class="editable" id="productModel" data-type="text" data-pk="productModel" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入产品型号">
+						<c:out value="${plan.planItems['productModel'].itemValue}"/>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th>生产性质</th>
-				<td>试产</td>
-				<td colspan = "2">小批</td>
-				<td>量产</td>
+				<td colspan = "4">
+						<div style="width:200px; text-align:left; word-break: break-all;"><a href="#" id="manufactureType" data-type="checklist" data-pk="manufactureType" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="生产性质"></a></div> 
+					<script>
+						$(function() {
+							$('#manufactureType').editable({
+								value : [${plan.planItems['manufactureType'].itemValue}],
+								source : [ {
+									value : 1,
+									text : '试产'
+								}, {
+									value : 2,
+									text : '小批'
+								}, {
+									value : 3,
+									text : '量产'
+								}],
+								placement: 'bottom',
+								display:function(value, sourceData){
+									var html = [], checked = $.fn.editableutils.itemsByValue(value, sourceData);
+									if (checked.length) {
+								    	$.each(checked, function(i, v) {
+								        	html.push($.fn.editableutils.escape(v.text));
+								      	});
+								      	$(this).html(html.join(', '));
+								    } else {
+								      	$(this).empty();
+								    }
+								}
+							});
+						});
+					</script>
+				</td>
 				<th>订单数量</th>
-				<td colspan = "3">1500</td>
+				<td colspan = "3">
+					<a href="#" class="editable" id="dingdan_total" data-type="text" data-pk="dingdan_total" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入订单批量">
+						<c:out value="${plan.planItems['dingdan_total'].itemValue}"/>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th rowspan = "3">工单信息</th>
 				<th>产品信息</th>
 				<th>生产单号</th>
-				<td colspan = "2">5101-QR3000927005</td>
+				<td colspan = "2"><a href="#" id="product_list_number" data-type="textarea" data-pk="product_list_number" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入生产单号"><c:out value="${plan.planItems['product_list_number'].itemValue}"/></a>
+					<script>
+					$(function(){
+					    $('#product_list_number').editable({
+					        url: '<%=request.getContextPath()%>/do/plan/save.html',
+					        title: '生产单号',
+					        rows: 2
+					    });
+					});
+					</script>
+				</td>
 				<th>成品料号</th>
-				<td colspan = "2">6005071601</td>
+				<td colspan = "2"><a href="#" id="chengpin_number" data-type="textarea" data-pk="chengpin_number" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入成品料号"><c:out value="${plan.planItems['chengpin_number'].itemValue}"/></a>
+					<script>
+					$(function(){
+					    $('#chengpin_number').editable({
+					        url: '<%=request.getContextPath()%>/do/plan/save.html',
+					        title: '成品料号',
+					        rows: 2
+					    });
+					});
+					</script>
+				</td>
 				<th>整机颜色</th>
-				<td>N/A</td>
+				<td>
+					<a href="#" class="editable" id="" data-type="text" data-pk="machine_colour" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入整机颜色">
+						<c:out value="${plan.planItems['machine_colour'].itemValue}"/>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th>生产类别</th>
-				<td>核心板PCBA</td>
-				<td>主板PCBA</td>
-				<td>副板</td>
-				<td>机头</td>
-				<td>底座</td>
-				<td>包装</td>
-				<td>返工</td>
-				<td>升级出货</td>
+				<td colspan = "8"><a href="#" id="category" data-type="checklist" data-pk="category" data-url="<%=request.getContextPath()%>/do/plan/save.html" data-title="输入生产类别"></a>
+				<script>
+					$(function() {
+						$('#category').editable({
+							value : [${plan.planItems['category'].itemValue}],
+							source : [ {
+								value : 1,
+								text : '核心板PCBA'
+							}, {
+								value : 2,
+								text : '主板PCBA'
+							}, {
+								value : 3,
+								text : '副板'
+							}, {
+								value : 4,
+								text : '机头'
+							}, {
+								value : 5,
+								text : '底座'
+							}, {
+								value : 6,
+								text : '包装'
+							}, {
+								value : 7,
+								text : '返工'
+							}, {
+								value : 8,
+								text : '升级出货'
+							}],
+							display:function(value, sourceData){
+								var html = [], checked = $.fn.editableutils.itemsByValue(value, sourceData);
+								if (checked.length) {
+							    	$.each(checked, function(i, v) {
+							        	html.push($.fn.editableutils.escape(v.text));
+							      	});
+							      	$(this).html(html.join(', '));
+							    } else {
+							      	$(this).empty();
+							    }
+							}
+						});
+					});
+				</script>
+				</td>
 			</tr>
 			<tr>
 				<th>是否走系统</th>
-				<td colspan = "2">是</td>
-				<td colspan = "2">否</td>
+				<td colspan = "4">
+					<label><input type = "checkbox" name = "style" checked>是</label>
+					<label><input type = "checkbox" name = "style">否</label>
+				</td>
 				<th>即时出货</th>
-				<td colspan = "2">是</td>
-				<td>否</td>
+				<td colspan = "3">
+					<label><input type = "checkbox" name = "style" checked>是</label>
+					<label><input type = "checkbox" name = "style">否</label>
+				</td>
 			</tr>
 			<tr>
 				<th rowspan = "15">生产资料信息</th>
@@ -182,63 +392,63 @@
 			<tr>
 				<th rowspan = "8">配置信息</th>
 				<th rowspan = "6">频段</th>
-				<td>GSM</td>
-				<td>850</td>
-				<td>900</td>
-				<td>1800</td>
-				<td>1900</td>
+				<td><label><input type = "checkbox" name = "style">GSM</label></td>
+				<td><label><input type = "checkbox" name = "style">850</label></td>
+				<td><label><input type = "checkbox" name = "style" checked>900</label></td>
+				<td><label><input type = "checkbox" name = "style" checked>1800</label></td>
+				<td><label><input type = "checkbox" name = "style">1900</label></td>
 				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>CDMA</td>
-				<td>800</td>
-				<td>1900</td>
-				<td>AWS</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>WCDMA</td>
-				<td>850</td>
-				<td>900</td>
-				<td>1900</td>
-				<td>2100</td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>TD-SCDMA</td>
-				<td>B34</td>
-				<td>B39</td>
-				<td></td>
+				<td><label><input type = "checkbox" name = "style">CDMA</label></td>
+				<td><label><input type = "checkbox" name = "style">800</label></td>
+				<td><label><input type = "checkbox" name = "style">1900</label></td>
+				<td><label><input type = "checkbox" name = "style">AWS</label></td>
 				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td rowspan = "2">LTE-FDD</td>
-				<td>B38</td>
-				<td>B39</td>
-				<td>B40</td>
-				<td>B41</td>
+				<td><label><input type = "checkbox" name = "style">WCDMA</label></td>
+				<td><label><input type = "checkbox" name = "style">850</label></td>
+				<td><label><input type = "checkbox" name = "style">900</label></td>
+				<td><label><input type = "checkbox" name = "style">1900</label></td>
+				<td><label><input type = "checkbox" name = "style">2100</label></td>
 				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>B1</td>
-				<td>B2</td>
-				<td>B3</td>
-				<td>B5</td>
-				<td>B7</td>
-				<td>B8</td>
-				<td>B9</td>
+				<td><label><input type = "checkbox" name = "style">TD-SCDMA</label></td>
+				<td><label><input type = "checkbox" name = "style">B34</label></td>
+				<td><label><input type = "checkbox" name = "style">B39</label></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td rowspan = "2"><label><input type = "checkbox" name = "style"></label>LTE-FDD</td>
+				<td><label><input type = "checkbox" name = "style">B38</label></td>
+				<td><label><input type = "checkbox" name = "style">B39</label></td>
+				<td><label><input type = "checkbox" name = "style">B40</label></td>
+				<td><label><input type = "checkbox" name = "style">B41</label></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><label><input type = "checkbox" name = "style">B1</label></td>
+				<td><label><input type = "checkbox" name = "style">B2</label></td>
+				<td><label><input type = "checkbox" name = "style">B3</label></td>
+				<td><label><input type = "checkbox" name = "style">B5</label></td>
+				<td><label><input type = "checkbox" name = "style">B7</label></td>
+				<td><label><input type = "checkbox" name = "style">B8</label></td>
+				<td><label><input type = "checkbox" name = "style">B9</label></td>
 			</tr>
 			<tr>
 				<th>主板配置码</th>
@@ -248,11 +458,15 @@
 			</tr>
 			<tr>
 				<th>灌装SN密匙</th>
-				<td colspan = "2">是</td>
-				<td colspan = "2">否</td>
+				<td colspan = "4">
+					<label><input type = "checkbox" name = "style">是</label>
+					<label><input type = "checkbox" name = "style" checked>否</label>
+				</td>
 				<th>灌装客户密匙</th>
-				<td colspan = "2">是</td>
-				<td>否</td>
+				<td colspan = "4">
+					<label><input type = "checkbox" name = "style">是</label>
+					<label><input type = "checkbox" name = "style" checked>否</label>
+				</td>
 			</tr>
 			<tr>
 				<th rowspan = "3">号段信息</th>
@@ -267,27 +481,22 @@
 				<th>IMEI号段</th>
 				<td colspan = "4">N/A</td>
 			</tr>
+			<tr>
 				<th>PSN/KSN</th>
 				<td colspan = "3">NQR3B05</td>
 				<th>DSN/TUSN</th>
 				<td colspan = "4">N/A
 			</td>
+			</tr>
 			<tr>
 				<th>工单确认</th>
 				<td colspan = "3">PM:</td>
 				<td colspan = "3">SPM:</td>
 				<td colspan = "3">PMC:</td>
 			</tr>
+		</tbody>
 		</table>
-		<table>
-			<tr>
-			<th>制表日</th>
-			<td>2018年8月23日</td>
-			<th>制表：</th>
-			<td></td>
-			</tr>
-		</table>
-		</c:if>
+	</c:if>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>
