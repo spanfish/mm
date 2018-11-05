@@ -55,16 +55,16 @@
 	color: white;
 }
 
-input[type=submit] {
+input[type=submit], input[type=button] {
 	background-color: #4CAF50;
 	color: white;
-	padding: 12px 20px;
+	padding: 6px 12px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, input[type=button]:hover {
 	background-color: #45a049;
 }
 
@@ -87,21 +87,38 @@ input[type=submit]:hover {
 
 
 </style>
+<script>
+	function filter() {
+		$.ajax({
+			  method: "POST",
+			  url: "<%=request.getContextPath()%>/do/plan/filter.html",
+			  data: $( "#f" ).serialize()
+			})
+			.done(function( response ) {
+				$('#result').html(response);
+			})
+			.fail(function() {
+			    alert( "出错啦" );
+			});
+	}
+</script>
 </head>
 <body>
 	<jsp:include page="navi.jsp">
 		<jsp:param name="page" value="home" />
 	</jsp:include>
 
+	<div id="filter">
+	<form id="f">
 	<table id="search">
 		<tr>
 			<th style="width: 120px;text-align:right">创建/更新日期: 从</th>
 			<td>
-				<input type="date" name="dateFrom">
+				<input type="date" name="dateFrom" min="2018-11-01">
 			</td>
 			<th style="width: 40px; text-align:right">到</th>
 			<td>
-				<input type="date" name="dateTo">
+				<input type="date" name="dateTo" min="2018-11-01">
 			</td>
 			<th style="width: 60px; text-align:right">客戶</th>
 			<td style="width: 180px;">
@@ -118,13 +135,14 @@ input[type=submit]:hover {
 				<input type="text" name="notifyNo"></input>
 			</td>
 			<td>
-				<input type="button" value="检索"/>
+				<input type="button" value="检索" onclick="filter()"/>
 			</td>
 		</tr>
 	</table>
-	
+	</form>
+	</div>
 	<div id="result">
-	<jsp:include page="planTable.jsp"></jsp:include>
+		<jsp:include page="planTable.jsp"></jsp:include>
 	</div>
 	<br/>
 	<c:if test="${not empty templates}">
@@ -137,11 +155,11 @@ input[type=submit]:hover {
 				</c:forEach>
 			</select>
 			<input type="submit" value="创建生产计划"/>
-			
 		</form>
 	</c:if>
 	<c:if test="${empty templates}">
 	</c:if>
 	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="ajax.jsp"></jsp:include>
 </body>
 </html>

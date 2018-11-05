@@ -458,15 +458,6 @@
 		
 	</form>
 	<jsp:include page="footer.jsp"></jsp:include>
-	<div class="modal">
-		<script>
-			$( document ).ajaxStart(function() {
-				$("body").addClass("loading");
-			});
-			$( document ).ajaxStop(function() {
-				$("body").removeClass("loading");
-			});
-		</script>
-	</div>
+	<jsp:include page="ajax.jsp"></jsp:include>
 </body>
 </html>

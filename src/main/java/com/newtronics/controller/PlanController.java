@@ -43,7 +43,7 @@ import com.newtronics.tx.service.UserService;
 
 @Controller
 @RequestMapping(value = "/plan")
-@SessionAttributes({ "plan", "search" })
+@SessionAttributes({ "plan" })
 public class PlanController {
 
 	private Logger log = Logger.getLogger(PlanController.class);
@@ -60,41 +60,36 @@ public class PlanController {
 	@Autowired
 	private MailService mailService;
 
-	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
-	public ModelAndView searchCriteria(Principal principal, ModelMap modelMap,
-			@RequestParam(name = "name", required = false) String name,
-			@RequestParam(name = "pk", required = false) String pk,
-			@RequestParam(name = "value", required = false) String value) {
+	@RequestMapping(value = "filter.html", method = { RequestMethod.POST })
+	public ModelAndView filter(Principal principal, ModelMap modelMap,
+			@RequestParam(name = "dateFrom", required = false) String dateFrom,
+			@RequestParam(name = "dateTo", required = false) String dateTo,
+			@RequestParam(name = "customer", required = false) String customer,
+			@RequestParam(name = "notifyNo", required = false) String notifyNo) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> search = (Map<String, String>) modelMap.get("search");
 		if (search == null) {
 			search = new HashMap<String, String>();
 			modelMap.put("search", search);
+		} else {
+			search.clear();
 		}
-		if (!StringUtils.isEmpty(pk)) {
-			if (StringUtils.isEmpty(value)) {
-				search.remove(pk);
-			} else {
-				search.put(pk, value);
-			}
+		if(!StringUtils.isEmpty(dateFrom)) {
+			search.put("dateFrom", dateFrom);
 		}
-		
+		if(!StringUtils.isEmpty(dateTo)) {
+			search.put("dateTo", dateTo);
+		}
+		if(!StringUtils.isEmpty(customer)) {
+			search.put("customer", customer);
+		}
+		if(!StringUtils.isEmpty(notifyNo)) {
+			search.put("notifyNo", notifyNo);
+		}
 		ModelAndView mv = list(principal, modelMap, "0", "10");
 		mv.setViewName("planTable");
 		return mv;
 	}
-
-//	@RequestMapping(value = "search.html", method = { RequestMethod.POST })
-//	public ModelAndView search(Principal principal, ModelMap modelMap) {
-//		@SuppressWarnings("unchecked")
-//		Map<String, String> search = (Map<String, String>) modelMap.get("search");
-//		if (search == null) {
-//			search = new HashMap<String, String>();
-//			modelMap.put("search", search);
-//		}
-//
-//		return list(principal, modelMap, "0", "10");
-//	}
 
 	/**
 	 * 显示所有的计划列表 TODO:加入查询条件
@@ -123,14 +118,14 @@ public class PlanController {
 		}
 
 		Long totalCount = planService.getPageCount(search);
-		Long pageCount =  (totalCount + ps - 1) / ps;
+		Long pageCount = (totalCount + ps - 1) / ps;
 		modelMap.put("pageCount", pageCount);
 
-		if(totalCount > 0) {
+		if (totalCount > 0) {
 			List<Plan> plans = planService.listPlan(p, ps, search);
 			modelMap.put("plans", plans);
 		}
-		
+
 		List<Template> templates = templateService.findAllTemplatesByCreator(principal.getName());
 		modelMap.put("templates", templates);
 
