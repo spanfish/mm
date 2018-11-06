@@ -49,14 +49,17 @@
 			<jsp:param name="page" value="home" />
 		</jsp:include>
 
-		<c:if test="${plan == null}">
+		<div id="error">
+		<c:if test="${not empty error}">
 			<div class="w3-panel w3-red">
 			    <h3>出错了</h3>
 			    <p><c:out value="${error}"/></p>
 			</div>
-			<a href="<%=request.getContextPath()%>/do/plan/list.html">返回</a>
+			<c:if test="${empty plan}">
+				<a href="<%=request.getContextPath()%>/do/plan/list.html">返回</a>
+			</c:if>
 		</c:if>
-		
+		</div>
 		<c:if test="${plan != null}">
 			<jsp:include page="./gubeiDetail.jsp">
 				<jsp:param value="" name="view"/>

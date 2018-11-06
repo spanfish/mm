@@ -9,7 +9,7 @@
 			$("body").removeClass("loading");
 		});
 		$(document).ajaxComplete(function() {
-			
+			$('#error').html('');
 		});
 	</script>
 </div>
