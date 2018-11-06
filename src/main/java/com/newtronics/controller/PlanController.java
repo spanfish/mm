@@ -311,7 +311,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, "0", "10");
+		return list(principal, modelMap, "0", "10");
 	}
 
 	@RequestMapping(value = "review.html", method = RequestMethod.POST)
@@ -375,7 +375,7 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, "0", "10");
+		return list(principal, modelMap, "0", "10");
 	}
 
 	@RequestMapping(value = "approve.html", method = RequestMethod.POST)
@@ -441,6 +441,6 @@ public class PlanController {
 		}
 
 		// success
-		return list(principal, null, "0", "10");
+		return list(principal, modelMap, "0", "10");
 	}
 }
