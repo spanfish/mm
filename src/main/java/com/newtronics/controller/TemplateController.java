@@ -106,6 +106,8 @@ public class TemplateController {
 			} else {
 				model.put("template", t);
 			}
+		} else {
+			model.put("template", new Template());
 		}
 		return mv;
 	}
