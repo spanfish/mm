@@ -1,8 +1,9 @@
 package com.newtronics.tx.service;
 
-import java.util.Map;
+import com.newtronics.tx.model.Plan;
+import com.newtronics.tx.model.Template;
 
 public interface MailService {
 
-	void sendReviewEmail(Map<String, String> model);
+	void sendReviewEmail(final Plan model, final Template template);
 }

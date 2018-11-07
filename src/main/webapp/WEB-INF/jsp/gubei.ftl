@@ -42,39 +42,24 @@
 		<#assign planListClass ="active">
 		<#include "navi.ftl">
 		<div id="error">
-		<#if error??>
-			<div class="w3-panel w3-red">
-			    <h3>出错了</h3>
-			    <p>${error}</p>
-			</div>			
-		</#if>
-		<#if !plan??>
-			<a href="${rc.getContextPath()}/do/plan/list.html">返回</a>
+			<#if error??>
+				<div class="w3-panel w3-red">
+				    <h3>出错了</h3>
+				    <p>${error}</p>
+				</div>			
+			</#if>
+			<#if !plan??>
+				<a href="${rc.getContextPath()}/do/plan/list.html">返回</a>
+			</#if>
+		</div>
+		
+		<#if (plan.creator.username)?? && plan.creator.username == __user.principal.username>		
+			<#assign canWrite = "true">
 		</#if>
 		
 		<#include "gubeiDetail.ftl">
-
-		<center>
-			<br/>
-			<#if plan.status == 'CREATING'>
-	    		<form name="form" method="POST" action="${rc.getContextPath()}/do/plan/submitReview.html">
-	    			<input type="hidden" name="planId" value="${plan.planId}">
-	    			<input type="submit" value="提交审核"/>
-	    		</form>
-    		<#elseif plan.status == 'REVIEWING'>
-        		<form name="form" method="POST" action="${rc.getContextPath()}/do/plan/review.html">
-        			<input type="hidden" name="planId" value="${plan.planId}">
-        			<input type="submit" name="action" value="发回修改"/>
-        			<input type="submit" name="action" value="通过审核"/>
-        		</form>
-        	<#elseif plan.status == 'APPROVING'>	
-        		<form name="form" method="POST" action="${rc.getContextPath()}/do/plan/approve.html">
-        			<input type="hidden" name="planId" value="${plan.planId}">
-        			<input type="submit" name="action" value="发回修改"/>
-        			<input type="submit" name="action" value="承认"/>
-        		</form>
-    		</#if>
-    		
-     	</center>
+		<#include "buttons.ftl">
+		
+     	<#include "ajax.ftl">
 	</body>
 </html>

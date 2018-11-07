@@ -144,15 +144,19 @@ public class PlanController {
 	 * @return
 	 */
 	@RequestMapping(value = "input.html", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView inputPlan(@RequestParam(name = "templateId", required = false) String templateId,
+	public ModelAndView inputPlan(Principal principal, @RequestParam(name = "templateId", required = false) String templateId,
 			@RequestParam(name = "notifyNo", required = false) String notifyNo,
 			@RequestParam(name = "planId", required = false) String planId) {
 		ModelAndView mv = new ModelAndView();
+		
 		Plan plan = null;
 		String tid = templateId;
 		if (StringUtils.isEmpty(notifyNo)) {
 			// 新建计划
+			User user = userService.getUserByName(principal.getName());
 			plan = new Plan();
+			plan.setCreateDate(new Date());
+			plan.setCreator(user);
 		} else {
 			// 打开已有计划，查询DB
 			plan = planService.findPlanById(planId);
@@ -185,7 +189,7 @@ public class PlanController {
 
 		mv.setViewName(template.getViewName());
 		mv.addObject("plan", plan);
-
+		mv.addObject("template", template);
 		return mv;
 	}
 
@@ -284,26 +288,8 @@ public class PlanController {
 			planService.updatePlan(plan);
 
 			Template template = templateService.findTemplateById(plan.getTemplateId());
-			if (template != null) {
-				StringBuffer sb = new StringBuffer();
-				for (User u : template.getReviewers()) {
-					if (!StringUtils.isEmpty(u.getEmail())) {
-						if (sb.length() > 0) {
-							sb.append(";");
-						}
-						sb.append(u.getEmail());
-					}
-				}
-				if (sb.length() > 0) {
-					Map<String, String> model = new HashMap<String, String>();
-					model.put("receipts", sb.toString());
-					model.put("template", "review.ftl");
-					model.put("user", creator.getUserDispName());
-					model.put("notificationNo", plan.getNotifyNo());
-					model.put("contentPath", "/mm");
-					mailService.sendReviewEmail(model);
-				}
-
+			if (template != null && !StringUtils.isEmpty(template.getReviewers())) {
+				mailService.sendReviewEmail(plan, template);
 			}
 
 		} catch (Exception e) {
@@ -348,26 +334,8 @@ public class PlanController {
 			planService.updatePlan(plan);
 
 			Template template = templateService.findTemplateById(plan.getTemplateId());
-			if (template != null) {
-				StringBuffer sb = new StringBuffer();
-				for (User u : template.getApprovers()) {
-					if (!StringUtils.isEmpty(u.getEmail())) {
-						if (sb.length() > 0) {
-							sb.append(";");
-						}
-						sb.append(u.getEmail());
-					}
-				}
-				if (sb.length() > 0) {
-					Map<String, String> model = new HashMap<String, String>();
-					model.put("receipts", sb.toString());
-					model.put("template", "review.ftl");
-					model.put("user", creator.getUserDispName());
-					model.put("notificationNo", plan.getNotifyNo());
-					model.put("contentPath", "/mm");
-					mailService.sendReviewEmail(model);
-				}
-
+			if (template != null && template.getApprovers() != null && !template.getApprovers().isEmpty()) {
+				mailService.sendReviewEmail(plan, template);
 			}
 
 		} catch (Exception e) {
@@ -423,15 +391,6 @@ public class PlanController {
 						}
 						sb.append(u.getEmail());
 					}
-				}
-				if (sb.length() > 0) {
-					Map<String, String> model = new HashMap<String, String>();
-					model.put("receipts", sb.toString());
-					model.put("template", "review.ftl");
-					model.put("user", creator.getUserDispName());
-					model.put("notificationNo", plan.getNotifyNo());
-					model.put("contentPath", "/mm");
-					mailService.sendReviewEmail(model);
 				}
 
 			}
