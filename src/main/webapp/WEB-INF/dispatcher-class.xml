@@ -26,11 +26,18 @@
         </property>
     </bean>
 
+<!-- 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
-
+ -->
+ 	<bean id="viewResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+          <property name="cache" value="true"></property>
+          <property name="prefix" value="/WEB-INF/jsp/"></property>
+          <property name="suffix" value=".ftl"></property>
+    </bean>
     <!--
     The index controller.
     -->

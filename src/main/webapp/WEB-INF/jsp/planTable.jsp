@@ -20,7 +20,6 @@
 		<th style="">承认</th>
 	</tr>
 </thead>
-	<c:set value="ROLE_ADMIN" var="role" scope="page"> </c:set>
 	
 	<!-- 当前显示页 -->
 	<c:if test="${not empty param.page}">

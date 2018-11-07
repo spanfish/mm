@@ -97,6 +97,6 @@
 	<bean id="freemarkerConfiguration "
 		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
 		<property name="templateLoaderPath"
-			value="/WEB-INF/classes/freemarker/" />
+			value="/WEB-INF/jsp/" />
 	</bean>
 </beans>

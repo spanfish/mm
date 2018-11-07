@@ -87,7 +87,7 @@ public class PlanController {
 			search.put("notifyNo", notifyNo);
 		}
 		ModelAndView mv = list(principal, modelMap, "0", "10");
-		mv.setViewName("planTable");
+		mv.setViewName("listPlanTable");
 		return mv;
 	}
 
