@@ -1,3 +1,4 @@
+<#assign  security=JspTaglibs["http://www.springframework.org/security/tags"] /> 
 <ul id="navi" class="navi-ul">
 	<#if planListClass??>
 		<li class="navi-li"><a class="active" href="${rc.getContextPath()}/do/plan/list.html">生产计划</a></li>

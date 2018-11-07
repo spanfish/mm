@@ -1,3 +1,4 @@
+<#assign  security=JspTaglibs["http://www.springframework.org/security/tags"] /> 
 <html>
 	<head>
 		<meta http-equiv="cache-control" content="max-age=0" />
@@ -52,7 +53,7 @@
 		</#if>
 		
 		<#include "gubeiDetail.ftl">
-		
+
 		<center>
 			<br/>
 			<#if plan.status == 'CREATING'>
