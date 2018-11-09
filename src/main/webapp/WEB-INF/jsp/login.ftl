@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -85,7 +84,7 @@
 			    background-color: #fefefe;
 			    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
 			    border: 1px solid #888;
-			    width: 400px; /* Could be more or less, depending on screen size */
+			    width: 300px; /* Could be more or less, depending on screen size */
 			}
 			
 			/* The Close Button (x) */
