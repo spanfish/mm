@@ -333,8 +333,6 @@
 				<#else>
 					<label><input id="fabrication-youqian" class="ajaxCheckbox-fabrication" type="checkbox"><span> 有铅工艺</span></label>
 				</#if>
-				
-				
 
 				<script>
 				$('.ajaxCheckbox-fabrication').change(function() {
@@ -350,7 +348,6 @@
 			        	  });
 			    });
 				</script>
->
 			</td>
 		</tr>
 		<tr>
