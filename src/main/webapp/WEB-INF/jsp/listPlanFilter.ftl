@@ -1,3 +1,18 @@
+<script>
+	function filter() {
+		$.ajax({
+			  method: "POST",
+			  url: "${rc.getContextPath()}/do/plan/filter.html",
+			  data: $( "#f" ).serialize()
+			})
+			.done(function( response ) {
+				$('#result').html(response);
+			})
+			.fail(function() {
+			    alert( "出错啦" );
+			});
+	}
+</script>
 <div id="filter">
 	<form id="f">
 		<table id="search">
@@ -29,10 +44,11 @@
 				<td>
 					<select name="status">
 						<option></option>
-						<option value="1">待审核</option>
-						<option value="2">待承认</option>
-						<option value="3">被否决</option>
-						<option value="4">已承认</option>
+						<option value="CREATING">填写中</option>
+						<option value="REVIEWING">待审核</option>
+						<option value="APPROVING">待承认</option>
+						<option value="APPROVED">承认通过</option>
+						<option value="REJECTED">被否决</option>
 					</select>
 				</td>
 				

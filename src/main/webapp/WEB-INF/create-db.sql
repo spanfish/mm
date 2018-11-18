@@ -29,10 +29,10 @@ CREATE TABLE plan (
   memo VARCHAR(30),
   reviewer_name VARCHAR(30),
   review_date DATE,
-  reviewStatus INTEGER,
+  reviewStatus VARCHAR(30),
   approver_name VARCHAR(30),
   approve_date DATE,
-  approveStatus INTEGER,
+  approveStatus VARCHAR(30),
   message VARCHAR(200)
 );
 

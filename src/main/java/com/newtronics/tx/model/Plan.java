@@ -67,7 +67,7 @@ public class Plan {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date reviewDate;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private ApproveResult reviewStatus;
 	
 	// 承认者
@@ -80,7 +80,7 @@ public class Plan {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date approveDate;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private ApproveResult approveStatus;
 	
 	//

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.newtronics.common.PlanStatus;
 import com.newtronics.tx.dao.PlanDao;
 import com.newtronics.tx.model.Plan;
 
@@ -35,6 +36,7 @@ public class PlanDaoImpl implements PlanDao {
 		String dateTo = search.get("dateTo");
 		String customer = search.get("customer");
 		String notifyNo = search.get("notifyNo");
+		String status = search.get("status");
 
 		String hqlQuery = "select count(p) from Plan p";
 		if (!search.isEmpty()) {
@@ -75,6 +77,21 @@ public class PlanDaoImpl implements PlanDao {
 			hqlQuery += " p.notifyNo = :notifyNo";
 		}
 
+		if (!StringUtils.isEmpty(status)) {
+			if (w) {
+				hqlQuery += " and ";
+			} else {
+				w = true;
+			}
+
+			if (status.equals("REJECTED")) {
+				hqlQuery += " (p.reviewStatus = 'REJECTED' or p.approveStatus = 'REJECTED')";
+			} else {
+				hqlQuery += " p.status = :status";
+			}
+
+		}
+
 		Query query = em.createQuery(hqlQuery);
 
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd mm");
@@ -98,6 +115,18 @@ public class PlanDaoImpl implements PlanDao {
 		if (!StringUtils.isEmpty(notifyNo)) {
 			query.setParameter("notifyNo", notifyNo);
 		}
+
+		if (!StringUtils.isEmpty(status)) {
+			if (status.equals("CREATING")) {
+				query.setParameter("status", PlanStatus.CREATING);
+			} else if (status.equals("REVIEWING")) {
+				query.setParameter("status", PlanStatus.REVIEWING);
+			} else if (status.equals("APPROVING")) {
+				query.setParameter("status", PlanStatus.APPROVING);
+			} else if (status.equals("APPROVED")) {
+				query.setParameter("status", PlanStatus.APPROVED);
+			}
+		}
 		Long count = (Long) query.getSingleResult();
 		return count;
 	}
@@ -109,6 +138,7 @@ public class PlanDaoImpl implements PlanDao {
 		String dateTo = search.get("dateTo");
 		String customer = search.get("customer");
 		String notifyNo = search.get("notifyNo");
+		String status = search.get("status");
 
 		String hqlQuery = " from Plan p";
 		if (!search.isEmpty()) {
@@ -149,6 +179,13 @@ public class PlanDaoImpl implements PlanDao {
 			hqlQuery += " p.notifyNo = :notifyNo";
 		}
 
+		if (!StringUtils.isEmpty(status)) {
+			if (status.equals("REJECTED")) {
+				hqlQuery += " (p.reviewStatus = 'REJECTED' or p.approveStatus = 'REJECTED')";
+			} else {
+				hqlQuery += " p.status = :status";
+			}
+		}
 		hqlQuery += " order by p.notifyNo desc";
 		Query query = em.createQuery(hqlQuery);
 
@@ -171,6 +208,17 @@ public class PlanDaoImpl implements PlanDao {
 		}
 		if (!StringUtils.isEmpty(notifyNo)) {
 			query.setParameter("notifyNo", notifyNo);
+		}
+		if (!StringUtils.isEmpty(status)) {
+			if (status.equals("CREATING")) {
+				query.setParameter("status", PlanStatus.CREATING);
+			} else if (status.equals("REVIEWING")) {
+				query.setParameter("status", PlanStatus.REVIEWING);
+			} else if (status.equals("APPROVING")) {
+				query.setParameter("status", PlanStatus.APPROVING);
+			} else if (status.equals("APPROVED")) {
+				query.setParameter("status", PlanStatus.APPROVED);
+			}
 		}
 		query.setFirstResult(page * pageSize);
 		query.setMaxResults(pageSize);

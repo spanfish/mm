@@ -8,7 +8,7 @@ INSERT INTO roles VALUES('ROLE_ADMIN', '管理员用户');
 
 INSERT INTO user_role VALUES('xwang', 'ROLE_USER');
 INSERT INTO user_role VALUES('xwang', 'ROLE_ADMIN');
-INSERT INTO user_role VALUES('xwang2', 'ROLE_USER');
+INSERT INTO user_role VALUES('test1', 'ROLE_USER');
 
 INSERT INTO template VALUES('1', '海信', 'haixin', 'HX%yy%%mm%%dd%%02dMB',  1, null, null, null);
 INSERT INTO template VALUES('2', '杭州涂鸦', 'TYPage', 'TY%yy%%mm%%dd%%02dMB',  1, null, null, null);
