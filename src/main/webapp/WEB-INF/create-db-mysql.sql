@@ -110,5 +110,6 @@ INSERT INTO roles VALUES('ROLE_USER', '一般用户', 0);
 INSERT INTO roles VALUES('ROLE_ADMIN', '管理员用户', 0);
 
 INSERT INTO user_role VALUES('admin', 'ROLE_ADMIN');
+INSERT INTO user_role VALUES('admin', 'ROLE_USER');
 
 
