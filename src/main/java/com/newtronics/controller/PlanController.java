@@ -15,6 +15,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -65,7 +67,8 @@ public class PlanController {
 			@RequestParam(name = "dateFrom", required = false) String dateFrom,
 			@RequestParam(name = "dateTo", required = false) String dateTo,
 			@RequestParam(name = "customer", required = false) String customer,
-			@RequestParam(name = "notifyNo", required = false) String notifyNo) {
+			@RequestParam(name = "notifyNo", required = false) String notifyNo,
+			@RequestParam(name = "status", required = false) String status) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> search = (Map<String, String>) modelMap.get("search");
 		if (search == null) {
@@ -85,6 +88,9 @@ public class PlanController {
 		}
 		if(!StringUtils.isEmpty(notifyNo)) {
 			search.put("notifyNo", notifyNo);
+		}
+		if(!StringUtils.isEmpty(status)) {
+			search.put("status", status);
 		}
 		ModelAndView mv = list(principal, modelMap, "0", "10");
 		mv.setViewName("listPlanTable");
@@ -205,13 +211,13 @@ public class PlanController {
 	 */
 	@RequestMapping(value = "save.html", method = RequestMethod.POST)
 	@ResponseBody
-	public String saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
+	public ResponseEntity<HttpStatus> saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
 			@RequestParam("pk") String pk, @RequestParam(name = "value", required = false) String value,
 			@RequestParam(name = "value[]", required = false) String values) {
 
 		Plan plan = (Plan) modelMap.get("plan");
 		if (plan == null || principal == null || StringUtils.isEmpty(principal.getName())) {
-			return "已过期，请重新登陆";
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		String response = "成功";
 		try {
@@ -237,11 +243,12 @@ public class PlanController {
 				plan = planService.updatePlan(plan);
 			}
 			modelMap.put("plan", plan);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			response = "发生错误";
+			
 		}
-		return response;
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**
