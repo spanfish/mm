@@ -19,7 +19,7 @@
 			<tr>
 				<th style="width: 120px;text-align:right">创建/更新日期: 从</th>
 				<td>
-					<input type="date" name="dateFrom" min="2018-11-01">
+					<input type="date" name="dateFrom" min="2018-11-01" style="width:140px">
 				</td>
 				<th style="width: 40px; text-align:right">到</th>
 				<td>

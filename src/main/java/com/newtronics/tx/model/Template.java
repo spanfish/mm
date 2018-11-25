@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 /**
  * 计划模板文件·
@@ -73,6 +74,9 @@ public class Template {
 	@Transient
 	private String approverNames;
 
+	@Version
+	private int version;
+	
 	public Template() {
 		this.id = UUID.randomUUID().toString().replaceAll("-", "");
 		this.enabled = 1;
@@ -194,5 +198,13 @@ public class Template {
 			sb.append(user.getUsername()).append(",");
 		}
 		this.setApproverNames(sb.toString());
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }

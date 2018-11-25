@@ -3,6 +3,7 @@ package com.newtronics.tx.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "roles")
@@ -12,6 +13,9 @@ public class Role {
 
 	private String description;
 
+	@Version
+	private int version;
+	
 	public String getRole() {
 		return role;
 	}
@@ -26,6 +30,14 @@ public class Role {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

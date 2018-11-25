@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "USERS")
@@ -32,6 +33,9 @@ public class User {
 
 	private String enabled;
 
+	@Version
+	private int version;
+	
 	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_role", joinColumns = {
 			@JoinColumn(name = "username", referencedColumnName = "username") })
@@ -108,5 +112,13 @@ public class User {
 
 	public void setUserRole(String role) {
 		this.userRole = role;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }

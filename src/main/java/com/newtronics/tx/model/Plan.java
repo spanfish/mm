@@ -94,6 +94,9 @@ public class Plan {
 	
 	private String message;
 	
+	@Version
+	private int version;
+	
 	public Plan() {
 		this.planId = UUID.randomUUID().toString().replaceAll("-", "");
 		this.createDate = new Date();
@@ -239,6 +242,14 @@ public class Plan {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	
