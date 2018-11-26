@@ -11,10 +11,14 @@ INSERT INTO user_role VALUES('xwang', 'ROLE_ADMIN');
 INSERT INTO user_role VALUES('test1', 'ROLE_USER');
 
 INSERT INTO template VALUES('1', '海信', 'haixin', 'HX%yy%%mm%%dd%%02dMB',  1, null, null, null);
+INSERT INTO template VALUES('2', '大华', 'dahua', 'DH%yy%%mm%%dd%%02dMB',  1, null, null, null);
+INSERT INTO template VALUES('3', '古北', 'gubei', 'GB%yy%%mm%%dd%%02dMB',  1, null, null, null);
+INSERT INTO template VALUES('4', '恒强', 'hengqiang', 'HQ%yy%%mm%%dd%%02dMB',  1, null, null, null);
+INSERT INTO template VALUES('5', '竞天数码', 'jingtian', 'JT%yy%%mm%%dd%%02dMB',  1, null, null, null);
+
+
 INSERT INTO template VALUES('2', '杭州涂鸦', 'TYPage', 'TY%yy%%mm%%dd%%02dMB',  1, null, null, null);
 INSERT INTO template VALUES('3', '上海盛本智能科技有限公司', 'ShengBen', 'SB%yy%%mm%%dd%%02dMB',  1, null, null, null);
-INSERT INTO template VALUES('4', 'gubei', 'gubei', 'GB%yy%%mm%%dd%%02dMB',  1, null, null, null);
-INSERT INTO template VALUES('5', 'hengqiang', 'hengqiang', 'HQ%yy%%mm%%dd%%02dMB',  1, null, null, null);
 INSERT INTO template VALUES('6', 'meiqi', 'meiqi', 'MQ%yy%%mm%%dd%%02dMB',  1, null, null, null);
 
 
