@@ -82,14 +82,15 @@
 
 	<bean id="javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.live.com" />
-		<property name="port" value="587" />
-		<property name="username" value="wang_xiangwei@hotmail.com" />
-		<property name="password" value="" />
+
+		<!-- 
 		<property name="host" value="hwhkhm.qiye.163.com" />
+		 -->
+		 <property name="host" value="smtphz.qiye.163.com" />
 		<property name="port" value="994" />
 		<property name="username" value="OMS@newtronics.com.cn" />
-
+		<property name="password" value="" />
+		
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.transport.protocol">smtp</prop>
