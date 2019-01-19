@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<#assign  security=JspTaglibs["http://www.springframework.org/security/tags"] /> 
 <html>
 	<head>
 		<meta http-equiv="cache-control" content="max-age=0" />
@@ -26,36 +26,56 @@
         <script src="${rc.getContextPath()}/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/wysihtml5-0.3.0.min.js"></script>  
         <script src="${rc.getContextPath()}/resources/x-editable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.3/bootstrap-wysihtml5-0.0.3.min.js"></script>
         <script src="${rc.getContextPath()}/resources/x-editable/inputs-ext/wysihtml5/wysihtml5-0.0.3.js"></script>
-		<script>
-			$.fn.editable.defaults.mode = 'popup';
-		
-			$(document).ready(function() {
-				$('.editable').editable();
-			});
-		</script>
+
+		<style>
+			.oms_table th{
+				font-weight:normal}
+			label{
+				font-weight:normal;}
+			table{
+				font-size:10px;}
+			.oms_table {
+				table-layout: fixed;				
+			}
+			.oms_table td {
+				word-wrap: break-word;
+				word-break: break-all;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				height:15;
+			}			
+		</style>
 	</head>
-<body style=" width: 100%;">
-	<#assign planListClass ="active">
-	<#include "navi.ftl">
-	<div id="error">
-		<#if error??>
-			<div class="w3-panel w3-red">
-			    <h3>出错了</h3>
-			    <p>${error}</p>
-			</div>			
+	<body style=" width: 100%;">
+		<#assign planListClass ="active">
+		
+		<#if plan.approveStatus == 'APPROVED' && plan.reviewStatus == 'APPROVED'>
+			
 		</#if>
-		<#if !plan??>
-			<a href="${rc.getContextPath()}/do/plan/list.html">返回</a>
+		<#if plan.approveStatus != 'APPROVED' || plan.reviewStatus != 'APPROVED'>
+			<#include "navi.ftl">
 		</#if>
-	</div>
 		
-	<#if (plan.creator.username)?? && plan.creator.username == __user.principal.username>		
-		<#assign canWrite = "true">
-	</#if>
+		<div id="error">
+			<#if error??>
+				<div class="w3-panel w3-red">
+				    <h3>出错了</h3>
+				    <p>${error}</p>
+				</div>			
+			</#if>
+			<#if !plan??>
+				<a href="${rc.getContextPath()}/do/plan/list.html">返回</a>
+			</#if>
+		</div>
 		
-	<#include "hengqiangDetail.ftl">
-	<#include "buttons.ftl">
+		<#if (plan.creator.username)?? && plan.creator.username == __user.principal.username>		
+			<#assign canWrite = "true">
+		</#if>
 		
- 	<#include "ajax.ftl">
-</body>
+		<#include "hengqiangDetail.ftl">
+		<#include "buttons.ftl">
+		
+     	<#include "ajax.ftl">
+	</body>
 </html>

@@ -1,7 +1,7 @@
-<h3 align="center">竞天数码生产计划通知书</h3>
+<h3 align="center">生产计划通知书</h3>
 <table class="oms_table" style="margin-left: auto; margin-right: auto; border: 0px">
 		<tr>
-			<td style="width:100px";>客户名称:</td>
+			<td style="width:100px">客户名称:</td>
 			<td style="width:200px" align="left">
 				<div style="width:200px; text-align:left; word-wrap:break-word">
 				<a href="#" id="customer" data-type="textarea" data-pk="customer" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入客户名称">
@@ -54,29 +54,29 @@
 <table class="oms_table" border="1" style="margin-left: auto;margin-right: auto; width:80%">
     <tbody>
 		<tr>
-			<td style="width:100px" rowspan = "8">生产资料</td>
-			<td style="width:100px">产品名称 </td>
-			<td style="width:200px">产品型号 </td>
-			<td style="width:200px">PCB 版本号 </td>
-			<td style="width:200px">产品P/N </td>
+			<td rowspan = "18" width=100px word-break:break-all >生产资料<br>(无请填写/)</td>
+			<td colspan = "2" width=100px>产品名称 </td>
+			<td colspan = "3" width=200px>产品型号 </td>
+			<td colspan = "2" width=200px>PCB 版本号 </td>
+			<td colspan = "2" width=200px>产品P/N </td>
 		</tr>
 		<tr>
-			<td style="width:100px; word-break:break-all;">
+			<td style="width:100px" word-break:break-all; colspan = "2">
 				<a href="#" class="editable" id="productName" data-type="textarea" data-pk="productName" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入产品名称">${(plan.planItems['productName'].itemValue)!}</a>
 			</td>
-			<td style="width:200px; word-break:break-all;">
+			<td style="width:200px" word-break:break-all; colspan = "3">
 				<a href="#" class="editable" id="productModel" data-type="textarea" data-pk="productModel" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入产品型号">${(plan.planItems['productModel'].itemValue)!}</a>
 			</td>
-			<td style="width:200px; word-break:break-all;">
+			<td style="width:200px" word-break:break-all; colspan = "2">
 				<a href="#" class="editable" id="pcbVer" data-type="textarea" data-pk="pcbVer" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入PCB版本号 ">${(plan.planItems['pcbVer'].itemValue)!}</a>
 			</td>
-			<td style="width:200px; word-break:break-all;">
+			<td style="width:200px" word-break:break-all; colspan = "2">
 				<a href="#" class="editable" id="productPN" data-type="textarea" data-pk="productPN" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入产品P/N ">${(plan.planItems['productPN'].itemValue)!}</a>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px">类别</td>
-			<td style="width:600px" colspan="3">
+			<td style="width:100px" colspan="2" >类别</td>
+			<td style="width:600px" colspan="7">
 				<label><input ${canWrite!'disabled'} id="cat-smt" class="ajaxCheckbox-cat" type="checkbox" name="cat-smt" ${(plan.planItems['cat-smt'].itemValue)!}><span> SMT</span></label>
 				<label><input ${canWrite!'disabled'} id="cat-chajian" class="ajaxCheckbox-cat" type="checkbox" name="cat-chajian" ${(plan.planItems['cat-chajian'].itemValue)!}><span> 插件</span></label>
 				<label><input ${canWrite!'disabled'} id="cat-zuzhuang" class="ajaxCheckbox-cat" type="checkbox" name="cat-zuzhuang" ${(plan.planItems['cat-zuzhuang'].itemValue)!}><span> 组装</span></label>
@@ -100,22 +100,22 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px">组装和包装BOM</td>
-			<td style="width:400px" style="word-break:break-all;" colspan = "2">
-				<a href="#" id="bom" data-type="textarea" data-pk="bom" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入组装和包装BOM">${(plan.planItems['bom'].itemValue)!}</a>
+			<td style="width:100px" colspan = "2" >贴片BOM</td>
+			<td style="width:400px" style="word-break:break-all;" colspan = "5">
+				<a href="#" id="bom" data-type="textarea" data-pk="bom" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入贴片BOM">${(plan.planItems['bom'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
 					$(function(){
 					    $('#bom').editable({
 					        url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '组装和包装BOM',
+					        title: '贴片BOM',
 					        rows: 2
 					    });
 					});
 				</script>
 				</#if>
 			</td>
-			<td style="width:200px" rowspan = "5">
+			<td style="width:200px" rowspan = "8" colspan = "2" word-break:break-all;>
 				<a href="#" id="custel" data-type="textarea" data-pk="custel" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入客户信息">${(plan.planItems['custel'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
@@ -131,14 +131,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px">测试文件</td>
-			<td style="width:400px" colspan = "2"><a href="#" id="test_file" data-type="textarea" data-pk="test_file" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入测试文件">${(plan.planItems['test_file'].itemValue)!}</a>
+			<td style="width:100px" colspan = "2">SMT资料包</td>
+			<td style="width:400px" colspan = "5" word-break:break-all;><a href="#" id="smtDocPackage" data-type="textarea" data-pk="smtDocPackage" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入SMT资料包">${(plan.planItems['smtDocPackage'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
 					$(function(){
-					    $('#test_file').editable({
+					    $('#smtDocPackage').editable({
 					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '测试文件',
+					        title: 'SMT资料包',
 					        rows: 5
 					    });
 					});
@@ -147,26 +147,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px"><a href="#" id="message0" data-type="textarea" data-pk="message0" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息1名称">${(plan.planItems['message0'].itemValue)!}</a>
+			<td style="width:100px" colspan = "2">软件版本号</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="softwareVer" data-type="textarea" data-pk="softwareVer" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入软件版本号">${(plan.planItems['softwareVer'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
 					$(function(){
-					    $('#message0').editable({
+					    $('#softwareVer').editable({
 					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息1名称',
-					        rows: 5
-					    });
-					});
-				</script>
-				</#if>
-			</td>
-			<td style="width:400px" colspan = "2"><a href="#" id="input_message0" data-type="textarea" data-pk="input_message0" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息1内容">${(plan.planItems['input_message0'].itemValue)!}</a>
-				<#if canWrite??>
-				<script>
-					$(function(){
-					    $('#input_message0').editable({
-					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息1内容',
+					        title: '软件版本号',
 					        rows: 5
 					    });
 					});
@@ -175,26 +163,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px"><a href="#" id="message1" data-type="textarea" data-pk="message1" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息2名称">${(plan.planItems['message1'].itemValue)!}</a>
+			<td style="width:100px" colspan = "2">下载软件名</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="software_name" data-type="textarea" data-pk="software_name" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入下载软件名">${(plan.planItems['software_name'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
 					$(function(){
-					    $('#message1').editable({
+					    $('#software_name').editable({
 					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息2名称',
-					        rows: 5
-					    });
-					});
-				</script>
-				</#if>
-			</td>
-			<td style="width:400px" colspan = "2"><a href="#" id="input_message1" data-type="textarea" data-pk="input_message1" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息2内容">${(plan.planItems['input_message1'].itemValue)!}</a>
-				<#if canWrite??>
-				<script>
-					$(function(){
-					    $('#input_message1').editable({
-					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息2内容',
+					        title: '下载软件名',
 					        rows: 5
 					    });
 					});
@@ -203,26 +179,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px"><a href="#" id="message2" data-type="textarea" data-pk="message2" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息3名称">${(plan.planItems['message2'].itemValue)!}</a>
+			<td style="width:100px" colspan = "2">烧录软件校验和</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="softChecksum" data-type="textarea" data-pk="softChecksum" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入烧录软件校验和">${(plan.planItems['softChecksum'].itemValue)!}</a>
 				<#if canWrite??>
 				<script>
 					$(function(){
-					    $('#message2').editable({
+					    $('#softChecksum').editable({
 					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息3名称',
-					        rows: 5
-					    });
-					});
-				</script>
-				</#if>
-			</td>
-			<td style="width:400px" colspan = "2"><a href="#" id="input_message2" data-type="textarea" data-pk="input_message2" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入新增信息3内容">${(plan.planItems['input_message2'].itemValue)!}</a>
-				<#if canWrite??>
-				<script>
-					$(function(){
-					    $('#input_message2').editable({
-					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
-					        title: '新增信息3内容',
+					        title: '烧录软件校验和',
 					        rows: 5
 					    });
 					});
@@ -231,8 +195,137 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px; word-break:break-all;">绿色产品<br/>生产要求(必选)</td>
-			<td style="width:700px" colspan = "4">工艺要求：
+			<td style="width:100px" colspan = "2">测试流程要求</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="test_request" data-type="textarea" data-pk="test_request" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入测试流程要求">${(plan.planItems['test_request'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#test_request').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: '测试流程要求',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:100px" colspan = "2">测试工具版本</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="testtool_ver" data-type="textarea" data-pk="testtool_ver" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入测试工具版本">${(plan.planItems['testtool_ver'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#testtool_ver').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: '测试工具版本',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:100px" colspan = "2">烧录器件编码</td>
+			<td style="width:400px" colspan = "5"><a href="#" id="qijianCode" data-type="textarea" data-pk="qijianCode" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入烧录器件编码">${(plan.planItems['qijianCode'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#qijianCode').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: '烧录器件编码',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:100px" colspan = "2">LCM</td>
+			<td style="width:100px" colspan = "2"><a href="#" id="lcm" data-type="textarea" data-pk="lcm" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入LCM">${(plan.planItems['lcm'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#lcm').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: 'LCM',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+			<td style="width:100px">摄像头</td>
+			<td style="width:100px"><a href="#" id="camera" data-type="textarea" data-pk="camera" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="摄像头">${(plan.planItems['camera'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#camera').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: '摄像头',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+			<td style="width:100px">主副板配套信息</td>
+			<td style="width:200px" colspan = "2"><a href="#" id="zhufubanpeitao" data-type="textarea" data-pk="zhufubanpeitao" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="主副板配套信息">${(plan.planItems['zhufubanpeitao'].itemValue)!}</a>
+				<#if canWrite??>
+				<script>
+					$(function(){
+					    $('#zhufubanpeitao').editable({
+					    	url: '${(rc.getContextPath())!}/do/plan/save.html',
+					        title: '主副板配套信息',
+					        rows: 5
+					    });
+					});
+				</script>
+				</#if>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:50px" rowspan = "6">测试频段</th>
+			<td style="width:50px">GSM</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="gsm_number" data-type="textarea" data-pk="gsm_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入GSM频段">${(plan.planItems['gsm_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50px">CDMA</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="cdma_number" data-type="textarea" data-pk="cdma_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入CDMA频段">${(plan.planItems['cdma_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50px">WCDMA</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="wcdma_number" data-type="textarea" data-pk="wcdma_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入WCDMA频段">${(plan.planItems['wcdma_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50px">TDSCDMA</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="tdscdma_number" data-type="textarea" data-pk="tdscdma_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入TDSCDMA频段">${(plan.planItems['tdscdma_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50px">TDD-LTE</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="tdd-lte_number" data-type="textarea" data-pk="tdd-lte_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入TDD-LTE频段">${(plan.planItems['tdd-lte_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50px">FDD-LTE</td>
+			<td style="width:600px" word-break:break-all; word-wrap:break-word;  colspan = "7">
+				<a href="#" class="editable" id="fdd-lte_number" data-type="textarea" data-pk="fdd-lte_number" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入FDD-LTE频段">${(plan.planItems['fdd-lte_number'].itemValue)!}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:100px; word-break:break-all;">绿色产品<br/>生产要求<br>(必选)</td>
+			<td style="width:700px" colspan = "9">工艺要求：
 				<#if plan.planItems["fabrication-wuqian"]?has_content>
 					<label><input ${canWrite!'disabled'} id="fabrication-wuqian" class="ajaxCheckbox-fabrication" type="checkbox" ${plan.planItems['fabrication-wuqian'].itemValue}><span> 无铅工艺</span></label>
 				<#else>
@@ -281,7 +374,7 @@
 		</tr>
 		<tr>
 			<td style="width:100px">生产性质<br>（必选）</td>
-			<td style="width:700px" colspan = "4">
+			<td style="width:700px" colspan = "9">
 			<#if plan.planItems["manufacture-lianchan"]?has_content>
 				<label><input ${canWrite!'disabled'} id="manufacture-lianchan" class="ajaxCheckbox-manufacture" type="checkbox"  ${plan.planItems['manufacture-lianchan'].itemValue}><span> 量产</span></label>
 			<#else>
@@ -289,15 +382,9 @@
 			</#if>
 			
 			<#if plan.planItems["manufacture-shichan"]?has_content>
-				<label><input ${canWrite!'disabled'} id="manufacture-shichan" class="ajaxCheckbox-manufacture" type="checkbox" ${plan.planItems['manufacture-shichan'].itemValue}><span> 试产（小批量设计验证）</span></label>
+				<label><input ${canWrite!'disabled'} id="manufacture-shichan" class="ajaxCheckbox-manufacture" type="checkbox" ${plan.planItems['manufacture-shichan'].itemValue}><span> 试产</span></label>
 			<#else>
-				<label><input ${canWrite!'disabled'} id="manufacture-shichan" class="ajaxCheckbox-manufacture" type="checkbox"><span> 试产（小批量设计验证）</span></label>
-			</#if>
-			
-			<#if plan.planItems["manufacture-softupdate"]?has_content>
-				<label><input ${canWrite!'disabled'} id="manufacture-softupdate" class="ajaxCheckbox-manufacture" type="checkbox" ${plan.planItems['manufacture-softupdate'].itemValue}><span> 软件升级</span></label>
-			<#else>
-				<label><input ${canWrite!'disabled'} id="manufacture-softupdate" class="ajaxCheckbox-manufacture" type="checkbox"><span> 软件升级</span></label>
+				<label><input ${canWrite!'disabled'} id="manufacture-shichan" class="ajaxCheckbox-manufacture" type="checkbox"><span> 试产</span></label>
 			</#if>
 			
 			<#if plan.planItems["manufacture-fangong"]?has_content>
@@ -320,96 +407,78 @@
 			        	  });
 			    });
 				</script>
-
 			</td>
 		</tr>
 		<tr>
-               <td style="width:100px">委托加工方</td>
-               <td style="width:100px">订单批量</td>
-               <td style="width:200px">要求出货数量</td>
-               <td style="width:200px">预计生产日期</td>
-               <td style="width:200px">预计交货日期</td>
-        </tr>
+			<td style="width:100px">委托加工方</td>
+			<td style="width:150px" colspan = "3">订单批量</td>
+			<td style="width:150px" colspan = "2">要求出货数量</td>
+			<td style="width:200px" colspan = "2">预计生产日期</td>
+			<td style="width:200px" colspan = "2">预计交货日期</td>
+		</tr>
 		<tr>
 			<td style="width:100px">
 			<a href="#" class="editable" id="jiagong_customer" data-type="textarea" data-pk="jiagong_customer" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入委托加工方">
 					<#if plan.planItems["jiagong_customer"]?has_content>${plan.planItems['jiagong_customer'].itemValue}</#if></a>
 			</td>
-			<td style="width:100px">
+			<td style="width:150px" colspan = "3">
 				<a href="#" class="editable" id="dingdan_total" data-type="textarea" data-pk="dingdan_total" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入订单批量">
 					<#if plan.planItems["dingdan_total"]?has_content>${plan.planItems['dingdan_total'].itemValue}</#if></a>
 			</td>
-			<td style="width:200px">
+			<td style="width:150px" colspan = "2">
 				<a href="#" class="editable" id="request_total" data-type="textarea" data-pk="request_total" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入要求出货数量">
 					<#if plan.planItems["request_total"]?has_content>${plan.planItems['request_total'].itemValue}</#if></a>
 			</td>
-			<td style="width:200px">
+			<td style="width:200px" colspan = "2">
 				<a href="#" class="editable" id="manufactureDate" data-type="date" data-pk="manufactureDate" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入预计生产日期">
 					<#if plan.planItems["manufactureDate"]?has_content>${plan.planItems['manufactureDate'].itemValue}</#if></a>
 			</td>
-			<td style="width:200px">
+			<td style="width:200px" colspan = "2">
 				<a href="#" class="editable" id="completeDate" data-type="date" data-pk="completeDate" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入预计交货日期">
 					<#if plan.planItems["completeDate"]?has_content>${plan.planItems['completeDate'].itemValue}</#if></a>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px" rowspan = "2">客户确认<br>(标记)</td>
-			<td style="width:100px">主板S/N</td>
-			<td style="width:200px">
+			<td style="width:100px" rowspan = "3">客户确认</td>
+			<th style="width:50px" rowspan = "3">标记</th>
+			<td style="width:100px" colspan = "2">主板S/N</td>
+			<td style="width:200px" colspan = "3">
 				<a href="#" class="editable" id="zhuban_sn" data-type="textarea" data-pk="zhuban_sn" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入主板S/N">
 					<#if plan.planItems["zhuban_sn"]?has_content>${plan.planItems['zhuban_sn'].itemValue}</#if></a>
 			</td>
-			<td style="width:200px">MAC地址</td>
-			<td style="width:200px">
+			<td style="width:100px">MAC地址</td>
+			<td style="width:200px" colspan = "2">
 				<a href="#" class="editable" id="mac_address" data-type="textarea" data-pk="mac_address" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="MAC地址">
 					<#if plan.planItems["mac_address"]?has_content>${plan.planItems['mac_address'].itemValue}</#if></a>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px">IMEI</td>
-			<td style="width:200px">
+			<td style="width:100px" colspan = "2">IMEI</td>
+			<td style="width:200px" colspan = "3">
 				<a href="#" class="editable" id="imei" data-type="textarea" data-pk="imei" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入IMEI">
 					<#if plan.planItems["imei"]?has_content>${plan.planItems['imei'].itemValue}</#if></a>
 			</td>
-			<td style="width:200px">MEID</td>
-			<td style="width:200px">
+			<td style="width:100px">MEID</td>
+			<td style="width:200px" colspan = "2">
 				<a href="#" class="editable" id="meid" data-type="textarea" data-pk="meid" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入MEID">
 					<#if plan.planItems["meid"]?has_content>${plan.planItems['meid'].itemValue}</#if></a>
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px">物料信息</td>
-			<td style="width:700px" colspan = "4" >
-				<div ${canWrite!'disabled'} id="wuliao_message" data-type="wysihtml5" data-pk="wuliao_message">
-					<#if plan.planItems["wuliao_message"]?has_content>${plan.planItems['wuliao_message'].itemValue}</#if>
-				</div>
-				<#if canWrite??>
-
-				<script>
-				$('#wuliao_message').editable({
-			        url: '${(rc.getContextPath())!}/do/plan/save.html',
-			        title: '物料信息',
-			        wysihtml5:{
-			        	"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
-			        	"emphasis": true, //Italics, bold, etc. Default true
-			        	"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
-			        	"html": false, //Button which allows you to edit the generated HTML. Default false
-			        	"link": false, //Button to insert a link. Default true
-			        	"image": false, //Button to insert an image. Default true,
-			        	"color": true //Button to change color of font 
-			        }
-			    });
-				</script>
-				</#if>
+			<td style="width:100px" colspan = "2">蓝牙地址</td>
+			<td style="width:200px" colspan = "3">
+				<a href="#" class="editable" id="bluetooth_address" data-type="textarea" data-pk="bluetooth_address" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="蓝牙地址">
+					<#if plan.planItems["bluetooth_address"]?has_content>${plan.planItems['bluetooth_address'].itemValue}</#if></a>
 			</td>
+			<td style="width:100px"></td>
+			<td style="width:200px" colspan = "2"></td>
 		</tr>
 		<tr>
 			<td style="width:100px">备注</td>
-			<td style="width:700px" colspan = "4" >
+			<td style="width:700px" colspan = "9" >
 				<div ${canWrite!'disabled'} id="comments" data-type="wysihtml5" data-pk="comments">
 					<#if plan.planItems["comments"]?has_content>${plan.planItems['comments'].itemValue}</#if>
 				</div>
-				
 				<#if canWrite??>
 				<script>
 				$('#comments').editable({

@@ -94,7 +94,7 @@ public class PlanDaoImpl implements PlanDao {
 
 		Query query = em.createQuery(hqlQuery);
 
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd mm");
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		if (!StringUtils.isEmpty(dateFrom)) {
 			try {
 				query.setParameter("dateFrom", sf.parse(dateFrom + " 00:00:00"));
@@ -180,6 +180,12 @@ public class PlanDaoImpl implements PlanDao {
 		}
 
 		if (!StringUtils.isEmpty(status)) {
+			if (w) {
+				hqlQuery += " and ";
+			} else {
+				w = true;
+			}
+			
 			if (status.equals("REJECTED")) {
 				hqlQuery += " (p.reviewStatus = 'REJECTED' or p.approveStatus = 'REJECTED')";
 			} else {

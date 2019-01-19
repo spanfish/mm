@@ -43,6 +43,7 @@
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+				data-placement: auto;
 				height:15;
 			}			
 		</style>
@@ -73,7 +74,7 @@
 			<#assign canWrite = "true">
 		</#if>
 		
-		<#include "jingtianDetail.ftl">
+		<#include "haixinDetail.ftl">
 		<#include "buttons.ftl">
 		
      	<#include "ajax.ftl">

@@ -28,12 +28,36 @@
         <script src="${rc.getContextPath()}/resources/x-editable/inputs-ext/wysihtml5/wysihtml5-0.0.3.js"></script>
 
 		<style>
-					
+			.oms_table th{
+				font-weight:normal}
+			label{
+				font-weight:normal;}
+			table{
+				font-size:10px;}
+			.oms_table {
+				table-layout: fixed;			
+			}
+			.oms_table td {
+				word-wrap: break-word;
+				word-break: break-all;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				data-placement: auto;
+				height:15;
+			}			
 		</style>
 	</head>
 	<body style=" width: 100%;">
 		<#assign planListClass ="active">
-		<#include "navi.ftl">
+		
+		<#if plan.approveStatus == 'APPROVED' && plan.reviewStatus == 'APPROVED'>
+			
+		</#if>
+		<#if plan.approveStatus != 'APPROVED' || plan.reviewStatus != 'APPROVED'>
+			<#include "navi.ftl">
+		</#if>
+		
 		<div id="error">
 			<#if error??>
 				<div class="w3-panel w3-red">

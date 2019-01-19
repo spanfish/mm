@@ -22,7 +22,7 @@
 				<#assign pageSize = 10>
 	
 				<#list plans as p>
-					<tr style="height: 80px;">
+					<tr style="height: 35px;">
 						<td style="width:40px">${p_index + 1 + cp * pageSize}</td>
 						<td style="width:100px">${p.createDate?string["yyyy-MM-dd"]}</td>
 						<td style="width:300px">${p.customer}</td>
@@ -64,7 +64,7 @@
 	<#if pageCount gt 1>
 		<!-- Pagination Bar size -->
 		<#assign ns = 10>
-		<#assign ps = 2>
+		<#assign ps = 10>
 		
 		<!-- Current page -->
 		<#if RequestParameters.page??>

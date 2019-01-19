@@ -1731,7 +1731,7 @@ to {
 	border: 3px double #f00;
 	border-radius: 50%;
 	color: #f00;
-	width: 64px;
+	width: 88px;
 	height: 64px;
 	position: relative;
 	margin: auto;
@@ -1770,7 +1770,7 @@ to {
 	padding-top: 2px;
 	line-height: 1;
 }
-
+	
 .stamp-REJECTED span:first-child::before {
 	content: "否决";
 }
