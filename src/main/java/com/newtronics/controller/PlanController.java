@@ -68,6 +68,7 @@ public class PlanController {
 			@RequestParam(name = "dateTo", required = false) String dateTo,
 			@RequestParam(name = "customer", required = false) String customer,
 			@RequestParam(name = "notifyNo", required = false) String notifyNo,
+			@RequestParam(name = "fileNo", required = false) String fileNo,
 			@RequestParam(name = "status", required = false) String status) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> search = (Map<String, String>) modelMap.get("search");
@@ -91,6 +92,9 @@ public class PlanController {
 		}
 		if(!StringUtils.isEmpty(status)) {
 			search.put("status", status);
+		}
+		if(!StringUtils.isEmpty(fileNo)) {
+			search.put("fileNo", fileNo);
 		}
 		ModelAndView mv = list(principal, modelMap, "0", "10");
 		mv.setViewName("listPlanTable");

@@ -34,31 +34,13 @@
 					</#list>
 				</select>
 				</td>
-				<!--
-				<td style="width: 180px;">
-					<select name="customer">
-						<option></option>
-						<#list templates as t>
-							<option value="${t.id}">"${t.name}"</option>
-						</#list>	
-					</select>
-				</td>
-				-->
-				<!--
-				<td style="width: 180px;">
-					<select name="customer">
-						<option></option>
-							
-					</select>
-				</td>
-				-->
 				<th style="width: 60px;" style="text-align:right">生产计划<br>通知书号</th>
 				<td style="width: 140px;">
 					<input type="text" name="notifyNo"></input>
 				</td>
 				<th style="width: 64px;" style="text-align:center">文件编号/工单编号</th>
 				<td style="width: 165px;">
-					<input type="text" name="file_No"></input>
+					<input type="text" name="fileNo"></input>
 				</td>
 				<th style="width: 33px; text-align:right">状态</th>
 				<td style="width: 90px";>

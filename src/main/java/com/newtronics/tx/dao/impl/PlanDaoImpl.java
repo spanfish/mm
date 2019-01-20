@@ -66,7 +66,7 @@ public class PlanDaoImpl implements PlanDao {
 			} else {
 				w = true;
 			}
-			hqlQuery += " p.customer = :customer";
+			hqlQuery += " p.templateId = :customer";
 		}
 		if (!StringUtils.isEmpty(notifyNo)) {
 			if (w) {
@@ -74,7 +74,7 @@ public class PlanDaoImpl implements PlanDao {
 			} else {
 				w = true;
 			}
-			hqlQuery += " p.notifyNo = :notifyNo";
+			hqlQuery += " p.notifyNo like :notifyNo";
 		}
 
 		if (!StringUtils.isEmpty(status)) {
@@ -113,7 +113,7 @@ public class PlanDaoImpl implements PlanDao {
 			query.setParameter("customer", customer);
 		}
 		if (!StringUtils.isEmpty(notifyNo)) {
-			query.setParameter("notifyNo", notifyNo);
+			query.setParameter("notifyNo", "%" + notifyNo + "%");
 		}
 
 		if (!StringUtils.isEmpty(status)) {
@@ -168,7 +168,7 @@ public class PlanDaoImpl implements PlanDao {
 			} else {
 				w = true;
 			}
-			hqlQuery += " p.customer = :customer";
+			hqlQuery += " p.templateId = :customer";
 		}
 		if (!StringUtils.isEmpty(notifyNo)) {
 			if (w) {
@@ -176,7 +176,7 @@ public class PlanDaoImpl implements PlanDao {
 			} else {
 				w = true;
 			}
-			hqlQuery += " p.notifyNo = :notifyNo";
+			hqlQuery += " p.notifyNo like :notifyNo";
 		}
 
 		if (!StringUtils.isEmpty(status)) {
@@ -213,7 +213,7 @@ public class PlanDaoImpl implements PlanDao {
 			query.setParameter("customer", customer);
 		}
 		if (!StringUtils.isEmpty(notifyNo)) {
-			query.setParameter("notifyNo", notifyNo);
+			query.setParameter("notifyNo", "%" + notifyNo + "%");
 		}
 		if (!StringUtils.isEmpty(status)) {
 			if (status.equals("CREATING")) {
