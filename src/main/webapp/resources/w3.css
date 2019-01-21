@@ -1770,7 +1770,11 @@ to {
 	padding-top: 2px;
 	line-height: 1;
 }
-	
+
+.stamp-CREATE span:first-child::before {
+	content: "制作";
+}
+
 .stamp-REJECTED span:first-child::before {
 	content: "否决";
 }
