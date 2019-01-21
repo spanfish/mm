@@ -42,6 +42,9 @@ public class MailServiceImpl implements MailService {
 
 	@Value("${mail.subject}")
 	private String subject;
+	
+	@Value("${mail.viewPlanLink}")
+	private String viewPlanLink;
 
 	@Override
 	@Async
@@ -69,7 +72,10 @@ public class MailServiceImpl implements MailService {
 				String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, tmpMode);
 
 				helper.setTo(receipts.split(";"));
-				helper.setText(html, true);
+				String link = viewPlanLink;
+				link = link.replaceAll(":notifyNo", model.getNotifyNo());
+				link = link.replaceAll(":planId", model.getPlanId());
+				helper.setText(viewPlanLink + "<br/>" + html, true);
 				helper.setSubject(subject);
 				helper.setFrom(from);
 

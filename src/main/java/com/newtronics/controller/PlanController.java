@@ -165,6 +165,13 @@ public class PlanController {
 		return mv;
 	}
 
+	@RequestMapping(value = "view.html", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView viewPlan(Principal principal,
+			@RequestParam(name = "templateId", required = false) String templateId,
+			@RequestParam(name = "notifyNo", required = false) String notifyNo,
+			@RequestParam(name = "planId", required = false) String planId) {
+		return inputPlan(principal, templateId, notifyNo, planId);
+	}
 	/**
 	 * 从创建计划迁移而来，创建Plan对象并保持在内存中
 	 * 
