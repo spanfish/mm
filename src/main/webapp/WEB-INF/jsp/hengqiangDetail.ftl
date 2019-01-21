@@ -40,7 +40,7 @@
 		<tr>
 			<td style="width:100px">文件编号:</td>
 			<td style="width:200px">
-				<a href="#" class="editable" id="file_No" data-type="text" data-pk="file_No" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入文件编号">${(plan.planItems['file_No'].itemValue)!}
+				<a href="#" class="editable" id="fileNo" data-type="text" data-pk="fileNo" data-url="${(rc.getContextPath())!}/do/plan/save.html" data-title="输入文件编号">${(plan.planItems['fileNo'].itemValue)!}
 				</a>
 			</td>
 			<td style="width:100px">日    期：</td>
