@@ -75,7 +75,7 @@ public class MailServiceImpl implements MailService {
 				String link = viewPlanLink;
 				link = link.replaceAll(":notifyNo", model.getNotifyNo());
 				link = link.replaceAll(":planId", model.getPlanId());
-				helper.setText(viewPlanLink + "<br/>" + html, true);
+				helper.setText(link + "<br/>" + html, true);
 				helper.setSubject(subject);
 				helper.setFrom(from);
 
