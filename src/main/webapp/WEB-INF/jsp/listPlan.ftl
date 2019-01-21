@@ -81,6 +81,10 @@
 		
 		</style>
 		<script>
+			function resetForm() {
+				$('.rs').val("");
+				filter();	
+			}
 			function filter() {
 				$.ajax({
 					  method: "POST",

@@ -70,7 +70,11 @@
 		<#if RequestParameters.page??>
 			<#assign cp = RequestParameters.page?number>
 		<#else>
-			<#assign cp = 0>
+			<#if Session.searchForm??>
+    			<#assign cp = Session.searchForm['page']?number>
+    		<#else>
+    			<#assign cp = 0>
+			</#if>			
 		</#if>
 		
 		<!-- Pagination Bar Start Index-->

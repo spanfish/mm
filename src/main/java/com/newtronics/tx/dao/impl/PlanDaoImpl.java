@@ -30,6 +30,22 @@ public class PlanDaoImpl implements PlanDao {
 		return plan;
 	}
 
+	private boolean hasCriteria(Map<String, String> search) {
+		String dateFrom = search.get("dateFrom");
+		String dateTo = search.get("dateTo");
+		String customer = search.get("customer");
+		String notifyNo = search.get("notifyNo");
+		String status = search.get("status");
+		String fileNo = search.get("fileNo");
+		
+		return !StringUtils.isEmpty(dateFrom)
+				|| !StringUtils.isEmpty(dateTo)
+				|| !StringUtils.isEmpty(customer)
+				|| !StringUtils.isEmpty(notifyNo)
+				|| !StringUtils.isEmpty(status)
+				|| !StringUtils.isEmpty(fileNo);
+				
+	}
 	@Override
 	public Long getPageCount(Map<String, String> search) {
 		String dateFrom = search.get("dateFrom");
@@ -40,7 +56,7 @@ public class PlanDaoImpl implements PlanDao {
 		String fileNo = search.get("fileNo");
 
 		String hqlQuery = "select count(p) from Plan p";
-		if (!search.isEmpty()) {
+		if (hasCriteria(search)) {
 			hqlQuery += " where ";
 		}
 		boolean w = false;
@@ -159,7 +175,7 @@ public class PlanDaoImpl implements PlanDao {
 		String fileNo = search.get("fileNo");
 		
 		String hqlQuery = " from Plan p";
-		if (!search.isEmpty()) {
+		if (hasCriteria(search)) {
 			hqlQuery += " where ";
 		}
 		boolean w = false;

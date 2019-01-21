@@ -45,11 +45,12 @@ import com.newtronics.tx.service.UserService;
 
 @Controller
 @RequestMapping(value = "/plan")
-@SessionAttributes({ "plan" })
+@SessionAttributes({ "plan", "searchForm" })
 public class PlanController {
 
 	private Logger log = Logger.getLogger(PlanController.class);
 
+	private static String SEARCH_FORM = "searchForm";
 	@Autowired
 	private UserService userService;
 
@@ -62,6 +63,15 @@ public class PlanController {
 	@Autowired
 	private MailService mailService;
 
+	public Map<String, String> setRequestForm(Map<String, String> searchMap, String name, String value) {
+		
+		searchMap.remove(name);
+		if(!StringUtils.isEmpty(value)) {
+			searchMap.put(name, value);
+		}
+		return searchMap;
+	}
+
 	@RequestMapping(value = "filter.html", method = { RequestMethod.POST })
 	public ModelAndView filter(Principal principal, ModelMap modelMap,
 			@RequestParam(name = "dateFrom", required = false) String dateFrom,
@@ -71,31 +81,32 @@ public class PlanController {
 			@RequestParam(name = "fileNo", required = false) String fileNo,
 			@RequestParam(name = "status", required = false) String status) {
 		@SuppressWarnings("unchecked")
-		Map<String, String> search = (Map<String, String>) modelMap.get("search");
+		Map<String, String> search = (Map<String, String>) modelMap.get(SEARCH_FORM);
 		if (search == null) {
 			search = new HashMap<String, String>();
-			modelMap.put("search", search);
-		} else {
-			search.clear();
+			modelMap.put(SEARCH_FORM, search);
 		}
-		if(!StringUtils.isEmpty(dateFrom)) {
-			search.put("dateFrom", dateFrom);
+		search.clear();
+		
+		if (!StringUtils.isEmpty(dateFrom)) {
+			setRequestForm(search, "dateFrom", dateFrom);
 		}
-		if(!StringUtils.isEmpty(dateTo)) {
-			search.put("dateTo", dateTo);
+		if (!StringUtils.isEmpty(dateTo)) {
+			setRequestForm(search, "dateTo", dateTo);
 		}
-		if(!StringUtils.isEmpty(customer)) {
-			search.put("customer", customer);
+		if (!StringUtils.isEmpty(customer)) {
+			setRequestForm(search, "customer", customer);
 		}
-		if(!StringUtils.isEmpty(notifyNo)) {
-			search.put("notifyNo", notifyNo);
+		if (!StringUtils.isEmpty(notifyNo)) {
+			setRequestForm(search, "notifyNo", notifyNo);
 		}
-		if(!StringUtils.isEmpty(status)) {
-			search.put("status", status);
+		if (!StringUtils.isEmpty(status)) {
+			setRequestForm(search, "status", status);
 		}
-		if(!StringUtils.isEmpty(fileNo)) {
-			search.put("fileNo", fileNo);
+		if (!StringUtils.isEmpty(fileNo)) {
+			setRequestForm(search, "fileNo", fileNo);
 		}
+		
 		ModelAndView mv = list(principal, modelMap, "0", "10");
 		mv.setViewName("listPlanTable");
 		return mv;
@@ -111,22 +122,29 @@ public class PlanController {
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "pageSize", required = false) String pageSize) {
 
+		@SuppressWarnings("unchecked")
+		Map<String, String> search = (Map<String, String>) modelMap.get(SEARCH_FORM);
+		if (search == null) {
+			search = new HashMap<String, String>();
+			modelMap.put(SEARCH_FORM, search);
+		}
+		
 		int p = 0;
+		if (StringUtils.isEmpty(page)) {
+			page = search.get("page");
+		}
+		
 		if (!StringUtils.isEmpty(page)) {
 			p = Integer.valueOf(page);
 		}
+		
 		int ps = 10;
 		if (!StringUtils.isEmpty(pageSize)) {
 			ps = Integer.valueOf(pageSize);
 		}
-
-		@SuppressWarnings("unchecked")
-		Map<String, String> search = (Map<String, String>) modelMap.get("search");
-		if (search == null) {
-			search = new HashMap<String, String>();
-			modelMap.put("search", search);
-		}
-
+		
+		search.put("page", String.valueOf(p));
+		
 		Long totalCount = planService.getPageCount(search);
 		Long pageCount = (totalCount + ps - 1) / ps;
 		modelMap.put("pageCount", pageCount);
@@ -154,11 +172,12 @@ public class PlanController {
 	 * @return
 	 */
 	@RequestMapping(value = "input.html", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView inputPlan(Principal principal, @RequestParam(name = "templateId", required = false) String templateId,
+	public ModelAndView inputPlan(Principal principal,
+			@RequestParam(name = "templateId", required = false) String templateId,
 			@RequestParam(name = "notifyNo", required = false) String notifyNo,
 			@RequestParam(name = "planId", required = false) String planId) {
 		ModelAndView mv = new ModelAndView();
-		
+
 		Plan plan = null;
 		String tid = templateId;
 		if (StringUtils.isEmpty(notifyNo)) {
@@ -215,8 +234,9 @@ public class PlanController {
 	 */
 	@RequestMapping(value = "save.html", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> saveItem(Principal principal, ModelMap modelMap, @RequestParam("name") String name,
-			@RequestParam("pk") String pk, @RequestParam(name = "value", required = false) String value,
+	public ResponseEntity<HttpStatus> saveItem(Principal principal, ModelMap modelMap,
+			@RequestParam("name") String name, @RequestParam("pk") String pk,
+			@RequestParam(name = "value", required = false) String value,
 			@RequestParam(name = "value[]", required = false) String values) {
 
 		Plan plan = (Plan) modelMap.get("plan");
@@ -250,7 +270,7 @@ public class PlanController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			
+
 		}
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
