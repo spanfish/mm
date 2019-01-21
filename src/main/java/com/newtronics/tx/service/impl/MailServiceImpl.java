@@ -43,12 +43,19 @@ public class MailServiceImpl implements MailService {
 	@Value("${mail.subject}")
 	private String subject;
 	
-	@Value("${mail.viewPlanLink}")
-	private String viewPlanLink;
+	@Value("${mail.reviewPlanLink}")
+	private String reviewPlanLink;
 
-	@Override
-	@Async
-	public void sendReviewEmail(final Plan model, final com.newtronics.tx.model.Template tmp) {
+	@Value("${mail.approvePlanLink}")
+	private String approvePlanLink;
+	
+	@Value("${mail.rejectPlanLink}")
+	private String rejectPlanLink;
+	
+	@Value("${mail.completePlanLink}")
+	private String completePlanLink;
+	
+	public void sendEmail(final String link, final Plan model, final com.newtronics.tx.model.Template tmp) {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper;
 		try {
@@ -72,9 +79,7 @@ public class MailServiceImpl implements MailService {
 				String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, tmpMode);
 
 				helper.setTo(receipts.split(";"));
-				String link = viewPlanLink;
-				link = link.replaceAll(":notifyNo", model.getNotifyNo());
-				link = link.replaceAll(":planId", model.getPlanId());
+				
 				helper.setText(link + "<br/>" + html, true);
 				helper.setSubject(subject);
 				helper.setFrom(from);
@@ -95,6 +100,47 @@ public class MailServiceImpl implements MailService {
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
-
 	}
+	
+	@Override
+	@Async
+	public void sendReviewEmail(final String userName, final Plan model, final com.newtronics.tx.model.Template tmp) {
+		String link = reviewPlanLink;
+		link = link.replaceAll(":notifyNo", model.getNotifyNo());
+		link = link.replaceAll(":planId", model.getPlanId());
+		link = link.replaceAll(":user", userName != null ? userName : "");
+		sendEmail(link, model, tmp);
+	}
+
+	@Override
+	@Async
+	public void sendRejectEmail(final String userName, Plan model, com.newtronics.tx.model.Template tmp) {
+		String link = rejectPlanLink;
+		link = link.replaceAll(":notifyNo", model.getNotifyNo());
+		link = link.replaceAll(":planId", model.getPlanId());
+		link = link.replaceAll(":user", userName != null ? userName : "");
+		
+		sendEmail(link, model, tmp);
+	}
+
+	@Override
+	@Async
+	public void sendApproveEmail(final String userName, Plan model, com.newtronics.tx.model.Template tmp) {
+		String link = approvePlanLink;
+		link = link.replaceAll(":notifyNo", model.getNotifyNo());
+		link = link.replaceAll(":planId", model.getPlanId());
+		link = link.replaceAll(":user", userName != null ? userName : "");
+		sendEmail(link, model, tmp);
+	}
+	
+	@Override
+	@Async
+	public void sendCompleteEmail(final String userName, Plan model, com.newtronics.tx.model.Template tmp) {
+		String link = completePlanLink;
+		link = link.replaceAll(":notifyNo", model.getNotifyNo());
+		link = link.replaceAll(":planId", model.getPlanId());
+		link = link.replaceAll(":user", userName != null ? userName : "");
+		sendEmail(link, model, tmp);
+	}
+	
 }

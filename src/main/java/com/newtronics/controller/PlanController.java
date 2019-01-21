@@ -317,8 +317,8 @@ public class PlanController {
 				mv.setViewName(template.getViewName());
 				return mv;
 			}
-			User creator = userService.getUserByName(principal.getName());
-			plan.setCreator(creator);
+			User user = userService.getUserByName(principal.getName());
+			plan.setCreator(user);
 			plan.setCreateDate(new Date());
 			plan.setStatus(PlanStatus.REVIEWING);
 			plan.setReviewStatus(ApproveResult.NONE);
@@ -327,7 +327,7 @@ public class PlanController {
 
 			Template template = templateService.findTemplateById(plan.getTemplateId());
 			if (template != null && !StringUtils.isEmpty(template.getReviewers())) {
-				mailService.sendReviewEmail(plan, template);
+				mailService.sendReviewEmail(user.getUserDispName(),plan, template);
 			}
 
 		} catch (Exception e) {
@@ -358,22 +358,29 @@ public class PlanController {
 				mv.setViewName("error");
 				return mv;
 			}
-			User creator = userService.getUserByName(principal.getName());
-			plan.setReviewer(creator);
+			User user = userService.getUserByName(principal.getName());
+			plan.setReviewer(user);
 			plan.setReviewDate(new Date());
 			if ("发回修改".equals(action)) {
 				plan.setStatus(PlanStatus.CREATING);
 				plan.setReviewStatus(ApproveResult.REJECTED);
+				
+				planService.updatePlan(plan);
+
+				Template template = templateService.findTemplateById(plan.getTemplateId());
+				if (template != null && template.getCreatorNames() != null && !template.getCreatorNames().isEmpty()) {
+					mailService.sendRejectEmail(user.getUserDispName(), plan, template);
+				}
 			} else {
 				plan.setStatus(PlanStatus.APPROVING);
 				plan.setReviewStatus(ApproveResult.APPROVED);
-			}
+				
+				planService.updatePlan(plan);
 
-			planService.updatePlan(plan);
-
-			Template template = templateService.findTemplateById(plan.getTemplateId());
-			if (template != null && template.getApprovers() != null && !template.getApprovers().isEmpty()) {
-				mailService.sendReviewEmail(plan, template);
+				Template template = templateService.findTemplateById(plan.getTemplateId());
+				if (template != null && template.getApprovers() != null && !template.getApprovers().isEmpty()) {
+					mailService.sendApproveEmail(user.getUserDispName(), plan, template);
+				}
 			}
 
 		} catch (Exception e) {
@@ -406,31 +413,28 @@ public class PlanController {
 				return mv;
 			}
 
-			User creator = userService.getUserByName(principal.getName());
-			plan.setApprover(creator);
+			User user = userService.getUserByName(principal.getName());
+			plan.setApprover(user);
 			plan.setApproveDate(new Date());
 			if ("发回修改".equals(action)) {
 				plan.setStatus(PlanStatus.CREATING);
 				plan.setReviewStatus(ApproveResult.REJECTED);
 				plan.setApproveStatus(ApproveResult.REJECTED);
+				planService.updatePlan(plan);
+				
+				Template template = templateService.findTemplateById(plan.getTemplateId());
+				if (template != null && template.getApprovers() != null && !template.getApprovers().isEmpty()) {
+					mailService.sendRejectEmail(user.getUserDispName(), plan, template);
+				}
 			} else {
 				plan.setStatus(PlanStatus.APPROVED);
 				plan.setApproveStatus(ApproveResult.APPROVED);
-			}
-			planService.updatePlan(plan);
-
-			Template template = templateService.findTemplateById(plan.getTemplateId());
-			if (template != null) {
-				StringBuffer sb = new StringBuffer();
-				for (User u : template.getApprovers()) {
-					if (!StringUtils.isEmpty(u.getEmail())) {
-						if (sb.length() > 0) {
-							sb.append(";");
-						}
-						sb.append(u.getEmail());
-					}
+				planService.updatePlan(plan);
+				
+				Template template = templateService.findTemplateById(plan.getTemplateId());
+				if (template != null && template.getApprovers() != null && !template.getApprovers().isEmpty()) {
+					mailService.sendCompleteEmail(user.getUserDispName(),plan, template);
 				}
-
 			}
 
 		} catch (Exception e) {
