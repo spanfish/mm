@@ -48,14 +48,11 @@
 		</style>
 	</head>
 	<body style=" width: 100%;">
+	<#if RequestParameters.print??>		
+	<#else>
 		<#assign planListClass ="active">
 		
-		<#if plan.approveStatus == 'APPROVED' && plan.reviewStatus == 'APPROVED'>
-			
-		</#if>
-		<#if plan.approveStatus != 'APPROVED' || plan.reviewStatus != 'APPROVED'>
-			<#include "navi.ftl">
-		</#if>
+		<#include "navi.ftl">
 		
 		<div id="error">
 			<#if error??>
@@ -72,10 +69,13 @@
 		<#if (plan.creator.username)?? && plan.creator.username == __user.principal.username>		
 			<#assign canWrite = "true">
 		</#if>
+	</#if>
 		
 		<#include "dahuaDetail.ftl">
+	<#if RequestParameters.print??>		
+	<#else>
 		<#include "buttons.ftl">
-		
-     	<#include "ajax.ftl">
+		<#include "ajax.ftl">
+	</#if>
 	</body>
 </html>

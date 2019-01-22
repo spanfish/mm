@@ -20,8 +20,20 @@
 	</#if>
 	</@security.authorize>
 	
-  	
-  	
   	<li class="navi-li" style="float:right"><a href="${rc.getContextPath()}/logout">退出</a></li>
+  	
+  	<#if RequestParameters.notifyNo??>
+  		<#if RequestParameters.planId??>
+  			<script>
+function printPlan()
+{
+	window.open('${rc.getContextPath()}/do/plan/printView.html?print=true&notifyNo=${RequestParameters.notifyNo}&planId=${RequestParameters.planId}', '', 'width=1024,height=960'); 
+	return false;
+}
+</script>
+  			<li class="navi-li" style="float:right"><a href="javascript:void();" onclick="return printPlan()">打印</a></li>
+  		</#if>
+  	</#if>
 </ul>
+
 

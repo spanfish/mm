@@ -562,7 +562,12 @@
 	<table style="border:0;">
 		<tr>
 			<th style="width:80px">制表</th>
-			<td style="width:160px">${plan.creator.userDispName}</td>
+			<td style="width:160px">
+				<div class="stamp stamp-CREATE">
+					<span>${plan.createDate?string["yyyy-MM-dd"]}</span>
+					${plan.creator.userDispName}
+				</div>
+			</td>
 			<th style="width:80px">审核</th>
 			<td style="width:160px">
 				<#if plan.reviewStatus == 'REJECTED' || plan.reviewStatus == 'APPROVED'>
