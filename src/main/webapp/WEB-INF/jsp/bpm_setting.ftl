@@ -70,8 +70,9 @@
 
 	
 	<br/>
-	<form method="GET" action="${rc.getContextPath()}/do/user/create/">
-		<input type="submit" name="Create" value="创建用户">
-	</form>
+	<form action="${rc.getContextPath()}/do/approve/deploy.html" method="post" enctype="multipart/form-data">
+        <input type="file" name="processDef" /><br />
+        <button type="submit">upload</button>
+    </form>
 </body>
 </html>
