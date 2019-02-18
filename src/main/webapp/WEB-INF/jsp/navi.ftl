@@ -18,7 +18,14 @@
 	<#else>
 		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/user/users.html">用户设置</a></li>
 	</#if>
+	
+	<#if approveClass??>
+		<li class="navi-li"><a class="${approveClass}" href="${rc.getContextPath()}/do/approve/setting.html">审核设置</a></li>
+	<#else>
+		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/approve/setting.html">审核设置</a></li>
+	</#if>
 	</@security.authorize>
+	
 	
   	<li class="navi-li" style="float:right"><a href="${rc.getContextPath()}/logout">退出</a></li>
   	

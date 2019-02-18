@@ -40,11 +40,4 @@
 		<property name="templateLoaderPath" value="/WEB-INF/jsp/" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
-
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.newtronics.common.PutUserInModelInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
 </beans>
