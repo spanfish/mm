@@ -3,7 +3,8 @@ CREATE TABLE users (
   userDispname VARCHAR(30),
   password VARCHAR(30),
   email  VARCHAR(50),
-  enabled CHAR(1)
+  enabled CHAR(1),
+  version INTEGER
 );
 
 CREATE TABLE user_role (
@@ -16,7 +17,7 @@ CREATE TABLE roles (
   description VARCHAR(30)
 );
 
-CREATE TABLE plan (
+CREATE TABLE plans (
   planid VARCHAR(100),
   status VARCHAR(30),
   templateId VARCHAR(30),
@@ -33,14 +34,16 @@ CREATE TABLE plan (
   approver_name VARCHAR(30),
   approve_date DATE,
   approveStatus VARCHAR(30),
-  message VARCHAR(200)
+  message VARCHAR(200),
+  version INTEGER
 );
 
 CREATE TABLE planitem (
   id VARCHAR(100),
   plan_id  VARCHAR(100),
   itemname VARCHAR(100),
-  itemvalue VARCHAR(100)
+  itemvalue VARCHAR(100),
+  version INTEGER
 );
 
 
@@ -53,19 +56,23 @@ CREATE TABLE template (
   creators VARCHAR(400),
   reviewers VARCHAR(400),
   approvers VARCHAR(400),
+  version INTEGER
 );
 
 CREATE TABLE template_creator (
  template_id varchar(100),
- user_id varchar(100)
+ user_id varchar(100),
+  version INTEGER
 );
 
 CREATE TABLE template_reviewer (
  template_id varchar(100),
- user_id varchar(100)
+ user_id varchar(100),
+  version INTEGER
 );
 
 CREATE TABLE template_approver (
  template_id varchar(100),
- user_id varchar(100)
+ user_id varchar(100),
+  version INTEGER
 );
