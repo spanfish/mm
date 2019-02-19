@@ -20,9 +20,9 @@
 	</#if>
 	
 	<#if approveClass??>
-		<li class="navi-li"><a class="${approveClass}" href="${rc.getContextPath()}/do/approve/setting.html">审核设置</a></li>
+		<li class="navi-li"><a class="${approveClass}" href="${rc.getContextPath()}/do/process/identify.html">审核设置</a></li>
 	<#else>
-		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/approve/setting.html">审核设置</a></li>
+		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/process/identify.html">审核设置</a></li>
 	</#if>
 	</@security.authorize>
 	
