@@ -24,6 +24,12 @@
 	<#else>
 		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/process/identify.html">审核设置</a></li>
 	</#if>
+	
+	<#if workflowClass??>
+		<li class="navi-li"><a class="${workflowClass}" href="${rc.getContextPath()}/do/workflow/workflow.html">工作流发布</a></li>
+	<#else>
+		<li class="navi-li"><a class="" href="${rc.getContextPath()}/do/workflow/workflow.html">工作流发布</a></li>
+	</#if>
 	</@security.authorize>
 	
 	

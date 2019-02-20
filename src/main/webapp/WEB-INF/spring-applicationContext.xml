@@ -50,7 +50,7 @@
 	 -->
 
 
-	<!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) 
+	<!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) --> 
 
 	<jdbc:embedded-database id="dataSource"
 		type="HSQL">
@@ -59,7 +59,7 @@
 		<jdbc:script location="/WEB-INF/insert-data.sql"
 			encoding="utf-8" />
 	</jdbc:embedded-database>
-	-->
+	<!--
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost/mm?useUnicode=true&amp;characterEncoding=UTF8" />
@@ -67,7 +67,7 @@
 		<property name="password" value="9350" />
 		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
 	</bean>
-		
+	-->	
 	<bean id="transactionManager"
 		class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="em" />

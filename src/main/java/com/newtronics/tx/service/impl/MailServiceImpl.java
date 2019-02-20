@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,7 +31,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 
 @Service
-public class MailServiceImpl implements MailService {
+public class MailServiceImpl implements MailService, JavaDelegate {
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -143,4 +145,11 @@ public class MailServiceImpl implements MailService {
 		sendEmail(link, model, tmp);
 	}
 	
+	@Override
+	public void execute(DelegateExecution execution) {
+		String a = (String) execution.getVariable("mailTo");
+		if(a != null) {
+			
+		}
+	}
 }

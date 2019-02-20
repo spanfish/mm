@@ -32,7 +32,8 @@
 
 		<authentication-provider>
 			<user-service>
-				<user name="admin" password="f3f1c26545d2424e5bbc7bf12a8f2dc6" authorities="ROLE_USER, ROLE_ADMIN" />
+				<!-- 9350 -->
+				<user name="admin" password="52ff52aa56d10a1287274ecf02dccb5f" authorities="ROLE_USER, ROLE_ADMIN" />
 			</user-service>
 			<password-encoder hash="md5"/>
 		</authentication-provider>

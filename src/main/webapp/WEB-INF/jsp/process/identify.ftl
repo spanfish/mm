@@ -14,22 +14,22 @@
 	<script src="${rc.getContextPath()}/resources/bootstrap300/js/bootstrap.js"></script>
 		
 	<style>
-		#users {
+		table {
 		    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 		    border-collapse: collapse;
 		    width: 100%;
 		}
 		
-		#users td, #users th {
+		table td, table th {
 		    border: 1px solid #ddd;
 		    padding: 8px;
 		}
 		
-		#users tr:nth-child(even){background-color: #f2f2f2;}
+		table tr:nth-child(even){background-color: #f2f2f2;}
 		
-		#users tr:hover {background-color: #ddd;}
+		table tr:hover {background-color: #ddd;}
 		
-		#users th {
+		table th {
 		    padding-top: 12px;
 		    padding-bottom: 12px;
 		    text-align: left;
@@ -72,22 +72,32 @@
 	<div style="width: 400px">
 		<h3>已有组</h3>
 		<form id="groupForm" action="${rc.getContextPath()}/do/process/showGroup.html" method="Post">
-			<select id="group" name="groupId">
-				<option value=""></option>
-		    	<#if groups??>
+			<table>
+				<tr>
+					<th colspan="2">组ID</th>
+				</tr>
+				
+				<#if groups??>
 					<#list groups as g>
-						<#if groupId?? && groupId == g.id>
-							<option value="${g.id}" selected>${g.id}</option>
-						<#else>
-							<option value="${g.id}">${g.id}</option>
-						</#if>
+						<tr>
+							<td>
+								<#if groupId?? && groupId = g.id>
+									<input type="radio" class="group" name="groupId" value="${g.id}" checked/>
+								<#else>
+									<input type="radio" class="group" name="groupId" value="${g.id}"/>
+								</#if>
+								
+								
+								</td>
+							<td>${g.id}</td>
+						</tr>
 					</#list>
 				</#if>
-			</select>
+			</table>
 		</form>
 		<script>
 		$(function() {
-  			$('#group').change(function() {
+  			$('.group').click(function() {
     			$('#groupForm').submit();
   				});
 			});
@@ -95,34 +105,53 @@
 		
 
 		<#if groupId??>
-			<h4>组内用户</h4>
+			<h4>组"${groupId}"内用户</h4>
 			<#if users??>
-				<#list users as u>
-					${u.id}
-				</#list>
+				<table>
+					<tr>
+						<th colspan="2">用户ID</th>
+					</tr>
+					
+					<#list users as u>
+						<tr>
+							<td>
+								<input type="checkbox" name="删除" value="${u.id}"/>
+							</td>
+							<td>${u.id}</td>
+						</tr>
+					</#list>
+				</table>
+				<input type="submit" value="从组里删除用户">
 			<#else>
 			还没添加用户
 			</#if>
+			<br/><br/>
 			<form id="addUserForm" action="${rc.getContextPath()}/do/process/addUser.html" method="Post">
-		    	<input type="hidden" name="groupId" value="${groupId}"/>
-			    <select id="userId" name="userId">
-			    	<#if sysUsers??>
-						<#list sysUsers as su>
-							<option value="${su.username}">${su.userDispName}</option>
-						</#list>
-					</#if>
-				</select>
-		  		<input type="submit" value="添加用户">
+				<div style="display:table">
+					<div style="display: table-cell;">
+						<input type="hidden" name="groupId" value="${groupId}"/>
+					    <select id="userId" name="userId">
+					    	<#if sysUsers??>
+								<#list sysUsers as su>
+									<option value="${su.username}">${su.userDispName}</option>
+								</#list>
+							</#if>
+						</select>
+					</div>
+					<div style="display: table-cell;">
+	  					<input type="submit" value="添加用户">
+	  				</div>
+	  			</div>
 			</form> 
 		</#if>
 		
 		<br/><br/>
 		<h3>新建组</h3>
 	    <form action="${rc.getContextPath()}/do/process/saveGroup.html" method="Post">
-		  Group(必须唯一):<br>
+		  组ID(必须唯一且和工作流中设置一致):<br>
 		  <input type="text" name="groupId">
 		  <br><br>
-		  <input type="submit" value="保存">
+		  <input type="submit" value="创建">
 		</form> 
 	</div>
 </body>

@@ -61,6 +61,7 @@
 				<th style="">序号</th>
 				<th style="">模板名称</th>
 				<th style="">模板文件名</th>
+				<th style="">模板对应工作流ID</th>
 				<th style="">通知书号码格式</th>
 				<th style="">制作权限</th>
 				<th style="">审核权限</th>
@@ -81,6 +82,9 @@
 					
 					<td style="width:100px">
 						${t.viewName }
+					</td>
+					<td style="width:160px">
+					
 					</td>
 					<td style="width:200px">
 						${t.notifiyNoFormat}
